@@ -6,7 +6,7 @@
 #    By: chanson <chanson@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 14:53:31 by chanson           #+#    #+#              #
-#    Updated: 2022/12/27 11:55:19 by chanson          ###   ########.fr        #
+#    Updated: 2022/12/27 22:24:35 by chanson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ $(NAME):	$(OBJS)
 
 clean:
 			rm -rf $(NAME)
+			rm -rf $(OBJS)
 
 fclean:		clean
 
