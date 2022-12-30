@@ -1,5 +1,0 @@
-{
-	"code-runner.excutorMap": {
-		"cpp": "cd $dir && clang++ -std=c++17 $finleName -o $fileNameWithoutExt && $dir$fileN"
-	}
-}
