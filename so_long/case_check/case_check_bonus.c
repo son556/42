@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 16:00:37 by chanson           #+#    #+#             */
-/*   Updated: 2023/01/02 22:08:46 by chanson          ###   ########.fr       */
+/*   Created: 2023/01/03 16:01:23 by chanson           #+#    #+#             */
+/*   Updated: 2023/01/03 16:30:30 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ void	case_check(t_game *g)
 		case_eat_collectable(g, x, y);
 	if ((g->map1)[y][x] == -3 && g->custom.cnt == 0)
 		case_enter_escape(g);
-	if (player_meet_enemy(g))
+	else if (player_meet_enemy(g))
 		put_game_over_img(g);
 }

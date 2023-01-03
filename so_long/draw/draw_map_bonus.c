@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:00:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/01/02 20:27:42 by chanson          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:02:14 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	draw_left_ball_count(t_game *g)
 	str = NULL;
 	str = ft_itoa(g->custom.left_ball);
 	mlx_put_image_to_window(g->mlx, g->win, g->custom.n_box, 64, 0);
-	mlx_string_put(g->mlx, g->win, 88, 18, 0x23652f, str);
+	mlx_string_put(g->mlx, g->win, 93, 35, 0x23652f, str);
 	free(str);
 }
 
@@ -30,7 +30,7 @@ void	draw_step_count(t_game *g)
 	str = NULL;
 	str = ft_itoa(g->user.move);
 	mlx_put_image_to_window(g->mlx, g->win, g->custom.n_box, 0, 0);
-	mlx_string_put(g->mlx, g->win, 24, 18, 0x000000, str);
+	mlx_string_put(g->mlx, g->win, 30, 35, 0x000000, str);
 	free(str);
 }
 

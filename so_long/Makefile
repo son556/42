@@ -20,9 +20,9 @@ OBJS_B = $(SRCS_B:.c=.o)
 
 NAME = so_long
 
-CC		=	gcc -g
+CC		=	cc
 CFLAGS	=	-Wall -Werror -Wextra
-CLIB	=	-Lmlx -lmlx -framework OpenGL -framework Appkit -Imlx
+CLIB	=	-L./mlx -lmlx -framework OpenGL -framework Appkit
 
 ifdef BONUS
  	OBJS_ALL = $(OBJS_B)
@@ -34,7 +34,6 @@ all:	$(NAME)
 
 $(NAME):	$(OBJS_ALL)
 			$(CC) $(CFLAGS) $(CLIB) $(OBJS_ALL) -o $(NAME)
-			install_name_tool -change libmlx.dylib mlx/libmlx.dylib $(NAME)
 
 %.o : %.c
 			$(CC) $(CFLAGS) -c $< -o $@
@@ -50,4 +49,4 @@ re:			fclean all
 bonus:
 	make BONUS=1 all
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re bonus

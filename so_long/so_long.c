@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/03 16:08:11 by chanson           #+#    #+#             */
+/*   Updated: 2023/01/03 16:08:12 by chanson          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 int	main_loop(t_game *g)
@@ -71,7 +83,6 @@ int	main(int argc, char **argv)
 		return (0);
 	game_init(&game, argv[1]);
 	read_map(&game);
-	system("leaks so_long");
 	check_valid(&game);
 	game_start(&game);
 }
