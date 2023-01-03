@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 15:58:10 by chanson           #+#    #+#             */
-/*   Updated: 2023/01/03 16:05:35 by chanson          ###   ########.fr       */
+/*   Updated: 2023/01/03 18:06:46 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static int	map_check_frame(t_game *g, char *line, int idx)
 			if (i == 0 && line[i] != '1')
 				return (0);
 			if (i == g->map_v.x_size - 1 && line[i] != '1')
+				return (0);
+			if (line[i] != 'C' && line[i] != 'P' && line[i] != 'E' \
+					&& line[i] != '0' && line[i] != '1')
 				return (0);
 		}
 		i++;
