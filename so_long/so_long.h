@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:08:19 by chanson           #+#    #+#             */
-/*   Updated: 2023/01/03 16:08:20 by chanson          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:38:39 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <mlx.h>
+# include "./mlx/mlx.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include "./get_next_line/get_next_line.h"
