@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 15:50:42 by chanson           #+#    #+#             */
-/*   Updated: 2023/02/04 13:58:50 by chanson          ###   ########.fr       */
+/*   Updated: 2023/02/07 09:06:18 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void	philo_status_death(long long ms, int number)
 void	philo_status_fork(t_philo *p, int fork1, int fork2)
 {
 	pthread_mutex_lock(&(p->monitor->print_key));
-	printf("%lld	%d has taken %d fork\n", time_check(p), p->index, fork1);
-	printf("%lld	%d has taken %d fork\n", time_check(p), p->index, fork2);
+	printf("%lld	%d has taken %d fork\n", time_check(p), \
+		p->index + 1, fork1 + 1);
+	printf("%lld	%d has taken %d fork\n", time_check(p), \
+		p->index + 1, fork2 + 1);
 	pthread_mutex_unlock(&(p->monitor->print_key));
 }
