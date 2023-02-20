@@ -17,7 +17,7 @@ LINE_CLEAR	=	"\x1b[1A\x1b[M"
 # Command Variables
 # =============================================================================
 
-CC			=	gcc
+CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra
 CDEBUG		=	-fsanitize=address -g
 RM			=	rm -f
