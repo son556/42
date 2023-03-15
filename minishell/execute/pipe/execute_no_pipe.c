@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:34:55 by chanson           #+#    #+#             */
-/*   Updated: 2023/03/11 20:16:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/03/13 17:28:15 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	_execute_cmd(t_tree *tree, char **temp)
 	if (tree->cmd.cmd_head == NULL)
 		prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 	if (execve(tree->cmd.cmd_head, tree->cmd.cmd_arr, tree->envp_val) == -1)
-		ft_error("cmd option error child\n");
+		prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 }
 
 void	change_env_val(char **pure_cmd, t_tree *tree)
@@ -111,8 +111,11 @@ void	execute_no_pipe(char **temp, t_tree *tree)
 	pure_cmd = ft_erase_null(pure_cmd);
 	change_env_val(pure_cmd, tree);
 	cmd_check(tree, pure_cmd);
-	if (pure_cmd[0] == NULL)
+	if (pure_cmd[0] == NULL && tree->origin == NULL)
+	{
+		free(tree->origin);
 		return ;
+	}
 	start_execute(tree, temp);
 	free(tree->origin);
 }

@@ -55,7 +55,7 @@ int	do_export(t_tree *info)
 		check_args = export_args(info, temp);
 		if (check_args)
 		{
-			printf("export: not a valid identifier\n");
+			write(2, "export: not a valid identifier\n", 31);
 			ft_free_str(temp);
 			return (2);
 		}

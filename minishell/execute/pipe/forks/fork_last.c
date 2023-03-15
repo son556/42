@@ -69,6 +69,6 @@ void	fork_last(t_tree *tree, char **cmd)
 		if (tree->cmd.cmd_head == NULL)
 			prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 		if (execve(tree->cmd.cmd_head, tree->cmd.cmd_arr, tree->envp_val) == -1)
-			ft_error("cmd option error child\n");
+			prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 	}
 }

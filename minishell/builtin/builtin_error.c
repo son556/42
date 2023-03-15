@@ -41,5 +41,5 @@ void	prt_err_2(char *str1, char *str2)
 	write(2, str1, ft_strlen(str1));
 	write(2, str2, ft_strlen(str2));
 	write(2, "\n", 1);
-	exit(2);
+	exit(127);
 }

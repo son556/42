@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:43:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/03/11 20:22:37 by chanson          ###   ########.fr       */
+/*   Updated: 2023/03/13 18:40:54 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void	fork_first(t_tree *tree, char **cmd)
 		if (tree->cmd.cmd_head == NULL)
 			prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 		if (execve(tree->cmd.cmd_head, tree->cmd.cmd_arr, tree->envp_val) == -1)
-			ft_error("cmd option error child\n");
+			prt_err_2(tree->cmd.cmd_arr[0], ": cmd not found");
 	}
 }

@@ -19,6 +19,11 @@ int	key_check(char *s, char c)
 	i = 1;
 	while (s[i] && s[i] != c && s[i] != '=')
 	{
+		if (c == '"' && s[i] == '$')
+		{
+			i++;
+			continue ;
+		}
 		if (!ft_isalnum(s[i]))
 			return (0);
 		i++;

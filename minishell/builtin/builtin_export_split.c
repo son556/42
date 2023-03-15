@@ -70,6 +70,8 @@ char	**export_split(char *str)
 	new_temp = NULL;
 	tmp = NULL;
 	flag = 0;
+	if (!str)
+		return (NULL);
 	new_temp = do_export_split(str, new_temp, tmp, flag);
 	return (new_temp);
 }

@@ -87,7 +87,6 @@ SRCS_NAME =  ./test \
 		./builtin/builtin_getcmd \
 		./builtin/builtin_export_args \
 		./builtin/builtin_export_valid \
-		./utils/display \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 

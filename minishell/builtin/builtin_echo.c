@@ -21,8 +21,11 @@ void	find_value_print(t_env *env_list, char *key)
 	{
 		if (ft_strscmp(tmp->key, key))
 		{
-			printf("%s", tmp->value);
-			return ;
+			if (tmp->value && !ft_strscmp(tmp->value, " "))
+			{
+				printf("%s", tmp->value);
+				return ;
+			}
 		}
 		tmp = tmp->next;
 	}

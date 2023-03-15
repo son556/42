@@ -49,8 +49,11 @@ void	execute_cmd(char **cmd, int index, t_tree *tree)
 	pure_cmd = ft_erase_null(pure_cmd);
 	change_env_val(pure_cmd, tree);
 	cmd_check(tree, pure_cmd);
-	if (pure_cmd[0] == NULL)
+	if (pure_cmd[0] == NULL && tree->origin == NULL)
+	{
+		free(tree->origin);
 		return ;
+	}
 	tree->pid[index] = fork();
 	if (tree->pid[index] == 0)
 		child_execute(tree, index, cmd);
