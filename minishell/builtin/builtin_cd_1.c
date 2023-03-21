@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 17:54:11 by hyungjpa          #+#    #+#             */
-/*   Updated: 2023/03/13 18:34:56 by chanson          ###   ########.fr       */
+/*   Updated: 2023/03/21 13:47:45 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,7 @@ int	do_cd(t_tree *info)
 		return (1);
 	if (str_size(info->cmd.cmd_arr) > 2)
 		return (print_error_2("cd: string not in: ", info->cmd.cmd_arr[2]));
-	cwd_buf = (char *)malloc(sizeof(char) * 1024);
-	if (!cwd_buf)
-		return (print_error_1("malloc_error"));
-	cwd_buf = getcwd(cwd_buf, 1024);
+	cwd_buf = getcwd(NULL, 0);
 	if (info->cmd.cmd_arr[1])
 		return (change_dir(info, cwd_buf));
 	else

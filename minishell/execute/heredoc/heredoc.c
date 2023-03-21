@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:29:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/03/11 19:30:52 by chanson          ###   ########.fr       */
+/*   Updated: 2023/03/16 20:58:34 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_heredoc(t_tree *tree, char *limit)
 	pid_t		pid;
 
 	name = NULL;
-	name = ft_strstr(name, "heredoc");
+	name = ft_strstr(name, "./tmp/heredoc");
 	temp = ft_itoa(tree->heredoc_idx);
 	name = ft_strstr(name, temp);
 	free(temp);
