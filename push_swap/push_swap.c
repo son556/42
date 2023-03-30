@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 20:45:41 by chanson           #+#    #+#             */
-/*   Updated: 2022/12/16 21:43:32 by chanson          ###   ########.fr       */
+/*   Updated: 2023/03/25 18:11:04 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,16 @@ static void	make_d_a(t_LinkedDeque *deque_a, t_DequeNode **node, char **argv)
 	}
 }
 
+#include <stdio.h>
+
 int	main(int argc, char **argv)
 {
 	t_LinkedDeque	*deque_a;
 	t_LinkedDeque	*deque_b;
 	t_DequeNode		*node;
+	size_t			i;
 
+	i = 1;
 	if (argc <= 1)
 		return (0);
 	if (!check_argv(argc, argv))
@@ -112,6 +116,11 @@ int	main(int argc, char **argv)
 	deque_a = create_deque();
 	deque_b = create_deque();
 	node = NULL;
+	while (argv[i])
+	{
+		printf("%s ", argv[i]);
+		i++;
+	}
 	make_d_a(deque_a, &node, argv);
 	if (!determine_input(argv, deque_a))
 	{

@@ -1,2 +1,15 @@
-total 152
-drwxr-xr-x  18 chanson  2022_seoul    612  2  6 20:40 .
+total 136
+-rw-r--r--   1 chanson  2022_seoul   1777 Jan 20 18:59 Makefile
+drwxr-xr-x   9 chanson  2022_seoul    306 Jan 20 18:59 bonus
+drwxr-xr-x   6 chanson  2022_seoul    204 Mar 24 21:33 error
+drwxr-xr-x   5 chanson  2022_seoul    170 Jan 22 19:35 includes
+-rw-r--r--   1 chanson  2022_seoul      0 Jan 20 18:59 infile
+drwxr-xr-x   8 chanson  2022_seoul    272 Mar 24 21:33 init
+-rw-r--r--   1 chanson  2022_seoul      0 Mar 24 21:35 outfile
+drwxr-xr-x   4 chanson  2022_seoul    136 Mar 24 21:33 parse
+drwxr-xr-x   4 chanson  2022_seoul    136 Mar 24 21:35 pipe
+-rw-r--r--   1 chanson  2022_seoul   1542 Jan 20 18:59 pipe.c
+-rw-r--r--   1 chanson  2022_seoul   1456 Mar 24 21:33 pipe.o
+-rw-r--r--   1 chanson  2022_seoul   2621 Jan 20 18:59 pipe_bonus.c
+-rwxr-xr-x   1 chanson  2022_seoul  51008 Mar 24 21:35 pipex
+drwxr-xr-x  20 chanson  2022_seoul    680 Mar 24 21:33 utils
