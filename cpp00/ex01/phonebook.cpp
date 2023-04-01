@@ -20,7 +20,7 @@ void	PhoneBook::add_contact()
 	std::getline(std::cin, phone_number);
 	std::cout << "insert darkest secret: ";
 	std::getline(std::cin, darkest_secret);
-	if (first_name.size() > 0)
+	if (first_name.size() > 0 && last_name.size() > 0 && nick_name.size() > 0 && phone_number.size() > 0 && darkest_secret.size() > 0)
 	{
 		contact = Contact(first_name, last_name, nick_name, phone_number, darkest_secret);
 		this->contact[idx % 8] = contact;
@@ -56,8 +56,8 @@ void	PhoneBook::search_contact(int idx)
 		str[2] = this->contact[index].get_nick_name();
 		if (str[2].size() > 10)
 			str[0].replace(9, str[0].size() - 9, ".");
-		std::cout << "|" << std::setw(10) << idx << " | " << std::setw(10) << str[0] << " | " \
-			<< std::setw(10) << str[1] << " | "<< std::setw(10) << str[2] << "|" << std::endl;
+		std::cout << "|" << std::setw(10) << idx << "|" << std::setw(10) << str[0] << "|" \
+			<< std::setw(10) << str[1] << "|"<< std::setw(10) << str[2] << "|" << std::endl;
 	}
 }
 
@@ -74,7 +74,7 @@ void	PhoneBook::search_contact()
 		return ;
 	}
 	idx = 0;
-	while (this->contact[idx].get_first_name().size() > 0 && idx < 8)
+	while (idx < 8 && this->contact[idx].get_first_name().size() > 0)
 	{
 		str[0] = this->contact[idx].get_first_name();
 		if (str[0].size() > 10)
@@ -102,6 +102,5 @@ PhoneBook::PhoneBook()
 
 PhoneBook::~PhoneBook()
 {
-	int	idx;
 	std::cout << "execute phonebook destructor" << std::endl;
 }

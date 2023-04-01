@@ -12,7 +12,7 @@ int	main(void)
 			phonebook.add_contact();
 		else if (cmd.compare("SEARCH") == 0)
 			phonebook.search_contact();
-		else if (cmd.compare("EXIT") == 0)
+		else if (cmd.compare("EXIT") == 0 || std::cin.eof())
 			break ;
 		else
 			std::cout << "bad command" << std::endl;
