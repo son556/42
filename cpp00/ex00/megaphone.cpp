@@ -17,7 +17,10 @@ int main(int argc, char **argv)
 			i = -1;
 			while (argv[idx][++i])
 			{
-				c = toupper(argv[idx][i]);
+				if (argv[idx][i] >= 'a' && argv[idx][i] <= 'z')
+					c = argv[idx][i] - 32;
+				else
+					c = argv[idx][i];
 				std::cout << c;
 			}
 			std::cout << ' ';

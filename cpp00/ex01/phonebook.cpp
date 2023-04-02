@@ -52,10 +52,10 @@ void	PhoneBook::search_contact(int idx)
 			str[0].replace(9, str[0].size() - 9, ".");
 		str[1] = this->contact[index].get_last_name();
 		if (str[1].size() > 10)
-			str[0].replace(9, str[0].size() - 9, ".");
+			str[1].replace(9, str[1].size() - 9, ".");
 		str[2] = this->contact[index].get_nick_name();
 		if (str[2].size() > 10)
-			str[0].replace(9, str[0].size() - 9, ".");
+			str[2].replace(9, str[2].size() - 9, ".");
 		std::cout << "|" << std::setw(10) << idx << "|" << std::setw(10) << str[0] << "|" \
 			<< std::setw(10) << str[1] << "|"<< std::setw(10) << str[2] << "|" << std::endl;
 	}
@@ -81,19 +81,32 @@ void	PhoneBook::search_contact()
 			str[0].replace(9, str[0].size() - 9, ".");
 		str[1] = this->contact[idx].get_last_name();
 		if (str[1].size() > 10)
-			str[0].replace(9, str[0].size() - 9, ".");
+			str[1].replace(9, str[1].size() - 9, ".");
 		str[2] = this->contact[idx].get_nick_name();
 		if (str[2].size() > 10)
-			str[0].replace(9, str[0].size() - 9, ".");
+			str[2].replace(9, str[2].size() - 9, ".");
 		std::cout << "|" << std::setw(10) << idx + 1 << "|" << std::setw(10) << str[0] << "|" \
 			<< std::setw(10) << str[1] << "|" << std::setw(10) << str[2] << "|" << std::endl;
 		idx++;
 	}
 	std::cout << "insert idx if insert 0 exit" << std::endl;
 	std::getline(std::cin, select_idx);
-	if (select_idx.size() > 1 || (select_idx[0] > '8' || select_idx[0] < '0'))
-		return ;
-	search_contact(std::stoi(select_idx));
+	if (select_idx.compare("1") == 0)
+		search_contact(1);
+	else if (select_idx.compare("2") == 0)
+		search_contact(2);
+	else if (select_idx.compare("3") == 0)
+		search_contact(3);
+	else if (select_idx.compare("4") == 0)
+		search_contact(4);
+	else if (select_idx.compare("5") == 0)
+		search_contact(5);
+	else if (select_idx.compare("6") == 0)
+		search_contact(6);
+	else if (select_idx.compare("7") == 0)
+		search_contact(7);
+	else if (select_idx.compare("8") == 0)
+		search_contact(8);
 }
 
 PhoneBook::PhoneBook()
