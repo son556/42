@@ -11,6 +11,8 @@ int	main(int argc, char **argv)
 	std::string	file_name = argv[1];
 	std::ofstream newfile(file_name + ".replace");
 	std::string	s;
+	std::string	new_s;
+	size_t	idx;
 
 	if (!in.is_open())
 	{
@@ -20,14 +22,12 @@ int	main(int argc, char **argv)
 	while (!in.eof())
 	{
 		std::getline(in, s);
-		if (s.find(argv[2]) != std::string::npos)
+		while ((idx = s.find(argv[2])) != std::string::npos)
 		{
-			s = argv[3];
-			std::cout << "flag" << std::endl;
-			std::cout << s << std::endl;
+			new_s = argv[2];
+			s.erase(idx, new_s.size());
+			s.insert(idx, argv[3]);
 		}
-		else
-			std::cout << s << std::endl;
 		if (!in.eof())
 			newfile << s << std::endl;
 		else
