@@ -6,32 +6,57 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:39:41 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/07 22:27:36 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/09 21:51:43 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
-#include <stdio.h>
+#include "minirt.h"
 
-typedef struct s_vars
+void	write_color(double r, double g, double b)
 {
-	void	*mlx;
-	void	*win;
-}		t_vars;
+	int ir = (int)min(256 * r, 255);
+	int ig = (int)min(256 * g, 255);
+	int ib = (int)min(256 * b, 255);
+	printf("%d %d %d\n", ir, ig, ib);
+}
 
-int		close(int keycode, t_vars *vars)
+t_vec3	*color(t_ray *ray)
 {
-	printf("%d\n", keycode);
-	mlx_destroy_image(vars->mlx, vars->win);
-	return 0;
+	t_vec3	*unit_dir;
+	double	t;
+	t_vec3	*cal1;
+	t_vec3	*cal2;
+	t_vec3	*temp;
+
+	unit_dir = vec3_unit(&(ray->dir));
+	t = 0.5 * (unit_dir->y + 1.0);
+	cal1 = vec3_init(1.0, 1.0, 1.0);
+	cal2 = vec3_init(0.5, 0.7, 1.0);
+	temp = vec3_add(vec3_times((1.0 - t), cal1), vec3_times(t, cal2));
+	return (temp);
 }
 
 int	main(void)
 {
-	t_vars	vars;
+	const double	aspect_ratio = 16.0 / 9.0;
+	const int		image_width = 400;
+	const int		image_height = (int)(image_width / aspect_ratio);
 
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 1080, 1080, "Hello world!");
-	mlx_hook(vars.win, 4, 1L<<0, close, &vars);
-	mlx_loop(vars.mlx);
+	double	viewport_height = 2.0;
+	double	viewport_width = aspect_ratio * viewport_height;
+	double	focal_length = 1.0;
+	t_vec3		*vec3;
+
+	vec3 = vec3_init(0, 0, 0);
+	printf("P3\n256 256\n255\n");
+	for (int j = image_height - 1; j >= 0; --j)
+	{
+		for (int i = 0; i < image_width; ++i)
+		{
+			vec3->x = (double)i / (image_width - 1);
+			vec3->y = (double)j / (image_height - 1);
+			vec3->z = 0.25;
+			write_color(vec3->x, vec3->y, vec3->z);
+		}
+	}
 }

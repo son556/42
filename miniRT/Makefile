@@ -1,6 +1,7 @@
 NAME = miniRT
 
 SRCS_NAME = miniRT \
+			vec_oper \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 
