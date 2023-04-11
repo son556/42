@@ -1,7 +1,6 @@
 NAME = miniRT
 
 SRCS_NAME = miniRT \
-			vec_oper \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 
@@ -9,14 +8,14 @@ OBJS = $(addsuffix .o, $(SRCS_NAME))
 
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror
 
 CLIB = -L./mlx -lmlx -framework OpenGL -framework Appkit
 
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-			$(CC) $(FLAGS) $(CLIB) $(OBJS) -o $(NAME)
+			$(CC) $(CLIB) $(OBJS) -o $(NAME)
 
 $(OBJS):	$(SRCS)
 			$(CC) $(FLAGS) $(SRCS) -c
