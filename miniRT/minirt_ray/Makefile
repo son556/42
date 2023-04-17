@@ -6,22 +6,28 @@ SRCS_NAME = minirt \
 			./include/ray \
 			./include/canvas \
 			./include/scene \
+			./include/object_create \
+			./include/hit_sphere \
+			./include/normal \
+			./include/hit \
+			./include/object_utils \
+			./include/phong_lighting \
 
-SRCS = $(addsuffix .c, $(NAME))
+SRCS = $(addsuffix .c, $(SRCS_NAME))
 
-OBJS = $(addsuffix .o, $(NAME))
+OBJS = $(addsuffix .o, $(SRCS_NAME))
 
 CC = cc
 
 FLAGS = -Wall -Wextra -Werror
 
-all:	$(NAME)
+all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+			@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
 
-$(OBJS):	$(SRCS)
-			$(CC) $(FLAGS) $(SRCS) -c
+%.o : %.c
+			$(CC) $(FLAGS)  -c $< -o $@
 
 clean:
 			rm -rf $(OBJS)

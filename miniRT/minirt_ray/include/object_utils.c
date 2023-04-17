@@ -1,20 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.h                                            :+:      :+:    :+:   */
+/*   object_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:25:16 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/17 12:55:54 by chanson          ###   ########.fr       */
+/*   Created: 2023/04/17 15:08:08 by chanson           #+#    #+#             */
+/*   Updated: 2023/04/17 15:10:33 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_H
-# define PRINT_H
+#include "utils.h"
 
-# include <stdio.h>
-# include "structures.h"
+void	oadd(t_object **list, t_object *new)
+{
+	t_object	*cur;
 
-void	write_color(t_color3 pixel_color);
-#endif
+	if (*list == NULL)
+	{
+		*list = new;
+		return ;
+	}
+	cur = *list;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new;
+}
+
+t_object	*olast(t_object *list)
+{
+	if (list == NULL)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
+}

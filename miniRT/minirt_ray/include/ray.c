@@ -6,11 +6,12 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 21:35:09 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/16 22:10:52 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/17 16:27:15 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "trace.h"
+#include "structures.h"
 
 t_ray	ray(t_point3 orig, t_vec3 dir)
 {
@@ -40,10 +41,25 @@ t_ray	ray_primary(t_camera *cam, double u, double v)
 	return (ray);
 }
 
-t_color3	ray_color(t_ray	*r)
+t_hit_record	record_init(void)
 {
-	double	t;
+	t_hit_record	record;
 
-	t = 0.5 * (r->dir.y + 1.0);
-	return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0), t)));
+	record.tmin = EPSILON;
+	record.tmax = INFINITY;
+	return (record);
+}
+
+t_color3	ray_color(t_scene *scene)
+{
+	double			t;
+
+	scene->rec = record_init();
+	if (hit(scene->world, &scene->ray, &scene->rec))
+		return (phong_lighting(scene));
+	else
+	{
+		t = 0.5 * (scene->ray.dir.y + 1.0);
+		return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0), t)));
+	}
 }

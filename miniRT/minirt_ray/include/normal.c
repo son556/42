@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.h                                            :+:      :+:    :+:   */
+/*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 15:25:16 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/17 12:55:54 by chanson          ###   ########.fr       */
+/*   Created: 2023/04/17 14:36:19 by chanson           #+#    #+#             */
+/*   Updated: 2023/04/17 14:37:50 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_H
-# define PRINT_H
+#include "trace.h"
 
-# include <stdio.h>
-# include "structures.h"
-
-void	write_color(t_color3 pixel_color);
-#endif
+void	set_face_normal(t_ray *r, t_hit_record *rec)
+{
+	rec->front_face = vdot(r->dir, rec->normal) < 0;
+	rec->normal = (rec->front_face) ? rec->normal : vmult(rec->normal, -1);
+}

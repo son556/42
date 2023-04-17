@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 20:53:14 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/16 20:55:10 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/17 15:13:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,6 @@ double		vdot(t_vec3 vec, t_vec3 vec2);
 t_vec3		vcross(t_vec3 vec, t_vec3 vec2);
 t_vec3		vunit(t_vec3 vec);
 t_vec3		vmin(t_vec3 vec1, t_vec3 vec2);
+void		oadd(t_object **list, t_object *new);
+t_object	*olast(t_object *list);
 #endif
