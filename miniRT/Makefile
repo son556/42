@@ -5,6 +5,7 @@ SRCS_NAME = main \
 			./include/vec_utils/vec_utils2 \
 			./include/vec_utils/vec_utils3 \
 			./include/vec_utils/vec_utils4 \
+			./include/vec_utils/vec_utils5 \
 			./include/ray \
 			./include/mlx_functions/mlx_utils \
 			./include/mlx_functions/mlx_utils2 \
@@ -12,6 +13,7 @@ SRCS_NAME = main \
 			./include/hit/hit_cone \
 			./include/hit/hit_cylinder \
 			./include/hit/hit_cube \
+			./include/hit/hit_cube_2 \
 			./include/objects \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))

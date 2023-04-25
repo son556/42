@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/23 20:02:05 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:25:32 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define VEC3_H
 
 # include <math.h>
+
+# include <stdio.h>
 
 typedef struct s_vec3	t_vec3;
 typedef struct s_vec3	t_color3;
@@ -28,6 +30,20 @@ struct s_vec3
 	double	y;
 	double	z;
 };
+
+typedef struct s_inverse_factor
+{
+	double	det_a;
+	double	c_11;
+	double	c_12;
+	double	c_13;
+	double	c_21;
+	double	c_22;
+	double	c_23;
+	double	c_31;
+	double	c_32;
+	double	c_33;
+}	t_inverse_factor;
 
 struct s_vec3x3
 {
@@ -55,4 +71,7 @@ t_rot		rotate_vec_001(t_vec3 normal);
 double		get_radian(double theta);
 t_rot		rotate_vec(double t1, double t2, double t3);
 t_vec3		point_symemtry(t_vec3 target, t_vec3 std);
+t_vec3x3	inverse_vec3x3(t_vec3x3 vec);
+t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t);
+void		display_vec3(t_vec3 vec);
 #endif
