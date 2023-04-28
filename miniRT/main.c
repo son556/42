@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 19:36:25 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/28 16:34:39 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ void	display_cube(t_cube cube)
 	}
 }
 
+void	display_cube_plane(t_cube_plane plane)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		printf("vertex[%d]: ", i);
+		display_vec3(plane.plane_vertex[i]);
+	}
+}
+
 t_vec3	ray_color(t_ray ray, t_obj obj)
 {
 	t_vec3	color;
@@ -40,16 +49,16 @@ t_vec3	ray_color(t_ray ray, t_obj obj)
 	double	t;
 
 	t_max = INFINITY;
-	// t = hit_cylinder(obj.cylinder, ray, t_max);
+	t = hit_cylinder(obj.cylinder, ray, t_max);
 	// t = hit_cone(obj.cone, ray, t_max);
 	// t = hit_sphere(obj.sphere, ray, t_max);
 	// t = hit_plane(obj.plane, ray, t_max);
-	t = hit_cube(obj, ray, t_max, &color);
+	// t = hit_cube(obj.cube, ray, t_max, &color);
 	if (t > 0.0)
 	{
 		t_vec3	tmp = ray_at(ray, t);
 		t_vec3	N = normalize_vec3(vec3init(tmp.x, tmp.y, tmp.z - (-1)));
-		// color = mul_vec3(vec3init(N.x + 1, N.y + 1, N.z + 1), 0.5);
+		color = mul_vec3(vec3init(N.x + 1, N.y + 1, N.z + 1), 0.5);
 		return (color);
 	}
 	t_vec3	unit_vec = normalize_vec3(ray.direction);
@@ -84,9 +93,9 @@ int	main(void)
 	
 	t_obj		obj_cylinder;
 	obj_cylinder.type = CYLINDER;
-	obj_cylinder.cylinder.n_vec = vec3init(0, -1, 1);
+	obj_cylinder.cylinder.n_vec = vec3init(1, -1, 0);
 	obj_cylinder.cylinder.n_vec = normalize_vec3(obj_cylinder.cylinder.n_vec);
-	obj_cylinder.cylinder.center = vec3init(3, 2, -20);
+	obj_cylinder.cylinder.center = vec3init(0, 2, -8);
 	obj_cylinder.cylinder.radius = 1.0;
 	obj_cylinder.cylinder.height = 2.0;
 
@@ -94,7 +103,7 @@ int	main(void)
 	obj_cone.type = CONE;
 	obj_cone.cone.n_vec = vec3init(0, -1, 0);
 	obj_cone.cone.n_vec = normalize_vec3(obj_cone.cone.n_vec);
-	obj_cone.cone.center = vec3init(0, 0, -10);
+	obj_cone.cone.center = vec3init(0, 2, -10);
 	obj_cone.cone.radius = 2.0;
 	obj_cone.cone.height = 5.0;
 
@@ -113,9 +122,9 @@ int	main(void)
 	t_obj	obj_cube;
 	obj_cube.type = CUBE;
 	obj_cube.cube.n_vec = vec3init(0, 0, 1);
-	obj_cube.cube.n_vec_2 = normalize_vec3(vec3init(-1, 1, 0));
-	obj_cube.cube.len = 1.0;
-	obj_cube.cube.cube_c = vec3init(0, 3, -5);
+	obj_cube.cube.n_vec_2 = normalize_vec3(vec3init(1, -1, 0));
+	obj_cube.cube.len = 2.0;
+	obj_cube.cube.cube_c = vec3init(0, 5, -10);
 	obj_cube.cube.plane[0].color = vec3init(1, 0, 0);
 	obj_cube.cube.plane[1].color = vec3init(0, 0, 0);
 	obj_cube.cube.plane[2].color = vec3init(0, 1, 0);
@@ -123,6 +132,8 @@ int	main(void)
 	obj_cube.cube.plane[4].color = vec3init(1, 1, 0);
 	obj_cube.cube.plane[5].color = vec3init(0, 1, 1);
 	complete_cube(&(obj_cube.cube));
+	// display_cube(obj_cube.cube);
+	// display_cube_plane(obj_cube.cube.plane[0]);
 
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
@@ -136,7 +147,7 @@ int	main(void)
 							ll_corner.z + u*horizontal.z + v*vertical.z);
 			ray.direction = normalize_vec3(ray.direction);
 
-			t_vec3 argb = ray_color(ray, obj_cube);
+			t_vec3 argb = ray_color(ray, obj_cylinder);
 
 			int	color = argb_(0, argb.x * 255.999, argb.y * 255.999, argb.z * 255.999);
 			mlx_pixel_put(mlx.mlx, mlx.win, i, point_y - 1 - j, color);

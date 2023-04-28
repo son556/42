@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 22:59:06 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 14:25:18 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/27 19:43:04 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,19 @@ t_vec3x3	inverse_vec3x3(t_vec3x3 vec)
 	return (inv);
 }
 
+double	getradian(int num)
+{
+	return (num * (PI / 180));
+}
+
 void	display_vec3(t_vec3 vec)
 {
 	printf("%f %f %f\n", vec.x, vec.y, vec.z);
+}
+
+void	display_vec3x3(t_vec3x3 vec)
+{
+	display_vec3(vec.v_x);
+	display_vec3(vec.v_y);
+	display_vec3(vec.v_z);
 }

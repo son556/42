@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 14:25:32 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/27 19:43:20 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define VEC3_H
 
 # include <math.h>
-
 # include <stdio.h>
+
+# define PI 3.1415926535897
 
 typedef struct s_vec3	t_vec3;
 typedef struct s_vec3	t_color3;
@@ -73,5 +74,8 @@ t_rot		rotate_vec(double t1, double t2, double t3);
 t_vec3		point_symemtry(t_vec3 target, t_vec3 std);
 t_vec3x3	inverse_vec3x3(t_vec3x3 vec);
 t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t);
+double		getradian(int num);
+
 void		display_vec3(t_vec3 vec);
+void		display_vec3x3(t_vec3x3 vec);
 #endif

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 18:38:17 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:48:41 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ enum e_objects
 	HYPERBOLOID,
 	PARABOLOID
 };
+
+typedef struct s_triangle
+{
+	t_vec3	n1;
+	t_vec3	n2;
+	t_vec3	n3;
+	t_vec3	n_vec;
+}	t_tri;
 
 typedef struct s_cube_plane
 {
@@ -131,7 +139,7 @@ double	hit_sphere(t_sphere sph, t_ray ray, double t_max);
 double	hit_cylinder(t_cylinder cylinder, t_ray ray, double t_max);
 double	hit_cone(t_cone	con, t_ray ray, double t_max);
 double	hit_plane(t_plane pln, t_ray ray, double t_max);
-double	hit_cube(t_obj obj, t_ray ray, double t_max, t_color3 *color);
+double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
 double	ft_abs(double num);
 void	complete_cube(t_cube *cube);
 #endif

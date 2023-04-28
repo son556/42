@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:14:45 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/22 13:53:25 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/26 13:56:51 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ t_rot	rotate_vec_001(t_vec3 normal)
 	t_rot		rot;
 	t_vec3		rot_e;
 
-	if (normal.x == 0 && normal.y == 0 && normal.z == 1)
+	if ((normal.x == 0 && normal.y == 0 && normal.z == 1) || \
+		(normal.x == 0 && normal.y == 0 && normal.z == -1))
 	{
 		rot.v_x = vec3init(1.0, 0.0, 0.0);
 		rot.v_y = vec3init(0.0, 1.0, 0.0);

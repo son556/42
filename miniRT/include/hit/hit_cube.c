@@ -6,134 +6,119 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:00:18 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 19:45:39 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/28 15:57:18 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
+#include <stdio.h>
 
-static t_rot	rotate_plane_z(t_cube_plane	plane)
+static int	find_theta(t_vec3x3 cabi)
 {
-	t_vec3	point;
-	t_vec3	l_vec;
-	t_vec3	rot;
-	t_rot	rot_r;
+	double	cos1;
+	double	sin1;
+	double	cos2;
+	double	sin2;
+	double	cosin;
 
-	l_vec = sub_vec3(plane.plane_vertex[0], plane.plane_vertex[3]);
-	point = plane.plane_vertex[0];
-	rot.x = (ft_pow(l_vec.y) * point.x - l_vec.x * l_vec.y * point.y) / \
-		(ft_pow(l_vec.x) + ft_pow(l_vec.y));
-	rot.y = (-l_vec.y / l_vec.x) * rot.x;
-	rot.z = rot.y / rot.x;
-	point.z = sqrt(ft_pow(rot.y) + ft_pow(rot.x));
-	rot_r.v_x = vec3init(rot.x / point.z, rot.y / point.z, 0);
-	rot_r.v_y = vec3init(-rot.y / point.z, rot.x / point.z, 0);
-	rot_r.v_z = vec3init(0, 0, 1);
-	if (rot.z < 1e-5 && rot.z > -1e-5)
+	cos1 = dot_vec3(cabi.v_x, cabi.v_y) / \
+		(len_vec3(cabi.v_x) * len_vec3(cabi.v_y));
+	cos2 = dot_vec3(cabi.v_x, cabi.v_z) / \
+		(len_vec3(cabi.v_x) * len_vec3(cabi.v_z));
+	sin1 = sqrt(1 - ft_pow(cos1));
+	sin2 = sqrt(1 - ft_pow(cos2));
+	cosin = cos1 * cos2 - sin1 * sin2;
+	if (cosin <= 1e-5 && cosin >= -1e-5)
 	{
-		rot_r.v_x = vec3init(1, 0, 0);
-		rot_r.v_y = vec3init(0, 1, 0);
-		rot_r.v_z = vec3init(0, 0, 1);
+		if (cos1 < 0.0 && cos1 >= -1.0)
+			return (0);
+		if (cos2 >= -1 - 1e-6 && cos2 <= -1 + 1e-6)
+			return (0);
+		return (1);
 	}
-	return (rot_r);
+	return (0);
 }
 
-static t_cube_plane	rot_plane_abcd(t_rot rot, t_cube_plane plane)
+static int	complete_tri(t_tri *tri, t_cube_plane plane, t_vec3 hit)
 {
-	t_cube_plane	rot_plane;
-	int				i;
+	int	i;
 
-	rot_plane.center = vec3x3_x_vec3(rot, plane.center);
-	rot_plane.n_vec = vec3x3_x_vec3(rot, plane.n_vec);
 	i = -1;
 	while (++i < 4)
-		rot_plane.plane_vertex[i] = vec3x3_x_vec3(rot, plane.plane_vertex[i]);
-	return (rot_plane);
-}
-
-static int	in_the_target(t_rot	rot, t_discrim disc, t_cube_plane rot_plane)
-{
-	t_minmax	m;
-	int			i;
-
-	disc.ac = vec3x3_x_vec3(rot, disc.ac);
-	rot_plane = rot_plane_abcd(rot, rot_plane);
-	m.max_x = -INFINITY;
-	m.min_x = INFINITY;
-	m.max_y = -INFINITY;
-	m.min_y = INFINITY;
-	i = -1;
-	while (++i < 4)
-	{
-		if (rot_plane.plane_vertex[i].x < m.min_x)
-			m.min_x = rot_plane.plane_vertex[i].x;
-		if (rot_plane.plane_vertex[i].x > m.max_x)
-			m.max_x = rot_plane.plane_vertex[i].x;
-		if (rot_plane.plane_vertex[i].y < m.min_y)
-			m.min_y = rot_plane.plane_vertex[i].y;
-		if (rot_plane.plane_vertex[i].y > m.max_y)
-			m.max_y = rot_plane.plane_vertex[i].y;
-	}
-	if (disc.ac.x >= m.min_x && disc.ac.x <= m.max_x && \
-		disc.ac.y >= m.min_y && disc.ac.y <= m.max_y)
+		tri[i].n1 = plane.center;
+	tri[0].n2 = plane.plane_vertex[0];
+	tri[0].n3 = plane.plane_vertex[1];
+	tri[1].n2 = plane.plane_vertex[1];
+	tri[1].n3 = plane.plane_vertex[2];
+	tri[2].n2 = plane.plane_vertex[2];
+	tri[2].n3 = plane.plane_vertex[3];
+	tri[3].n2 = plane.plane_vertex[3];
+	tri[3].n3 = plane.plane_vertex[0];
+	if (hit.x == plane.center.x && \
+		hit.y == plane.center.y && hit.z == plane.center.z)
 		return (1);
 	return (0);
 }
 
-static double	hit_plane_c(t_cube_plane rot_plane, t_ray rot_ray, double t_max)
+static int	where_hit_area(t_cube_plane plane, t_vec3 hit, double len)
 {
-	t_discrim	disc;
-	t_rot		rot;
-	t_vec3		vec_c;
+	t_tri		tri[4];
+	int			i;
+	t_vec3x3	cabi;
 
-	vec_c.x = dot_vec3(rot_ray.direction, rot_plane.n_vec);
-	if (vec_c.x <= 1e-5 && vec_c.x >= -1e-5)
-		return (0);
-	vec_c.x = dot_vec3(sub_vec3(rot_ray.point, rot_plane.center), \
-		rot_plane.n_vec);
-	if (vec_c.x <= 1e-5 && vec_c.x >= -1e-5)
-		return (0);
-	disc.ac = sub_vec3(rot_ray.point, rot_plane.center);
-	disc.a = -1 * dot_vec3(disc.ac, rot_plane.n_vec);
-	disc.b = dot_vec3(rot_ray.direction, rot_plane.n_vec);
-	disc.root = disc.a / disc.b;
-	if (disc.root < 0.0001 || disc.root > t_max)
-		return (0);
-	disc.ac = ray_at(rot_ray, disc.root);
-	vec_c = normalize_vec3(rot_plane.center);
-	rot = rotate_plane_z(rot_plane);
-	if (in_the_target(rot, disc, rot_plane) == 0)
-		return (0);
-	return (disc.root);
+	if (complete_tri(tri, plane, hit) == 1)
+		return (1);
+	i = -1;
+	while (++i < 4)
+	{
+		cabi.v_x = sub_vec3(hit, plane.center);
+		cabi.v_y = sub_vec3(tri[i].n2, tri[i].n1);
+		cabi.v_z = sub_vec3(tri[i].n3, tri[i].n1);
+		if (find_theta(cabi))
+			break ;
+	}
+	// if (i == 1 || i == 2 || i == 3)
+	// 	return (0);
+	cabi.v_z = mul_vec3(add_vec3(tri[i].n2, tri[i].n3), 0.5);
+	cabi.v_z = sub_vec3(cabi.v_z, plane.center);
+	cabi.v_z = normalize_vec3(cabi.v_z);
+	cabi.v_x.x = dot_vec3(cabi.v_x, cabi.v_z);
+	if (cabi.v_x.x <= len / 2.0 && cabi.v_x.x >= 0)
+		return (1);
+	// if (cabi.v_x.x <= len / 2)
+	// 	return (1);
+	return (0);
 }
 
-double	hit_cube(t_obj obj, t_ray ray, double t_max, t_color3 *color)
+double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color)
 {
-	t_ray			rot_ray;
-	t_cube			cube;
-	t_rot			rot;
-	t_cube_plane	rot_plane;
-	int				i;
+	int			i;
+	int			j;
+	t_vec3		hit;
+	t_discrim	disc;
 
-	cube = obj.cube;
 	i = -1;
-	obj.cube.t_root = t_max;
+	cube.t_root = t_max;
 	while (++i < 6)
 	{
-		rot = rotate_vec_001(cube.plane[i].n_vec);
-		rot_ray.point = vec3x3_x_vec3(rot, ray.point);
-		rot_ray.direction = vec3x3_x_vec3(rot, ray.direction);
-		rot_plane = rot_plane_abcd(rot, cube.plane[i]);
-		obj.cube.temp_root = hit_plane_c(rot_plane, rot_ray, obj.cube.t_root);
-		if (obj.cube.temp_root > 0 && obj.cube.temp_root < obj.cube.t_root)
+		disc.ac = sub_vec3(ray.point, cube.plane[i].center);
+		disc.a = -1 * dot_vec3(disc.ac, cube.plane[i].n_vec);
+		disc.b = dot_vec3(cube.plane[i].n_vec, ray.direction);
+		if (disc.b > -1e-5 && disc.b < 1e-5)
+			continue ;
+		disc.c = disc.a / disc.b;
+		if (disc.c <= 1e-5 || disc.c >= cube.t_root)
+			continue ;
+		hit = ray_at(ray, disc.c);
+		if (where_hit_area(cube.plane[i], hit, cube.len) == 1)
 		{
 			color->x = cube.plane[i].color.x;
 			color->y = cube.plane[i].color.y;
 			color->z = cube.plane[i].color.z;
-			obj.cube.t_root = obj.cube.temp_root;
+			cube.t_root = disc.c;
 		}
 	}
-	if (obj.cube.t_root == INFINITY)
-		obj.cube.t_root = 0;
-	return (obj.cube.t_root);
+	if (cube.t_root == t_max)
+		return (0);
+	return (cube.t_root);
 }
