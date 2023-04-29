@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 22:02:23 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/25 18:43:16 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/29 16:41:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	_complete_cube_(t_cube *cube, t_vec3 *point)
 	cube->plane[5].plane_vertex[3] = point[7];
 }
 
-static void	complete_cube_(t_cube *cube, t_vec3 *n_vec)
+static void	complete_cube_(t_cube *cube)
 {
 	t_vec3	point[8];
 
@@ -56,7 +56,6 @@ static void	complete_cube_(t_cube *cube, t_vec3 *n_vec)
 	point[6] = add_vec3(point[2], mul_vec3(cube->plane[1].n_vec, cube->len));
 	point[7] = add_vec3(point[3], mul_vec3(cube->plane[1].n_vec, cube->len));
 	cube->t_root = 0;
-	cube->temp_root = 0;
 	_complete_cube_(cube, &(point[0]));
 }
 
@@ -83,5 +82,5 @@ void	complete_cube(t_cube *cube)
 				mul_vec3(n_vec[i], cube->len / 2));
 		}
 	}
-	complete_cube_(cube, n_vec);
+	complete_cube_(cube);
 }

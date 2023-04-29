@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:00:18 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/28 15:57:18 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/29 16:47:50 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,44 +60,49 @@ static int	complete_tri(t_tri *tri, t_cube_plane plane, t_vec3 hit)
 	return (0);
 }
 
-static int	where_hit_area(t_cube_plane plane, t_vec3 hit, double len)
+static int	where_hit_area(t_cube_plane pl, t_vec3 hit, double len, t_norm *n)
 {
 	t_tri		tri[4];
 	int			i;
 	t_vec3x3	cabi;
 
-	if (complete_tri(tri, plane, hit) == 1)
+	if (complete_tri(tri, pl, hit) == 1)
 		return (1);
 	i = -1;
 	while (++i < 4)
 	{
-		cabi.v_x = sub_vec3(hit, plane.center);
+		cabi.v_x = sub_vec3(hit, pl.center);
 		cabi.v_y = sub_vec3(tri[i].n2, tri[i].n1);
 		cabi.v_z = sub_vec3(tri[i].n3, tri[i].n1);
 		if (find_theta(cabi))
 			break ;
 	}
-	// if (i == 1 || i == 2 || i == 3)
-	// 	return (0);
 	cabi.v_z = mul_vec3(add_vec3(tri[i].n2, tri[i].n3), 0.5);
-	cabi.v_z = sub_vec3(cabi.v_z, plane.center);
+	cabi.v_z = sub_vec3(cabi.v_z, pl.center);
 	cabi.v_z = normalize_vec3(cabi.v_z);
 	cabi.v_x.x = dot_vec3(cabi.v_x, cabi.v_z);
 	if (cabi.v_x.x <= len / 2.0 && cabi.v_x.x >= 0)
+	{
+		n->n_vec = pl.n_vec;
 		return (1);
-	// if (cabi.v_x.x <= len / 2)
-	// 	return (1);
+	}
 	return (0);
 }
 
-double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color)
+static void	deter_cube(t_color3 *col, t_cube *cube, t_discrim dis, int i)
+{
+	*col = cube->plane[i].color;
+	cube->t_root = dis.c;
+}
+
+t_norm	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color)
 {
 	int			i;
-	int			j;
-	t_vec3		hit;
 	t_discrim	disc;
+	t_norm		norm;
 
 	i = -1;
+	norm.root = 0;
 	cube.t_root = t_max;
 	while (++i < 6)
 	{
@@ -109,16 +114,12 @@ double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color)
 		disc.c = disc.a / disc.b;
 		if (disc.c <= 1e-5 || disc.c >= cube.t_root)
 			continue ;
-		hit = ray_at(ray, disc.c);
-		if (where_hit_area(cube.plane[i], hit, cube.len) == 1)
-		{
-			color->x = cube.plane[i].color.x;
-			color->y = cube.plane[i].color.y;
-			color->z = cube.plane[i].color.z;
-			cube.t_root = disc.c;
-		}
+		if (where_hit_area(cube.plane[i], ray_at(ray, disc.c), \
+			cube.len, &norm) == 1)
+			deter_cube(color, &cube, disc, i);
 	}
 	if (cube.t_root == t_max)
-		return (0);
-	return (cube.t_root);
+		return (norm);
+	norm.root = cube.t_root;
+	return (norm);
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 20:21:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/23 20:44:21 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/29 15:33:27 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ static double	where_hit_cone(t_discrim disc, t_ray ray, t_cone con, int flag)
 	else
 	{
 		if (temp < 0)
-		{
-			disc.root = disc.root_2;
 			t = where_hit_cone(disc, ray, con, ++flag);
-		}
 		else
 		{
 			t = -dot_vec3(sub_vec3(ray.point, con.center), con.n_vec) / \
@@ -54,23 +51,39 @@ static t_bool	line_in_cone(t_cone con, t_ray ray, t_discrim disc)
 	return (1);
 }
 
-static double	hit_cone_(t_cone con, t_ray ray, double t_max, t_discrim disc)
+static t_norm	hit_cone_(t_cone con, t_ray ray, double t_max, t_discrim disc)
 {
+	t_norm	norm;
+	double	discrim;
+	t_vec3	hit;
+
+	norm.root = 0;
 	if (!line_in_cone(con, ray, disc))
-		return (0);
+		return (norm);
 	disc.root = (-disc.b - sqrt(disc.discrim)) / disc.a;
 	if (!range_in_hit(&disc, t_max))
-		return (0);
+		return (norm);
 	disc.root = where_hit_cone(disc, ray, con, 0);
 	if (disc.root < 1e-5)
-		return (0);
-	return (disc.root);
+		return (norm);
+	norm.root = disc.root;
+	hit = ray_at(ray, norm.root);
+	hit = normalize_vec3(sub_vec3(hit, con.c_h));
+	discrim = dot_vec3(sub_vec3(con.center, con.c_h), hit);
+	norm.n_vec = sub_vec3(add_vec3(mul_vec3(hit, discrim), con.c_h), \
+		con.center);
+	norm.n_vec = normalize_vec3(norm.n_vec);
+	discrim = dot_vec3(sub_vec3(hit, con.center), con.n_vec);
+	if (discrim == 0.0)
+		norm.n_vec = con.n_vec;
+	return (norm);
 }
 
-double	hit_cone(t_cone	con, t_ray ray, double t_max)
+t_norm	hit_cone(t_cone	con, t_ray ray, double t_max)
 {
 	t_discrim	disc;
 	double		m;
+	t_norm		norm;
 
 	con.c_h = add_vec3(con.center, mul_vec3(con.n_vec, -con.height));
 	con.n_vec = normalize_vec3(sub_vec3(con.center, con.c_h));
@@ -85,7 +98,8 @@ double	hit_cone(t_cone	con, t_ray ray, double t_max)
 	disc.c = dotself_vec3(disc.ac) - \
 		(m + 1) * ft_pow(dot_vec3(disc.ac, con.n_vec));
 	disc.discrim = ft_pow(disc.b) - disc.a * disc.c;
+	norm.root = 0;
 	if (disc.discrim < 0)
-		return (0);
+		return (norm);
 	return (hit_cone_(con, ray, t_max, disc));
 }

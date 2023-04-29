@@ -1,32 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit3.c                                             :+:      :+:    :+:   */
+/*   hit_cylinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 18:06:26 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/23 19:49:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/29 21:10:02 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 
-static double	where_hit_cylinder(t_discrim disc, t_ray ray, t_cylinder cyl)
+static void	where_hit_cylinder_(t_vec3 *p, t_norm *n, t_cylinder c, double temp)
+{
+	if (temp > c.height)
+	{
+		n->n_vec = c.n_vec;
+		*p = c.c_h;
+	}
+	else
+	{
+		n->n_vec = mul_vec3(c.n_vec, -1);
+		*p = c.c_c;
+	}
+}
+
+static double	where_hit_cylinder(t_discrim disc, t_ray ray, \
+	t_cylinder cyl, t_norm *norm)
 {
 	double	temp;
 	double	t;
 	t_vec3	plane;
 
 	temp = dot_vec3(sub_vec3(ray_at(ray, disc.root), cyl.c_c), cyl.n_vec);
+	norm->n_vec = cyl.n_vec;
+	norm->n_vec = sub_vec3(ray_at(ray, disc.root), \
+		add_vec3(cyl.c_c, mul_vec3(cyl.n_vec, temp)));
 	if (temp >= 0.0 && temp <= cyl.height)
 		return (disc.root);
 	else
 	{
-		if (temp > cyl.height)
-			plane = cyl.c_h;
-		else
-			plane = cyl.c_c;
+		where_hit_cylinder_(&plane, norm, cyl, temp);
 		t = dot_vec3(ray.direction, cyl.n_vec);
 		if (t >= -1e-5 && t <= 1e-5)
 			return (0);
@@ -42,7 +57,6 @@ static double	where_hit_cylinder(t_discrim disc, t_ray ray, t_cylinder cyl)
 int	range_in_hit(t_discrim *disc, double t_max)
 {
 	disc->root = (-disc->b - sqrt(disc->discrim)) / disc->a;
-	disc->root_2 = (-disc->b + sqrt(disc->discrim)) / disc->a;
 	if (disc->root < 0 || disc->root > t_max)
 	{
 		disc->root = (-disc->b + sqrt(disc->discrim)) / disc->a;
@@ -59,10 +73,12 @@ double	ft_abs(double num)
 	return (num);
 }
 
-double	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max)
+t_norm	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max)
 {
 	t_discrim	disc;
+	t_norm		norm;
 
+	norm.root = 0;
 	cyl.c_h = add_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height / 2));
 	cyl.c_c = sub_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height / 2));
 	disc.ac = sub_vec3(ray.point, cyl.c_c);
@@ -74,14 +90,14 @@ double	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max)
 		ft_pow(cyl.radius);
 	disc.discrim = disc.b * disc.b - disc.a * disc.c;
 	if (disc.discrim < 0)
-		return (0);
+		return (norm);
 	if (disc.discrim <= 1e-5)
 		if (ft_abs(dot_vec3(ray.direction, cyl.n_vec)) >= 1 - 1e-5)
-			return (0);
+			return (norm);
 	if (!range_in_hit(&disc, t_max))
-		return (0);
-	disc.root = where_hit_cylinder(disc, ray, cyl);
-	if (disc.root < 1e-5)
-		return (0);
-	return (disc.root);
+		return (norm);
+	norm.root = where_hit_cylinder(disc, ray, cyl, &norm);
+	if (norm.root < 1e-5)
+		return (norm);
+	return (norm);
 }

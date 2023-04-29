@@ -14,6 +14,7 @@ SRCS_NAME = main \
 			./include/hit/hit_cylinder \
 			./include/hit/hit_cube \
 			./include/hit/hit_cube_2 \
+			./include/hit/hit_paraboloid \
 			./include/objects \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
@@ -29,10 +30,10 @@ MLX = -L./mlx -lmlx -framework OpenGL -framework Appkit
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-			@$(CC) $(MLX) $(OBJS) -o $(NAME)
+			@$(CC) $(MLX) $(FLAGS) $(OBJS) -o $(NAME)
 
 %.o:	%.c
-			$(CC) -c $< -o $@
+			$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 			@rm -rf $(OBJS)
