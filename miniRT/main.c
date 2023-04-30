@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 21:42:17 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/30 20:18:24 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ int	main(void)
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
-	obj_cone.cone.n_vec = vec3init(0, -1, 0);
+	obj_cone.cone.n_vec = vec3init(0, 1, 0);
 	obj_cone.cone.n_vec = normalize_vec3(obj_cone.cone.n_vec);
-	obj_cone.cone.center = vec3init(0, 2, -10);
+	obj_cone.cone.center = vec3init(0, 3, -10);
 	obj_cone.cone.radius = 2.0;
-	obj_cone.cone.height = 6.0;
+	obj_cone.cone.height = 5.0;
 
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
@@ -124,7 +124,7 @@ int	main(void)
 	obj_cube.type = CUBE;
 	obj_cube.cube.n_vec = vec3init(0, 0, 1);
 	obj_cube.cube.n_vec_2 = normalize_vec3(vec3init(1, -1, 0));
-	obj_cube.cube.len = 2.0;
+	obj_cube.cube.len = 5.0;
 	obj_cube.cube.cube_c = vec3init(0, -3, -5);
 	obj_cube.cube.plane[0].color = vec3init(1, 0, 0);
 	obj_cube.cube.plane[1].color = vec3init(0, 0, 0);
@@ -137,13 +137,15 @@ int	main(void)
 	// display_cube_plane(obj_cube.cube.plane[0]);
 
 	t_obj	obj_paraboloid;
-	obj_paraboloid.para.cen = vec3init(0, 0, -20);
+	obj_paraboloid.para.cen = vec3init(0, 1, -20);
 	obj_paraboloid.para.pl.center = sub_vec3(obj_paraboloid.para.cen, \
 		vec3init(0, 1, 0));
 	obj_paraboloid.para.pl.n_vec = normalize_vec3(sub_vec3(obj_paraboloid.para.cen, \
 		obj_paraboloid.para.pl.center));
-	obj_paraboloid.para.len = 4.0;
-
+	obj_paraboloid.para.len = 5.0;
+	obj_paraboloid.para.len_cc = len_vec3(sub_vec3(obj_paraboloid.para.cen, \
+		obj_paraboloid.para.pl.center));
+	obj_paraboloid.para.r = paraboloid_r(obj_paraboloid.para);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)

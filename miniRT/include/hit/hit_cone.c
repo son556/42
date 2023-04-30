@@ -6,26 +6,25 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 20:21:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 15:33:27 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/30 16:14:35 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 
-static double	where_hit_cone(t_discrim disc, t_ray ray, t_cone con, int flag)
+static double	where_hit_cone(t_discrim disc, t_ray ray, t_cone con)
 {
 	double	temp;
 	double	t;
 
-	if (flag == 2)
-		return (0);
 	temp = dot_vec3(sub_vec3(ray_at(ray, disc.root), con.c_h), con.n_vec);
 	if (temp >= 0.0 && temp <= con.height)
 		return (disc.root);
 	else
 	{
 		if (temp < 0)
-			t = where_hit_cone(disc, ray, con, ++flag);
+			return (0);
+			// t = where_hit_cone(disc, ray, con, ++flag);
 		else
 		{
 			t = -dot_vec3(sub_vec3(ray.point, con.center), con.n_vec) / \
@@ -63,7 +62,7 @@ static t_norm	hit_cone_(t_cone con, t_ray ray, double t_max, t_discrim disc)
 	disc.root = (-disc.b - sqrt(disc.discrim)) / disc.a;
 	if (!range_in_hit(&disc, t_max))
 		return (norm);
-	disc.root = where_hit_cone(disc, ray, con, 0);
+	disc.root = where_hit_cone(disc, ray, con);
 	if (disc.root < 1e-5)
 		return (norm);
 	norm.root = disc.root;
@@ -85,7 +84,7 @@ t_norm	hit_cone(t_cone	con, t_ray ray, double t_max)
 	double		m;
 	t_norm		norm;
 
-	con.c_h = add_vec3(con.center, mul_vec3(con.n_vec, -con.height));
+	con.c_h = add_vec3(con.center, mul_vec3(con.n_vec, con.height));
 	con.n_vec = normalize_vec3(sub_vec3(con.center, con.c_h));
 	con.cos = ft_pow(con.height) / \
 		sqrt(ft_pow(con.height) + ft_pow(con.radius));

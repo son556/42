@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 21:33:18 by chanson          ###   ########.fr       */
+/*   Updated: 2023/04/30 19:43:44 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ typedef struct s_para
 	t_vec3		cen;
 	t_plane		pl;
 	double		len;
+	double		r;
+	double		len_cc;
 }	t_para;
 
 typedef struct s_obj
@@ -154,5 +156,6 @@ t_norm	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
 t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max);
 // double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
 double	ft_abs(double num);
+double	paraboloid_r(t_para	para);
 void	complete_cube(t_cube *cube);
 #endif
