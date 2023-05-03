@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 20:06:48 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/03 19:56:43 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,52 @@ t_norm	hit_plane(t_plane pln, t_ray ray, double t_max)
 	norm.root = disc.root;
 	norm.n_vec = pln.n_vec;
 	return (norm);
+}
+
+static t_norm	find_hit_function(t_ray ray, t_obj obj, double t_max)
+{
+	if (obj.type == SPHERE)
+		return (hit_sphere(obj.sphere, ray, t_max));
+	if (obj.type == CYLINDER)
+		return (hit_cylinder(obj.cylinder, ray, t_max));
+	if (obj.type == PLANE)
+		return (hit_plane(obj.plane, ray, t_max));
+	if (obj.type == CUBE)
+		return (hit_cube(obj.cube, ray, t_max, &obj.cube.color));
+	if (obj.type == CONE)
+		return (hit_cone(obj.cone, ray, t_max));
+	return (hit_paraboloid(obj.para, ray, t_max));
+}
+
+t_color3	ray_color(t_ray ray, t_obj *obj, int n)
+{
+	t_vec3	color;
+	t_norm	norm;
+	t_light	light;
+	int		i;
+	double	temp;
+
+	norm.t_max = INFINITY;
+	temp = norm.t_max;
+	i = -1;
+	while (++i < n)
+	{
+		norm = find_hit_function(ray, obj[i], norm.t_max);
+		if (norm.root == 0.0)
+			norm.t_max = temp;
+		if (norm.root > 0.0)
+		{
+			norm.hit = ray_at(ray, norm.root);
+			light.ratio = dot_vec3(norm.n_vec, normalize_vec3(vec3init(1, 1, 0)));
+			light.ratio = ft_minmax(light.ratio, 0, 1);
+			color = mul_vec3(vec3init(0, 1, 1), light.ratio);
+			norm.t_max = norm.root;
+			temp = norm.t_max;
+			return (color);
+		}
+	}
+	t_vec3	unit_vec = normalize_vec3(ray.direction);
+	norm.root = 0.5 * (unit_vec.y + 1.0);
+	color = vec3init(1.0 - 0.5 * norm.root, 1.0 - 0.3 * norm.root, 1.0);
+	return (color);
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 18:06:26 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 21:10:02 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:59:42 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static double	where_hit_cylinder(t_discrim disc, t_ray ray, \
 			return (0);
 		t = -dot_vec3(sub_vec3(ray.point, plane), cyl.n_vec) / \
 			dot_vec3(ray.direction, cyl.n_vec);
+		if (t < 0 || t > norm->root)
+			return (0);
 		temp = len_vec3(sub_vec3(ray_at(ray, t), plane));
 		if (temp > cyl.radius)
 			return (0);
@@ -96,8 +98,7 @@ t_norm	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max)
 			return (norm);
 	if (!range_in_hit(&disc, t_max))
 		return (norm);
+	norm.root = t_max;
 	norm.root = where_hit_cylinder(disc, ray, cyl, &norm);
-	if (norm.root < 1e-5)
-		return (norm);
 	return (norm);
 }

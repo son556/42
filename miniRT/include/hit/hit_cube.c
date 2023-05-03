@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 18:00:18 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/29 16:47:50 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/03 19:26:48 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	find_theta(t_vec3x3 cabi)
 	{
 		if (cos1 < 0.0 && cos1 >= -1.0)
 			return (0);
-		if (cos2 >= -1 - 1e-6 && cos2 <= -1 + 1e-6)
+		if (cos1 > -1e-6 && cos2 >= -1 - 1e-6 && cos2 <= -1 + 1e-6)
 			return (0);
 		return (1);
 	}
@@ -112,7 +112,7 @@ t_norm	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color)
 		if (disc.b > -1e-5 && disc.b < 1e-5)
 			continue ;
 		disc.c = disc.a / disc.b;
-		if (disc.c <= 1e-5 || disc.c >= cube.t_root)
+		if (disc.c < 0 || disc.c > cube.t_root)
 			continue ;
 		if (where_hit_area(cube.plane[i], ray_at(ray, disc.c), \
 			cube.len, &norm) == 1)

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/30 19:43:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/03 20:00:05 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ typedef struct s_plane
 
 typedef struct s_cone
 {
-	t_vec3	center;
 	t_vec3	c_h;
 	double	radius;
 	double	height;
-	double	cos;
+	double	c_cos;
 	t_vec3	n_vec;
 	t_vec3	color;
+	t_plane	pl;
 }	t_cone;
 
 typedef struct s_para
@@ -112,14 +112,7 @@ typedef struct s_obj
 	t_cone			cone;
 	t_plane			plane;
 	t_para			para;
-	struct s_obj	*next;
 }	t_obj;
-
-typedef struct s_objlist
-{
-	t_obj	*first;
-	int		list_cnt;
-}	t_objlist;
 
 typedef struct s_discrim
 {
@@ -131,31 +124,36 @@ typedef struct s_discrim
 	double		root;
 }	t_discrim;
 
-typedef struct s_minmax
-{
-	double	max_x;
-	double	min_x;
-	double	max_y;
-	double	min_y;
-}	t_minmax;
-
 typedef struct s_norm
 {
-	double	root;
-	t_vec3	n_vec;
+	double		root;
+	t_vec3		n_vec;
+	t_point3	hit;
+	double		t_max;
+	t_color3	albedo;
+	t_light		light;
+	t_light		ambi;
+	t_light		spec;
 }	t_norm;
 
-// t_obj	object_init(int type, t_point3 point, t_vec3 normal, t_color3 color);
-void	add_objlist(t_objlist *list, t_obj *object);
-int		range_in_hit(t_discrim *disc, double t_max);
-t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max);
-t_norm	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max);
-t_norm	hit_cone(t_cone	con, t_ray ray, double t_max);
-t_norm	hit_plane(t_plane pln, t_ray ray, double t_max);
-t_norm	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
-t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max);
-// double	hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
-double	ft_abs(double num);
-double	paraboloid_r(t_para	para);
-void	complete_cube(t_cube *cube);
+int			range_in_hit(t_discrim *disc, double t_max);
+t_norm		hit_sphere(t_sphere sph, t_ray ray, double t_max);
+t_norm		hit_cylinder(t_cylinder cyl, t_ray ray, double t_max);
+t_norm		hit_cone(t_cone	con, t_ray ray, double t_max);
+t_norm		hit_plane(t_plane pln, t_ray ray, double t_max);
+t_norm		hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
+t_norm		hit_paraboloid(t_para para, t_ray ray, double t_max);
+double		ft_abs(double num);
+double		paraboloid_r(t_para	para);
+void		complete_cone(t_cone *con, t_vec3 cen, t_vec3 n_vec, t_vec3 rh);
+void		complete_cube(t_cube *cube, t_vec3x3 n1_n2_c, t_vec3 col, double l);
+void		complete_para(t_para *para, t_vec3 center, t_vec3 move, double len);
+void		complete_sphere(t_sphere *sp, t_vec3 cen, t_vec3 col, double r);
+void		complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_col, \
+			double r, double h);
+void		complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec, t_color3 col);
+t_vec3x3	cen_vec_col_init(t_vec3 cen, t_vec3 vec, t_color3 col);
+t_vec3x3	make_n1_n2_c(t_vec3 n1, t_vec3 n2, t_vec3 cen);
+t_color3	ray_color(t_ray ray, t_obj *obj, int n);
+void		display_cone(t_cone con);
 #endif

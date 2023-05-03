@@ -6,58 +6,57 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:52:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/30 20:17:18 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/02 20:11:55 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
+#include <stdio.h>
 
-static void	find_norm(t_norm *no, t_para para, t_ray ray)
+static void	find_norm(t_norm *no, t_para para, t_vec3 hit, double n)
 {
-	t_vec3	hit;
-	t_vec3	hit_;
 	t_vec3	mid;
-	t_vec3	cro1;
+	t_vec3	hit2;
+	double	t;
 
-	if (dot_vec3(ray_at(ray, no->root), \
-		normalize_vec3(sub_vec3(para.pl.center, para.cen))) > para.len)
-		no->n_vec = normalize_vec3(sub_vec3(para.pl.center, para.cen));
-	else
+	if (n == 0.0)
 	{
-		hit = ray_at(ray, no->root);
-		hit_ = add_vec3(hit, mul_vec3(mul_vec3(para.pl.n_vec, -1), no->root));
-		mid = mul_vec3(add_vec3(hit_, para.cen), 0.5);
-		cro1 = cross_vec3(sub_vec3(hit_, hit), sub_vec3(para.cen, hit));
-		no->n_vec = cross_vec3(sub_vec3(mid, hit), cro1);
-		no->n_vec = normalize_vec3(no->n_vec);
+		t = -1 * dot_vec3(sub_vec3(para.pl.center, hit), para.pl.center);
+		hit2 = add_vec3(hit, mul_vec3(mul_vec3(para.pl.n_vec, -1), t));
+		mid = mul_vec3(add_vec3(para.cen, hit2), 0.5);
+		no->n_vec = normalize_vec3(sub_vec3(mid, para.cen));
 	}
+	else
+		no->n_vec = para.pl.n_vec;
 }
 
-static int	validation_para(t_discrim d, t_ray ray, t_para para, double t_max)
+static t_norm	validation_para(t_discrim *d, t_ray ray, t_para p, double t_max)
 {
-	double	num;
 	t_vec3	h;
+	t_norm	norm;
 
-	if (d.discrim < 0)
-		return (0);
-	if (range_in_hit(&d, t_max) == 0)
-		return (0);
-	num = dot_vec3(normalize_vec3(sub_vec3(para.pl.center, para.cen)), \
-		sub_vec3(ray_at(ray, d.root), para.cen));
-	if (num > 0 && ft_abs(num) > (para.len_cc / 2.0))
-		return (0);
-	if (num < 0 && ft_abs(num) > para.len - (para.len_cc / 2.0))
+	norm.root = 0;
+	norm.n_vec.x = dot_vec3(mul_vec3(p.pl.n_vec, -1), \
+		sub_vec3(ray_at(ray, d->root), p.cen));
+	h.x = 0.0;
+	if (h.y > 0 && ft_abs(h.y) > (p.len_cc / 2.0))
+		return (norm);
+	if (norm.n_vec.x < 0 && ft_abs(norm.n_vec.x) > p.len - (p.len_cc / 2.0))
 	{
-		num = para.len - para.len_cc / 2.0;
-		h = add_vec3(para.cen, mul_vec3(para.pl.n_vec, num));
-		num = -1 * dot_vec3(sub_vec3(ray.point, h), \
-			mul_vec3(para.pl.n_vec, -1)) / \
-			dot_vec3(mul_vec3(para.pl.n_vec, -1), ray.direction);
-		num = len_vec3(sub_vec3(ray_at(ray, num), h));
-		if (num > para.r)
-			return (0);
+		h = add_vec3(p.cen, mul_vec3(p.pl.n_vec, p.len - p.len_cc / 2.0));
+		norm.n_vec.x = -1 * dot_vec3(sub_vec3(ray.point, h), p.pl.n_vec) / \
+			dot_vec3(p.pl.n_vec, ray.direction);
+		if (norm.n_vec.x < 0 || norm.n_vec.x > t_max)
+			return (norm);
+		if (len_vec3(sub_vec3(ray_at(ray, norm.n_vec.x), h)) > p.r)
+			return (norm);
+		norm.root = norm.n_vec.x;
+		h.x = 1.0;
 	}
-	return (1);
+	else
+		norm.root = d->root;
+	find_norm(&norm, p, ray_at(ray, norm.root), h.x);
+	return (norm);
 }
 
 t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max)
@@ -79,10 +78,11 @@ t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max)
 		2 * dot_vec3(ray.point, ray.direction);
 	disc.c -= dotself_vec3(ray.point);
 	disc.discrim = ft_pow(disc.b) - disc.a * disc.c;
-	if (validation_para(disc, ray, para, t_max) == 0)
+	if (disc.discrim < 0)
 		return (norm);
-	norm.root = disc.root;
-	find_norm(&norm, para, ray);
+	if (range_in_hit(&disc, t_max) == 0)
+		return (norm);
+	norm = validation_para(&disc, ray, para, t_max);
 	return (norm);
 }
 
@@ -92,4 +92,14 @@ double	paraboloid_r(t_para	para)
 
 	r = sqrt(2 * para.len * para.len_cc);
 	return (r);
+}
+
+void	complete_para(t_para *para, t_vec3 center, t_vec3 move, double len)
+{
+	para->cen = center;
+	para->pl.center = sub_vec3(para->cen, move);
+	para->pl.n_vec = normalize_vec3(sub_vec3(para->cen, para->pl.center));
+	para->len = len;
+	para->len_cc = len_vec3(sub_vec3(para->cen, para->pl.center));
+	para->r = paraboloid_r(*para);
 }

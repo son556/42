@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/27 19:43:20 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/03 14:55:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_vec3		point_symemtry(t_vec3 target, t_vec3 std);
 t_vec3x3	inverse_vec3x3(t_vec3x3 vec);
 t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t);
 double		getradian(int num);
+double		ft_minmax(double val, double t_min, double t_max);
 
 void		display_vec3(t_vec3 vec);
 void		display_vec3x3(t_vec3x3 vec);

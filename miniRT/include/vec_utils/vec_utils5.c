@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 22:59:06 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/27 19:43:04 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/03 14:54:44 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ t_vec3x3	inverse_vec3x3(t_vec3x3 vec)
 double	getradian(int num)
 {
 	return (num * (PI / 180));
+}
+
+double	ft_minmax(double val, double t_min, double t_max)
+{
+	if (val < t_min)
+		return (t_min);
+	if (val > t_max)
+		return (t_max);
+	return (val);
 }
 
 void	display_vec3(t_vec3 vec)
