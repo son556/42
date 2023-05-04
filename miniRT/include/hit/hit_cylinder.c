@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 18:06:26 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/02 19:59:42 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 19:56:41 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ static double	where_hit_cylinder(t_discrim disc, t_ray ray, \
 	double	t;
 	t_vec3	plane;
 
-	temp = dot_vec3(sub_vec3(ray_at(ray, disc.root), cyl.c_c), cyl.n_vec);
-	norm->n_vec = cyl.n_vec;
-	norm->n_vec = sub_vec3(ray_at(ray, disc.root), \
-		add_vec3(cyl.c_c, mul_vec3(cyl.n_vec, temp)));
+	plane = ray_at(ray, disc.root);
+	temp = dot_vec3(sub_vec3(plane, cyl.c_c), cyl.n_vec);
+	norm->n_vec = sub_vec3(plane, add_vec3(cyl.c_c, mul_vec3(cyl.n_vec, temp)));
 	if (temp >= 0.0 && temp <= cyl.height)
 		return (disc.root);
 	else

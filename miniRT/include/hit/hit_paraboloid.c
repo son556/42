@@ -6,28 +6,24 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:52:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/02 20:11:55 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:13:44 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 #include <stdio.h>
 
-static void	find_norm(t_norm *no, t_para para, t_vec3 hit, double n)
+static void	find_norm(t_norm *no, t_para para, t_vec3 hit, t_discrim *d)
 {
 	t_vec3	mid;
 	t_vec3	hit2;
 	double	t;
 
-	if (n == 0.0)
-	{
-		t = -1 * dot_vec3(sub_vec3(para.pl.center, hit), para.pl.center);
-		hit2 = add_vec3(hit, mul_vec3(mul_vec3(para.pl.n_vec, -1), t));
-		mid = mul_vec3(add_vec3(para.cen, hit2), 0.5);
-		no->n_vec = normalize_vec3(sub_vec3(mid, para.cen));
-	}
-	else
-		no->n_vec = para.pl.n_vec;
+	no->root = d->root;
+	t = dot_vec3(sub_vec3(para.pl.center, hit), para.pl.n_vec);
+	hit2 = add_vec3(hit, mul_vec3(mul_vec3(para.pl.n_vec, -1), t));
+	mid = mul_vec3(add_vec3(para.cen, hit2), 0.5);
+	no->n_vec = normalize_vec3(sub_vec3(mid, para.cen));
 }
 
 static t_norm	validation_para(t_discrim *d, t_ray ray, t_para p, double t_max)
@@ -38,24 +34,23 @@ static t_norm	validation_para(t_discrim *d, t_ray ray, t_para p, double t_max)
 	norm.root = 0;
 	norm.n_vec.x = dot_vec3(mul_vec3(p.pl.n_vec, -1), \
 		sub_vec3(ray_at(ray, d->root), p.cen));
-	h.x = 0.0;
-	if (h.y > 0 && ft_abs(h.y) > (p.len_cc / 2.0))
-		return (norm);
 	if (norm.n_vec.x < 0 && ft_abs(norm.n_vec.x) > p.len - (p.len_cc / 2.0))
 	{
 		h = add_vec3(p.cen, mul_vec3(p.pl.n_vec, p.len - p.len_cc / 2.0));
+		norm.n_vec.x = dot_vec3(p.pl.n_vec, ray.direction);
+		if (norm.n_vec.x < 1e-5 && norm.n_vec.x > -1e-5)
+			return (norm);
 		norm.n_vec.x = -1 * dot_vec3(sub_vec3(ray.point, h), p.pl.n_vec) / \
-			dot_vec3(p.pl.n_vec, ray.direction);
+			norm.n_vec.x;
 		if (norm.n_vec.x < 0 || norm.n_vec.x > t_max)
 			return (norm);
 		if (len_vec3(sub_vec3(ray_at(ray, norm.n_vec.x), h)) > p.r)
 			return (norm);
 		norm.root = norm.n_vec.x;
-		h.x = 1.0;
+		norm.n_vec = p.pl.n_vec;
 	}
 	else
-		norm.root = d->root;
-	find_norm(&norm, p, ray_at(ray, norm.root), h.x);
+		find_norm(&norm, p, ray_at(ray, norm.root), d);
 	return (norm);
 }
 

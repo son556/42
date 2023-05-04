@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:07:40 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 17:11:32 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 19:59:38 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_vec3x3	cen_vec_col_init(t_vec3 cen, t_vec3 vec, t_color3 col)
 void	complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_col, double r, double h)
 {
 	cyl->center = cen_vec_col.v_x;
-	cyl->n_vec = cen_vec_col.v_y;
+	cyl->n_vec = normalize_vec3(cen_vec_col.v_y);
 	cyl->color = cen_vec_col.v_z;
 	cyl->radius = r;
 	cyl->height = h;

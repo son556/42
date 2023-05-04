@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/04 19:20:23 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:25:31 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 	disc.b = dot_vec3(disc.ac, ray.direction);
 	disc.c = dot_vec3(disc.ac, disc.ac) - pow(sph.radius, 2);
 	disc.discrim = disc.b * disc.b - disc.a * disc.c;
+	norm.root = 0;
 	if (disc.discrim < 0)
-		norm.root = 0;
+		return (norm);
 	disc.root = (-disc.b - sqrt(disc.discrim)) / disc.a;
 	if (disc.root < 0.001 || disc.root > t_max)
 	{
 		disc.root = (-disc.b + sqrt(disc.discrim)) / disc.a;
-		if (disc.root < 0.001 || disc.root > t_max)
-			norm.root = 0;
+		if (disc.root < 1e-5 || disc.root > t_max)
+			return (norm);
 	}
 	norm.root = disc.root;
 	norm.n_vec = normalize_vec3(sub_vec3(ray_at(ray, norm.root), sph.center));
@@ -83,6 +84,7 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 	t_norm	norm;
 	int		i;
 	double	temp;
+	// int	flag = 0;
 
 	norm.t_max = INFINITY;
 	temp = norm.t_max;
@@ -90,6 +92,8 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 	color.x = -1000;
 	while (++i < n)
 	{
+		// if (i != 1 && i != 2)
+		// 	continue ;
 		norm = find_hit_function(ray, obj[i], norm.t_max);
 		if (norm.root == 0.0)
 			norm.t_max = temp;
@@ -98,13 +102,28 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 			norm.hit = ray_at(ray, norm.root);
 			norm.light.ratio = dot_vec3(norm.n_vec, normalize_vec3(vec3init(1, 1, 0)));
 			norm.light.ratio = ft_minmax(norm.light.ratio, 0, 1);
+			// if (color.x != -1000)
+			// {
+			// 	display_vec3(color);
+			// 	flag = 1;
+			// }
 			color = mul_vec3(vec3init(0, 1, 1), norm.light.ratio);
+			// color = add_vec3(norm.n_vec, vec3init(1, 1, 1));
+			// color = mul_vec3(color, 0.5);
+			// if (flag)
+			// {
+				// display_vec3(color);
+			// 	printf("\n");
+			// }
 			norm.t_max = norm.root;
 			temp = norm.t_max;
 		}
 	}
 	if (color.x != -1000)
+	{
+		// display_vec3(norm.n_vec);
 		return (color);
+	}
 	t_vec3	unit_vec = normalize_vec3(ray.direction);
 	norm.root = 0.5 * (unit_vec.y + 1.0);
 	color = vec3init(1.0 - 0.5 * norm.root, 1.0 - 0.3 * norm.root, 1.0);

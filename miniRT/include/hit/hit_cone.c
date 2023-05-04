@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 20:21:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/02 14:25:52 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:23:39 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ t_norm	hit_cone2(t_cone con, t_ray ray, double t_max)
 	double		m;
 	t_norm		norm;
 
-	// display_cone(con);
 	m = ft_pow(con.radius) / ft_pow(con.height);
 	disc.ac = sub_vec3(ray.point, con.c_h);
 	disc.a = dotself_vec3(ray.direction) - (m + 1) * \
