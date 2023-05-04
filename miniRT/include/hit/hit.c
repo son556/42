@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 19:56:43 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 19:20:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 {
 	t_vec3	color;
 	t_norm	norm;
-	t_light	light;
 	int		i;
 	double	temp;
 
 	norm.t_max = INFINITY;
 	temp = norm.t_max;
 	i = -1;
+	color.x = -1000;
 	while (++i < n)
 	{
 		norm = find_hit_function(ray, obj[i], norm.t_max);
@@ -96,14 +96,15 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 		if (norm.root > 0.0)
 		{
 			norm.hit = ray_at(ray, norm.root);
-			light.ratio = dot_vec3(norm.n_vec, normalize_vec3(vec3init(1, 1, 0)));
-			light.ratio = ft_minmax(light.ratio, 0, 1);
-			color = mul_vec3(vec3init(0, 1, 1), light.ratio);
+			norm.light.ratio = dot_vec3(norm.n_vec, normalize_vec3(vec3init(1, 1, 0)));
+			norm.light.ratio = ft_minmax(norm.light.ratio, 0, 1);
+			color = mul_vec3(vec3init(0, 1, 1), norm.light.ratio);
 			norm.t_max = norm.root;
 			temp = norm.t_max;
-			return (color);
 		}
 	}
+	if (color.x != -1000)
+		return (color);
 	t_vec3	unit_vec = normalize_vec3(ray.direction);
 	norm.root = 0.5 * (unit_vec.y + 1.0);
 	color = vec3init(1.0 - 0.5 * norm.root, 1.0 - 0.3 * norm.root, 1.0);
