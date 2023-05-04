@@ -16,6 +16,7 @@ SRCS_NAME = main \
 			./include/hit/hit_cube \
 			./include/hit/hit_cube_2 \
 			./include/hit/hit_paraboloid \
+			./include/hit/hit_paraboloid_2 \
 			./include/hit/hit_obj \
 			./include/objects \
 

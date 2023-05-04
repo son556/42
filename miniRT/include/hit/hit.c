@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/04 21:25:31 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:51:24 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 	color.x = -1000;
 	while (++i < n)
 	{
-		// if (i != 1 && i != 2)
+		// if (i == 5)
 		// 	continue ;
 		norm = find_hit_function(ray, obj[i], norm.t_max);
 		if (norm.root == 0.0)
