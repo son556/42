@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/04 21:58:15 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/05 17:40:03 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ int	main(void)
 	t_obj	obj_paraboloid;
 
 	obj_paraboloid.type = PARABOLOID;
-	complete_para(&obj_paraboloid.para, vec3init(0, -2, -10), vec3init(0, 0, 1), 3.0);
-	t_obj	obj_arr[6];
+	complete_para(&obj_paraboloid.para, vec3init(0, -3, -10), vec3init(0, 1, 0), 3.0);
 
+	t_obj	obj_arr[6];
 	obj_arr[0] = obj_cylinder;
 	obj_arr[1] = obj_cone;
 	obj_arr[2] = obj_sphere;

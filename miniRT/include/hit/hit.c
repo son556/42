@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/04 21:51:24 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/05 17:38:41 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,29 +92,14 @@ t_color3	ray_color(t_ray ray, t_obj *obj, int n)
 	color.x = -1000;
 	while (++i < n)
 	{
-		// if (i == 5)
-		// 	continue ;
 		norm = find_hit_function(ray, obj[i], norm.t_max);
-		if (norm.root == 0.0)
-			norm.t_max = temp;
+		norm.t_max = temp;
 		if (norm.root > 0.0)
 		{
 			norm.hit = ray_at(ray, norm.root);
 			norm.light.ratio = dot_vec3(norm.n_vec, normalize_vec3(vec3init(1, 1, 0)));
 			norm.light.ratio = ft_minmax(norm.light.ratio, 0, 1);
-			// if (color.x != -1000)
-			// {
-			// 	display_vec3(color);
-			// 	flag = 1;
-			// }
 			color = mul_vec3(vec3init(0, 1, 1), norm.light.ratio);
-			// color = add_vec3(norm.n_vec, vec3init(1, 1, 1));
-			// color = mul_vec3(color, 0.5);
-			// if (flag)
-			// {
-				// display_vec3(color);
-			// 	printf("\n");
-			// }
 			norm.t_max = norm.root;
 			temp = norm.t_max;
 		}
