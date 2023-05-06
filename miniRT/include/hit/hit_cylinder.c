@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 18:06:26 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/04 19:56:41 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:12:05 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static double	where_hit_cylinder(t_discrim disc, t_ray ray, \
 	else
 	{
 		where_hit_cylinder_(&plane, norm, cyl, temp);
-		t = dot_vec3(ray.direction, cyl.n_vec);
+		t = dot_vec3(ray.direction, norm->n_vec);
 		if (t >= -1e-5 && t <= 1e-5)
 			return (0);
-		t = -dot_vec3(sub_vec3(ray.point, plane), cyl.n_vec) / \
-			dot_vec3(ray.direction, cyl.n_vec);
+		t = -dot_vec3(sub_vec3(ray.point, plane), norm->n_vec) / \
+			dot_vec3(ray.direction, norm->n_vec);
 		if (t < 0 || t > norm->root)
 			return (0);
 		temp = len_vec3(sub_vec3(ray_at(ray, t), plane));
@@ -67,21 +67,14 @@ int	range_in_hit(t_discrim *disc, double t_max)
 	return (1);
 }
 
-double	ft_abs(double num)
-{
-	if (num < 0)
-		return (-1 * num);
-	return (num);
-}
-
-t_norm	hit_cylinder(t_cylinder cyl, t_ray ray, double t_max)
+t_norm	hit_cylinder_2(t_cylinder cyl, t_ray ray, double t_max)
 {
 	t_discrim	disc;
 	t_norm		norm;
 
 	norm.root = 0;
-	cyl.c_h = add_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height / 2));
-	cyl.c_c = sub_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height / 2));
+	cyl.c_h = add_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height * 0.5));
+	cyl.c_c = sub_vec3(cyl.center, mul_vec3(cyl.n_vec, cyl.height * 0.5));
 	disc.ac = sub_vec3(ray.point, cyl.c_c);
 	disc.a = dotself_vec3(ray.direction) - \
 		ft_pow(dot_vec3(ray.direction, cyl.n_vec));

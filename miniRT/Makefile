@@ -13,6 +13,7 @@ SRCS_NAME = main \
 			./include/hit/hit_cone \
 			./include/hit/hit_cone2 \
 			./include/hit/hit_cylinder \
+			./include/hit/hit_cylinder_2 \
 			./include/hit/hit_cube \
 			./include/hit/hit_cube_2 \
 			./include/hit/hit_paraboloid \

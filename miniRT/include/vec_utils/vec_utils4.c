@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:34:52 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/23 20:01:45 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/05 19:18:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ t_vec3	point_symemtry(t_vec3 target, t_vec3 std)
 	move.y = std.y - (target.y - std.y);
 	move.z = std.z - (target.z - std.z);
 	return (move);
+}
+
+t_vec3	add_vec3_num(t_vec3 vec, double num)
+{
+	t_vec3	add;
+
+	add.x = vec.x + num;
+	add.y = vec.y + num;
+	add.z = vec.z + num;
+	return (add);
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 20:00:05 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:12:19 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,12 @@ typedef struct s_norm
 
 int			range_in_hit(t_discrim *disc, double t_max);
 t_norm		hit_sphere(t_sphere sph, t_ray ray, double t_max);
+t_norm		hit_cylinder_2(t_cylinder cyl, t_ray ray, double t_max);
 t_norm		hit_cylinder(t_cylinder cyl, t_ray ray, double t_max);
 t_norm		hit_cone(t_cone	con, t_ray ray, double t_max);
 t_norm		hit_plane(t_plane pln, t_ray ray, double t_max);
 t_norm		hit_cube(t_cube cube, t_ray ray, double t_max, t_color3 *color);
 t_norm		hit_paraboloid(t_para para, t_ray ray, double t_max);
-double		ft_abs(double num);
 double		paraboloid_r(t_para	para);
 void		complete_cone(t_cone *con, t_vec3 cen, t_vec3 n_vec, t_vec3 rh);
 void		complete_cube(t_cube *cube, t_vec3x3 n1_n2_c, t_vec3 col, double l);
@@ -154,6 +154,6 @@ void		complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_col, \
 void		complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec, t_color3 col);
 t_vec3x3	cen_vec_col_init(t_vec3 cen, t_vec3 vec, t_color3 col);
 t_vec3x3	make_n1_n2_c(t_vec3 n1, t_vec3 n2, t_vec3 cen);
-t_color3	ray_color(t_ray ray, t_obj *obj, int n);
+t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 void		display_cone(t_cone con);
 #endif

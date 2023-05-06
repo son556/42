@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit_paraboloid.c                                   :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:52:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 21:55:13 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/06 14:03:05 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static t_norm	validation_para(t_discrim *d, t_ray ray, t_para p, double t_max)
 	double	t;
 
 	norm.root = 0;
-	t = dot_vec3(p.pl.n_vec, sub_vec3(ray_at(ray, d->root), p.cen));
-	if (t > 0 && t > p.len - (p.len_cc * 0.5))
+	t = -1 * dot_vec3(p.pl.n_vec, sub_vec3(ray_at(ray, d->root), p.cen));
+	if (t < 0 && ft_abs(t) > p.len - (p.len_cc * 0.5))
 	{
 		h = add_vec3(p.cen, mul_vec3(p.pl.n_vec, p.len - p.len_cc * 0.5));
 		t = dot_vec3(p.pl.n_vec, ray.direction);
@@ -59,13 +59,11 @@ static int	para_plane(t_para pa, t_norm *no, t_ray ray, double t_max)
 	t_vec3	cen;
 	double	t;
 
-	if (dot_vec3(ray.direction, pa.pl.n_vec) >= 0)
-		return (0);
 	cen = add_vec3(pa.cen, mul_vec3(pa.pl.n_vec, pa.len - pa.len_cc * 0.5));
-	if (dot_vec3(sub_vec3(cen, ray.point), pa.pl.n_vec) >= 0)
+	if (dot_vec3(ray.direction, pa.pl.n_vec) > 0)
 		return (0);
 	t = dot_vec3(ray.direction, pa.pl.n_vec);
-	if (t < 1e-5 && t > -1e-5)
+	if (t < 0 && t > -1e-5)
 		return (0);
 	t = -1 * dot_vec3(sub_vec3(ray.point, cen), pa.pl.n_vec) / t;
 	if (t < 0 || t > t_max)
@@ -75,7 +73,6 @@ static int	para_plane(t_para pa, t_norm *no, t_ray ray, double t_max)
 		return (0);
 	no->root = t;
 	no->n_vec = pa.pl.n_vec;
-	printf("hit\n");
 	return (1);
 }
 
@@ -84,13 +81,12 @@ static int	para_range_check(t_discrim *disc, double t_max)
 	double	n1;
 	double	n2;
 
-	printf("%f %f %f\n", disc->b, sqrt(disc->discrim), disc->a);
-	n1 = (-1 * disc->b - sqrt(disc->discrim)) / disc->a;
-	n2 = (-1 * disc->b + sqrt(disc->discrim)) / disc->a;
+	n1 = (-disc->b - sqrt(disc->discrim)) / disc->a;
+	n2 = (-disc->b + sqrt(disc->discrim)) / disc->a;
 	if (n1 > n2)
-		disc->root = n2;
+		disc->root = (-disc->b + sqrt(disc->discrim)) / (disc->a);
 	else
-		disc->root = n1;
+		disc->root = (-disc->b - sqrt(disc->discrim)) / (disc->a);
 	if (disc->root < 1e-5 || disc->root > t_max)
 		return (0);
 	return (1);
@@ -104,22 +100,25 @@ t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max)
 	norm.root = 0;
 	if (para_plane(para, &norm, ray, t_max))
 		return (norm);
-	disc.a = ft_pow(dot_vec3(para.pl.n_vec, ray.direction)) - \
-		dotself_vec3(ray.direction);
-	disc.b = dot_vec3(ray.point, para.pl.n_vec) * \
-		dot_vec3(ray.direction, para.pl.n_vec) - \
-		dot_vec3(para.pl.center, para.pl.n_vec) * \
-		dot_vec3(ray.direction, para.pl.n_vec) - \
-		dot_vec3(ray.point, ray.direction) + \
-		dot_vec3(ray.direction, para.cen);
-	disc.c = dot_vec3(para.pl.center, para.pl.n_vec) - \
-		dot_vec3(ray.point, para.pl.n_vec);
-	disc.c = ft_pow(disc.c) - dotself_vec3(ray.point);
-	disc.c -= 2 * dot_vec3(para.cen, ray.point) + dotself_vec3(para.cen);
+	disc.a = ft_pow(dot_vec3(para.pl.n_vec, ray.direction));
+	disc.a -= dotself_vec3(ray.direction);
+	disc.b = dot_vec3(ray.direction, para.pl.n_vec);
+	disc.b *= dot_vec3(ray.point, para.pl.n_vec);
+	disc.b -= dot_vec3(ray.direction, para.pl.n_vec) * \
+		dot_vec3(para.pl.center, para.pl.n_vec);
+	disc.b += dot_vec3(ray.direction, para.cen);
+	disc.c = dot_vec3(ray.point, para.pl.n_vec) - \
+		dot_vec3(para.pl.center, para.pl.n_vec);
+	disc.c = ft_pow(disc.c) - dotself_vec3(para.cen) - \
+		2 * dot_vec3(ray.point, ray.direction);
+	disc.c -= dotself_vec3(ray.point);
 	disc.discrim = ft_pow(disc.b) - disc.a * disc.c;
 	if (disc.discrim < 0)
 		return (norm);
 	if (para_range_check(&disc, t_max) == 0)
 		return (norm);
-	return (validation_para(&disc, ray, para, t_max));
+	norm = validation_para(&disc, ray, para, t_max);
+	return (norm);
 }
+
+// cc test.c ./include/vec_utils/vec_utils.c ./include/vec_utils2.c ./include/vec_utils3.c

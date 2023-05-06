@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:14:45 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/26 13:56:51 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/06 17:29:36 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,9 @@ t_vec3x3	transpose_vec3x3(t_vec3x3 vec3x3)
 	return (vec3x3_t);
 }
 
-t_rot	rotate_vec_001(t_vec3 normal)
+double	ft_abs(double num)
 {
-	t_vec3x3	rot_y;
-	t_vec3x3	rot_z;
-	t_rot		rot;
-	t_vec3		rot_e;
-
-	if ((normal.x == 0 && normal.y == 0 && normal.z == 1) || \
-		(normal.x == 0 && normal.y == 0 && normal.z == -1))
-	{
-		rot.v_x = vec3init(1.0, 0.0, 0.0);
-		rot.v_y = vec3init(0.0, 1.0, 0.0);
-		rot.v_z = vec3init(0.0, 0.0, 1.0);
-		return (rot);
-	}
-	rot_e.x = sqrt(pow(normal.y, 2) + pow(normal.z, 2));
-	rot_e.y = sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
-	rot_e.z = sqrt(pow(normal.x, 2) + pow(normal.y, 2));
-	rot_z.v_x = vec3init(normal.x / rot_e.z, normal.y / rot_e.z, 0);
-	rot_z.v_y = vec3init(-normal.y / rot_e.z, normal.x / rot_e.z, 0);
-	rot_z.v_z = vec3init(0, 0, 1);
-	rot_y.v_x = vec3init(normal.z / rot_e.y, 0, -rot_e.z / rot_e.y);
-	rot_y.v_y = vec3init(0, 1, 0);
-	rot_y.v_z = vec3init(rot_e.z / rot_e.y, 0, normal.z / rot_e.y);
-	rot = mul_vec3x3(rot_y, rot_z);
-	return (rot);
+	if (num < 0)
+		return (-1 * num);
+	return (num);
 }

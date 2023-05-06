@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 14:55:23 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/06 17:29:51 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_vec3x3	mul_vec3x3(t_vec3x3 v1, t_vec3x3 v2);
 t_vec3x3	vec3x3init(t_vec3 v_x, t_vec3 v_y, t_vec3 v_z);
 t_vec3		vec3x3_x_vec3(t_vec3x3 vec3x3, t_vec3 vec);
 t_vec3x3	transpose_vec3x3(t_vec3x3 vec3x3);
-t_rot		rotate_vec_001(t_vec3 normal);
 double		get_radian(double theta);
 t_rot		rotate_vec(double t1, double t2, double t3);
 t_vec3		point_symemtry(t_vec3 target, t_vec3 std);
@@ -76,7 +75,8 @@ t_vec3x3	inverse_vec3x3(t_vec3x3 vec);
 t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t);
 double		getradian(int num);
 double		ft_minmax(double val, double t_min, double t_max);
-
+t_vec3		add_vec3_num(t_vec3 vec, double num);
+double		ft_abs(double num);
 void		display_vec3(t_vec3 vec);
 void		display_vec3x3(t_vec3x3 vec);
 #endif
