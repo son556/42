@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 21:55:23 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/07 20:33:57 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ int	main(void)
 	t_obj		obj_cylinder;
 	obj_cylinder.type = CYLINDER;
 	complete_cyl(&obj_cylinder.cylinder, cen_vec_col_init(vec3init(0, -5, -10), \
-		vec3init(0, 1, 0), vec3init(1, 0, 1)), 6.0, 2.0);
+		vec3init(0, 1, 0), vec3init(1, 0, 1)), 8.0, 2.0);
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
 	complete_cone(&obj_cone.cone, vec3init(0.3, 0, -10), \
-		vec3init(0, -1, 0), vec3init(1, 2, 0));
+		vec3init(1, 0, 0), vec3init(1, 2, 0));
 	
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
@@ -95,12 +95,12 @@ int	main(void)
 	t_obj	obj_cube;
 	obj_cube.type = CUBE;
 	complete_cube(&obj_cube.cube, make_n1_n2_c(vec3init(1, 1, 1), \
-		vec3init(1, 0, -1), vec3init(0, 0, -10)), vec3init(1, 0, 0), 2.0);
+		vec3init(1, 0, -1), vec3init(0, 3, -10)), vec3init(1, 0, 0), 2.0);
 
 	t_obj	obj_paraboloid;
 
 	obj_paraboloid.type = PARABOLOID;
-	complete_para(&obj_paraboloid.para, vec3init(0, 0, -8), vec3init(0, 0, 1), 3.0);
+	complete_para(&obj_paraboloid.para, vec3init(0, -6, -10), vec3init(0, -1, 0), 6.0);
 
 	t_obj	obj_arr[6];
 	obj_arr[0] = obj_cylinder;
@@ -116,18 +116,23 @@ int	main(void)
 	obj_cyl.type = CYLINDER;
 	complete_cyl(&obj_cyl.cylinder, cen_vec_col_init(vec3init(0, 0, -10), \
 		vec3init(1, 0, 0), vec3init(1, 0, 1)), 1.0, 2.0);
+	
+	t_obj	obj_para;
+
+	obj_para.type = PARABOLOID;
+	complete_para(&obj_para.para, vec3init(0, -3, -10), vec3init(0, 1, 0), 2.0);
 
 	t_obj	obj_test[2];
-	obj_test[0] = obj_cylinder;
-	obj_test[1] = obj_arr[5];
-	norm.light = light_init(vec3init(-1, 10, -10), vec3init(1, 1, 1), 0.8);
+	obj_test[0] = obj_arr[0];
+	obj_test[1] = obj_para;
+	norm.light = light_init(vec3init(0, 20, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)
 		{
 			double u = i / (point_x - 1);
 			double v = j / (point_y - 1);
-			ray.point = vec3init(0, 0, 0);
+			ray.point = vec3init(-0.3, 0, 0);
 			ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x,
 							ll_corner.y + u*horizontal.y + v*vertical.y,
 							ll_corner.z + u*horizontal.z + v*vertical.z);

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:52:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 21:55:13 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/07 20:27:13 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	para_plane(t_para pa, t_norm *no, t_ray ray, double t_max)
 		return (0);
 	no->root = t;
 	no->n_vec = pa.pl.n_vec;
-	printf("hit\n");
+	// printf("hit\n");
 	return (1);
 }
 
@@ -84,9 +84,9 @@ static int	para_range_check(t_discrim *disc, double t_max)
 	double	n1;
 	double	n2;
 
-	printf("%f %f %f\n", disc->b, sqrt(disc->discrim), disc->a);
 	n1 = (-1 * disc->b - sqrt(disc->discrim)) / disc->a;
 	n2 = (-1 * disc->b + sqrt(disc->discrim)) / disc->a;
+	// printf("%f %f %f\n\n", n1, n2, disc->a);
 	if (n1 > n2)
 		disc->root = n2;
 	else
@@ -106,16 +106,16 @@ t_norm	hit_paraboloid(t_para para, t_ray ray, double t_max)
 		return (norm);
 	disc.a = ft_pow(dot_vec3(para.pl.n_vec, ray.direction)) - \
 		dotself_vec3(ray.direction);
-	disc.b = dot_vec3(ray.point, para.pl.n_vec) * \
-		dot_vec3(ray.direction, para.pl.n_vec) - \
-		dot_vec3(para.pl.center, para.pl.n_vec) * \
-		dot_vec3(ray.direction, para.pl.n_vec) - \
-		dot_vec3(ray.point, ray.direction) + \
-		dot_vec3(ray.direction, para.cen);
-	disc.c = dot_vec3(para.pl.center, para.pl.n_vec) - \
-		dot_vec3(ray.point, para.pl.n_vec);
+	disc.b = dot_vec3(ray.direction, para.pl.n_vec) * \
+			dot_vec3(ray.point, para.pl.n_vec) - \
+			dot_vec3(ray.direction, para.pl.n_vec) * \
+			dot_vec3(para.pl.center, para.pl.n_vec) - \
+			dot_vec3(ray.point, ray.direction) + \
+			dot_vec3(ray.direction, para.cen);
+	disc.c = dot_vec3(ray.point, para.pl.n_vec) - \
+			dot_vec3(para.pl.center, para.pl.n_vec);
 	disc.c = ft_pow(disc.c) - dotself_vec3(ray.point);
-	disc.c -= 2 * dot_vec3(para.cen, ray.point) + dotself_vec3(para.cen);
+	disc.c += 2 * dot_vec3(para.cen, ray.point) - dotself_vec3(para.cen);
 	disc.discrim = ft_pow(disc.b) - disc.a * disc.c;
 	if (disc.discrim < 0)
 		return (norm);
