@@ -6,41 +6,40 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:07:40 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 17:55:06 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 14:53:08 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 
-void	complete_sphere(t_sphere *sp, t_vec3 cen, t_vec3 col, double r)
+void	complete_sphere(t_sphere *sp, t_vec3 cen, double r)
 {
 	sp->center = cen;
-	sp->color = col;
 	sp->radius = r;
 }
 
-t_vec3x3	cen_vec_col_init(t_vec3 cen, t_vec3 vec, t_color3 col)
+t_vec3x3	cen_vec_rh_init(t_vec3 cen, t_vec3 vec, t_vec3 rh)
 {
-	t_vec3x3	cen_vec_color;
+	t_vec3x3	cen_vec_rh;
 
-	cen_vec_color.v_x = cen;
-	cen_vec_color.v_y = normalize_vec3(vec);
-	cen_vec_color.v_z = col;
-	return (cen_vec_color);
+	cen_vec_rh.v_x = cen;
+	cen_vec_rh.v_y = normalize_vec3(vec);
+	cen_vec_rh.v_z = rh;
+	return (cen_vec_rh);
 }
 
-void	complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_col, double r, double h)
+void	complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_rh)
 {
-	cyl->center = cen_vec_col.v_x;
-	cyl->n_vec = normalize_vec3(cen_vec_col.v_y);
-	cyl->color = cen_vec_col.v_z;
-	cyl->radius = r;
-	cyl->height = h;
+	cyl->center = cen_vec_rh.v_x;
+	cyl->n_vec = cen_vec_rh.v_y;
+	cyl->radius = cen_vec_rh.v_z.x;
+	cyl->height = cen_vec_rh.v_z.y;
+	cyl->c_h = add_vec3(cyl->center, mul_vec3(cyl->n_vec, cyl->height * 0.5));
+	cyl->c_c = add_vec3(cyl->center, mul_vec3(cyl->n_vec, cyl->height * -0.5));
 }
 
-void	complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec, t_color3 col)
+void	complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec)
 {
 	pl->center = cen;
 	pl->n_vec = vec;
-	pl->color = col;
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/07 20:33:57 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 15:16:29 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,34 +73,41 @@ int	main(void)
 	
 	t_obj		obj_cylinder;
 	obj_cylinder.type = CYLINDER;
-	complete_cyl(&obj_cylinder.cylinder, cen_vec_col_init(vec3init(0, -5, -10), \
-		vec3init(0, 1, 0), vec3init(1, 0, 1)), 8.0, 2.0);
+	complete_cyl(&obj_cylinder.cylinder, cen_vec_rh_init(vec3init(0, -5, -10), \
+		vec3init(0, 1, 0), vec3init(8.0, 2.0, 0)));
+	obj_cylinder.color = vec3init(0, 1, 0);
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
 	complete_cone(&obj_cone.cone, vec3init(0.3, 0, -10), \
 		vec3init(1, 0, 0), vec3init(1, 2, 0));
-	
+	obj_cone.color = vec3init(1, 1, 0);
+
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
-	complete_sphere(&obj_sphere.sphere, vec3init(0, 0, -10), vec3init(0, 0, 1), 1.5);
+	complete_sphere(&obj_sphere.sphere, vec3init(0, 0, -10), 1.5);
+	obj_sphere.color = vec3init(0, 0, 1);
 
 	t_obj	obj_plane;
 	obj_plane.type = PLANE;
 	complete_plane(&obj_plane.plane, vec3init(0, 0, -10), \
-		normalize_vec3(vec3init(0, 1, 0)), vec3init(1, 0, 0));
-	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, point_x, point_y, "test");
+		normalize_vec3(vec3init(0, 1, 0)));
+	obj_plane.color = vec3init(0, 1, 1);
 
 	t_obj	obj_cube;
 	obj_cube.type = CUBE;
 	complete_cube(&obj_cube.cube, make_n1_n2_c(vec3init(1, 1, 1), \
-		vec3init(1, 0, -1), vec3init(0, 3, -10)), vec3init(1, 0, 0), 2.0);
+		vec3init(1, 0, -1), vec3init(0, 3, -10)), 2.0);
+	obj_cube.color = vec3init(1, 0, 1);
 
 	t_obj	obj_paraboloid;
-
 	obj_paraboloid.type = PARABOLOID;
 	complete_para(&obj_paraboloid.para, vec3init(0, -6, -10), vec3init(0, -1, 0), 6.0);
+	obj_paraboloid.color = vec3init(1, 0, 0);
+
+	mlx.mlx = mlx_init();
+	mlx.win = mlx_new_window(mlx.mlx, point_x, point_y, "test");
+
 
 	t_obj	obj_arr[6];
 	obj_arr[0] = obj_cylinder;
@@ -114,18 +121,19 @@ int	main(void)
 
 	t_obj		obj_cyl;
 	obj_cyl.type = CYLINDER;
-	complete_cyl(&obj_cyl.cylinder, cen_vec_col_init(vec3init(0, 0, -10), \
-		vec3init(1, 0, 0), vec3init(1, 0, 1)), 1.0, 2.0);
+	complete_cyl(&obj_cyl.cylinder, cen_vec_rh_init(vec3init(0, 0, -10), \
+		vec3init(0, 1, 0), vec3init(1, 2, 0)));
+	obj_cyl.color = vec3init(0, 1, 1);
 	
 	t_obj	obj_para;
-
 	obj_para.type = PARABOLOID;
-	complete_para(&obj_para.para, vec3init(0, -3, -10), vec3init(0, 1, 0), 2.0);
+	complete_para(&obj_para.para, vec3init(0, -5, -10), vec3init(0, 1, 0), 3.0);
+	obj_para.color = vec3init(0, 1, 0);
 
 	t_obj	obj_test[2];
-	obj_test[0] = obj_arr[0];
+	obj_test[0] = obj_cyl;
 	obj_test[1] = obj_para;
-	norm.light = light_init(vec3init(0, 20, -10), vec3init(1, 1, 1), 0.8);
+	norm.light = light_init(vec3init(0, 5, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)

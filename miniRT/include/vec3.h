@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 17:29:51 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/08 21:14:06 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define VEC3_H
 
 # include <math.h>
+# include <time.h>
+# include <stdlib.h>
 # include <stdio.h>
 
 # define PI 3.1415926535897
@@ -67,6 +69,7 @@ t_vec3		normalize_vec3(t_vec3 v1);
 t_vec3x3	mul_vec3x3(t_vec3x3 v1, t_vec3x3 v2);
 t_vec3x3	vec3x3init(t_vec3 v_x, t_vec3 v_y, t_vec3 v_z);
 t_vec3		vec3x3_x_vec3(t_vec3x3 vec3x3, t_vec3 vec);
+t_vec3		vec3_rand(void);
 t_vec3x3	transpose_vec3x3(t_vec3x3 vec3x3);
 double		get_radian(double theta);
 t_rot		rotate_vec(double t1, double t2, double t3);
@@ -77,6 +80,9 @@ double		getradian(int num);
 double		ft_minmax(double val, double t_min, double t_max);
 t_vec3		add_vec3_num(t_vec3 vec, double num);
 double		ft_abs(double num);
+double		random_0_to_1(void);
+double		random_min_max(double min, double max);
+t_vec3		vec3_rand(void);
 void		display_vec3(t_vec3 vec);
 void		display_vec3x3(t_vec3x3 vec);
 #endif

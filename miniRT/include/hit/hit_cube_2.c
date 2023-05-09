@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 22:02:23 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 17:16:40 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/08 21:43:08 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,11 @@ t_vec3x3	make_n1_n2_c(t_vec3 n1, t_vec3 n2, t_vec3 cen)
 	return (n1n2c);
 }
 
-void	complete_cube(t_cube *cube, t_vec3x3 n1_n2_c, t_vec3 col, double l)
+void	complete_cube(t_cube *cube, t_vec3x3 n1_n2_c, double l)
 {
-	int	i;
-
 	cube->n_vec = n1_n2_c.v_x;
 	cube->n_vec_2 = n1_n2_c.v_y;
 	cube->cube_c = n1_n2_c.v_z;
 	cube->len = l;
-	i = -1;
-	while (++i < 6)
-		cube->plane[i].color = col;
 	make_cube(cube);
 }
