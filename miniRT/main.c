@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 15:16:29 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 20:55:19 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	main(void)
 	complete_cyl(&obj_cyl.cylinder, cen_vec_rh_init(vec3init(0, 0, -10), \
 		vec3init(0, 1, 0), vec3init(1, 2, 0)));
 	obj_cyl.color = vec3init(0, 1, 1);
-	
+
 	t_obj	obj_para;
 	obj_para.type = PARABOLOID;
 	complete_para(&obj_para.para, vec3init(0, -5, -10), vec3init(0, 1, 0), 3.0);
@@ -138,17 +138,22 @@ int	main(void)
 	{
 		for (int i = 0 ; i < point_x ; i++)
 		{
-			double u = i / (point_x - 1);
-			double v = j / (point_y - 1);
-			ray.point = vec3init(-0.3, 0, 0);
-			ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x,
-							ll_corner.y + u*horizontal.y + v*vertical.y,
-							ll_corner.z + u*horizontal.z + v*vertical.z);
-			ray.direction = normalize_vec3(ray.direction);
-
-			t_vec3 argb = ray_color(ray, obj_test, &norm, 2);
-
-			int	color = argb_(0, argb.x * 255.999, argb.y * 255.999, argb.z * 255.999);
+			t_vec3 argb = vec3init(0, 0, 0);
+			for (int k = 0; k < 9; k++)
+			{
+				double u = (i + random_0_to_1()) / (point_x - 1);
+				double v = (j + random_0_to_1()) / (point_y - 1);
+				ray.point = vec3init(0, 0, 0);
+				ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x,
+								ll_corner.y + u*horizontal.y + v*vertical.y,
+								ll_corner.z + u*horizontal.z + v*vertical.z);
+				ray.direction = normalize_vec3(ray.direction);
+				t_vec3 argb2 = ray_color(ray, obj_test, &norm, 2);
+				argb = add_vec3(argb, argb2);
+			}
+			argb = div_vec3(argb, 9.0);
+			argb = minmax_vec3(argb, 0, 1);
+			int	color = argb_(0, (int)(argb.x * 255.999), (int)(argb.y * 255.999), (int)(argb.z * 255.999));
 			mlx_pixel_put(mlx.mlx, mlx.win, i, point_y - 1 - j, color);
 		}
 	}

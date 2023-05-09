@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 15:24:21 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 20:54:26 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 			temp = tmp_n.root;
 			tmp_n.t_max = temp;
 			if (shade(*norm, obj, n, i))
-				color = mul_vec3(vec3init(0, 1, 0), 0.3);
+				color = mul_vec3(obj[i].color, 0.3);
 		}
 	}
-	if (color.x != -1000)
-		return (color);
-	norm->root = 0.5 * (ray.direction.y + 1.0);
-	color = vec3init(1.0 - 0.5 * norm->root, 1.0 - 0.3 * norm->root, 1.0);
+	if (color.x == -1000)
+	{
+		norm->root = 0.5 * (ray.direction.y + 1.0);
+		color = vec3init(1.0 - 0.5 * norm->root, 1.0 - 0.3 * norm->root, 1.0);
+	}
 	return (color);
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:02:47 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/08 20:24:03 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 20:42:46 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 double	random_0_to_1(void)
 {
-	srand(time(NULL));
 	return (rand() / (RAND_MAX + 1.0));
 }
 
@@ -29,4 +28,14 @@ t_vec3	vec3_rand(void)
 
 	random_vec3 = vec3init(random_0_to_1(), random_0_to_1(), random_0_to_1());
 	return (random_vec3);
+}
+
+t_vec3	minmax_vec3(t_vec3 vec, double min, double max)
+{
+	t_vec3	vec3;
+
+	vec3.x = ft_minmax(vec.x, min, max);
+	vec3.y = ft_minmax(vec.y, min, max);
+	vec3.z = ft_minmax(vec.z, min, max);
+	return (vec3);
 }

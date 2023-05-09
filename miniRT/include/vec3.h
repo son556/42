@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/08 21:14:06 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/09 20:43:27 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ double		ft_abs(double num);
 double		random_0_to_1(void);
 double		random_min_max(double min, double max);
 t_vec3		vec3_rand(void);
+t_vec3		minmax_vec3(t_vec3 vec, double min, double max);
 void		display_vec3(t_vec3 vec);
 void		display_vec3x3(t_vec3x3 vec);
 #endif
