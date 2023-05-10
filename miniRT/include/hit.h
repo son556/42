@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 20:51:27 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/10 21:04:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,9 @@ typedef struct s_norm
 	t_light		light;
 	t_light		ambi;
 	t_light		spec;
+	t_color3	color;
 	int			front;
+	int			depth;
 }	t_norm;
 
 int			range_in_hit(t_discrim *disc, double t_max);
@@ -152,7 +154,9 @@ void		complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec);
 t_vec3x3	cen_vec_rh_init(t_vec3 cen, t_vec3 vec, t_vec3 rh);
 t_vec3x3	make_n1_n2_c(t_vec3 n1, t_vec3 n2, t_vec3 cen);
 t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
+t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 t_norm		find_hit_function(t_ray ray, t_obj obj, double t_max);
+t_ray		diffuse_ray(t_norm norm);
 int			shade(t_norm norm, t_obj *obj, int n, int m);
 int			front_or_back(t_ray ray, t_norm norm);
 void		display_cone(t_cone con);

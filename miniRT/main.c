@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 20:55:19 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/10 21:29:12 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(void)
 
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
-	complete_sphere(&obj_sphere.sphere, vec3init(0, 0, -10), 1.5);
+	complete_sphere(&obj_sphere.sphere, vec3init(0, -1.0, -10), 1.0);
 	obj_sphere.color = vec3init(0, 0, 1);
 
 	t_obj	obj_plane;
@@ -121,7 +121,7 @@ int	main(void)
 
 	t_obj		obj_cyl;
 	obj_cyl.type = CYLINDER;
-	complete_cyl(&obj_cyl.cylinder, cen_vec_rh_init(vec3init(0, 0, -10), \
+	complete_cyl(&obj_cyl.cylinder, cen_vec_rh_init(vec3init(0, -2, -10), \
 		vec3init(0, 1, 0), vec3init(1, 2, 0)));
 	obj_cyl.color = vec3init(0, 1, 1);
 
@@ -131,7 +131,7 @@ int	main(void)
 	obj_para.color = vec3init(0, 1, 0);
 
 	t_obj	obj_test[2];
-	obj_test[0] = obj_cyl;
+	obj_test[0] = obj_arr[2];
 	obj_test[1] = obj_para;
 	norm.light = light_init(vec3init(0, 5, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
@@ -148,7 +148,9 @@ int	main(void)
 								ll_corner.y + u*horizontal.y + v*vertical.y,
 								ll_corner.z + u*horizontal.z + v*vertical.z);
 				ray.direction = normalize_vec3(ray.direction);
-				t_vec3 argb2 = ray_color(ray, obj_test, &norm, 2);
+				// t_vec3 argb2 = ray_color(ray, obj_test, &norm, 2);
+				norm.depth = 30;
+				t_vec3 argb2 = test_color(ray, obj_test, &norm, 2);
 				argb = add_vec3(argb, argb2);
 			}
 			argb = div_vec3(argb, 9.0);

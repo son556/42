@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:31:43 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 20:48:33 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/10 20:02:17 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,25 @@ int	front_or_back(t_ray ray, t_norm norm)
 	if (dif < 0)
 		return (1);
 	return (0);
+}
+
+t_ray	diffuse_ray(t_norm norm)
+{
+	t_ray	new_ray;
+	t_vec3	temp;
+	t_vec3	cen;
+
+	new_ray.point = norm.hit;
+	cen = add_vec3(norm.hit, norm.n_vec);
+	while (1)
+	{
+		temp.x = random_min_max(-1, 1);
+		temp.y = random_min_max(-1, 1);
+		temp.z = random_min_max(-1, 1);
+		if (len_vec3(temp) < 1)
+			break ;
+	}
+	new_ray.direction = normalize_vec3(sub_vec3(\
+		add_vec3(cen, temp), new_ray.point));
+	return (new_ray);
 }
