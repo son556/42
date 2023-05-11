@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 18:06:26 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 15:08:15 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 19:57:39 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static double	where_hit_cylinder(t_norm *n, t_ray r, t_cylinder c, double t_m)
 			return (0);
 		t = -dot_vec3(sub_vec3(r.point, cen), n->n_vec) / \
 			dot_vec3(r.direction, n->n_vec);
-		if (t < 0 || t > t_m)
+		if (t < 1e-5 || t > t_m)
 			return (0);
 		temp = len_vec3(sub_vec3(ray_at(r, t), cen));
 		if (temp > c.radius)
@@ -58,10 +58,10 @@ static double	where_hit_cylinder(t_norm *n, t_ray r, t_cylinder c, double t_m)
 int	range_in_hit(t_discrim *disc, double t_max)
 {
 	disc->root = (-disc->b - sqrt(disc->discrim)) / disc->a;
-	if (disc->root < 0 || disc->root > t_max)
+	if (disc->root < 0.001 || disc->root > t_max)
 	{
 		disc->root = (-disc->b + sqrt(disc->discrim)) / disc->a;
-		if (disc->root < 0 || disc->root > t_max)
+		if (disc->root < 0.001 || disc->root > t_max)
 			return (0);
 	}
 	return (1);
@@ -89,7 +89,7 @@ static int	hit_top_down(t_norm *n, t_ray r, double t_m, t_cylinder cyl)
 		return (0);
 	t = -dot_vec3(sub_vec3(r.point, cen), n->n_vec) / t;
 	hit = ray_at(r, t);
-	if (t < 0 || t > t_m || len_vec3(sub_vec3(hit, cen)) > cyl.radius)
+	if (t < 1e-5 || t > t_m || len_vec3(sub_vec3(hit, cen)) > cyl.radius)
 		return (0);
 	n->root = t;
 	return (1);

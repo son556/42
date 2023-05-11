@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/10 21:04:23 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 20:58:01 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ enum e_objects
 	PLANE,
 	CUBE,
 	CONE,
-	PARABOLOID
+	PARABOLOID,
+	METAL,
+	GLASS,
+	PLASTIC
 };
 
 typedef struct s_triangle
@@ -123,17 +126,20 @@ typedef struct s_discrim
 
 typedef struct s_norm
 {
-	double		root;
-	t_vec3		n_vec;
-	t_point3	hit;
-	double		t_max;
-	t_color3	albedo;
-	t_light		light;
-	t_light		ambi;
-	t_light		spec;
-	t_color3	color;
-	int			front;
-	int			depth;
+	double			root;
+	t_vec3			n_vec;
+	t_point3		hit;
+	double			t_max;
+	t_color3		albedo;
+	t_light			light;
+	t_light			ambi;
+	t_light			spec;
+	t_color3		color;
+	int				front;
+	int				depth;
+	int				p_depth;
+	int				hit_idx;
+	enum e_objects	material;
 }	t_norm;
 
 int			range_in_hit(t_discrim *disc, double t_max);

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/08 13:32:54 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 20:46:52 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 	if (disc.discrim < 0)
 		return (norm);
 	disc.root = (-disc.b - sqrt(disc.discrim)) / disc.a;
-	if (disc.root < 0.001 || disc.root > t_max)
+	if (disc.root < 1e-5 || disc.root > t_max)
 	{
 		disc.root = (-disc.b + sqrt(disc.discrim)) / disc.a;
 		if (disc.root < 1e-5 || disc.root > t_max)
@@ -56,7 +56,7 @@ t_norm	hit_plane(t_plane pln, t_ray ray, double t_max)
 	disc.a = -1 * dot_vec3(disc.ac, pln.n_vec);
 	disc.b = dot_vec3(ray.direction, pln.n_vec);
 	disc.root = disc.a / disc.b;
-	if (disc.root < 0.0001 || disc.root > t_max)
+	if (disc.root < 1e-5 || disc.root > t_max)
 		norm.root = 0;
 	norm.root = disc.root;
 	norm.n_vec = pln.n_vec;

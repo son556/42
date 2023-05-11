@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/10 21:29:12 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 20:47:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(void)
 
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
-	complete_sphere(&obj_sphere.sphere, vec3init(0, -1.0, -10), 1.0);
+	complete_sphere(&obj_sphere.sphere, vec3init(0, -3, -10), 1.0);
 	obj_sphere.color = vec3init(0, 0, 1);
 
 	t_obj	obj_plane;
@@ -109,13 +109,12 @@ int	main(void)
 	mlx.win = mlx_new_window(mlx.mlx, point_x, point_y, "test");
 
 
-	t_obj	obj_arr[6];
+	t_obj	obj_arr[5];
 	obj_arr[0] = obj_cylinder;
 	obj_arr[1] = obj_cone;
 	obj_arr[2] = obj_sphere;
-	obj_arr[3] = obj_plane;
-	obj_arr[4] = obj_cube;
-	obj_arr[5] = obj_paraboloid;
+	obj_arr[3] = obj_cube;
+	obj_arr[4] = obj_paraboloid;
 
 	t_norm	norm;
 
@@ -131,9 +130,9 @@ int	main(void)
 	obj_para.color = vec3init(0, 1, 0);
 
 	t_obj	obj_test[2];
-	obj_test[0] = obj_arr[2];
-	obj_test[1] = obj_para;
-	norm.light = light_init(vec3init(0, 5, -10), vec3init(1, 1, 1), 0.8);
+	obj_test[0] = obj_arr[0];
+	obj_test[1] = obj_arr[2];
+	norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)
@@ -148,12 +147,16 @@ int	main(void)
 								ll_corner.y + u*horizontal.y + v*vertical.y,
 								ll_corner.z + u*horizontal.z + v*vertical.z);
 				ray.direction = normalize_vec3(ray.direction);
-				// t_vec3 argb2 = ray_color(ray, obj_test, &norm, 2);
-				norm.depth = 30;
+				norm.depth = 50;
+				norm.hit_idx = -1;
+				norm.p_depth = norm.depth;
 				t_vec3 argb2 = test_color(ray, obj_test, &norm, 2);
 				argb = add_vec3(argb, argb2);
 			}
 			argb = div_vec3(argb, 9.0);
+			argb.x = sqrt(argb.x);
+			argb.y = sqrt(argb.y);
+			argb.z = sqrt(argb.z);
 			argb = minmax_vec3(argb, 0, 1);
 			int	color = argb_(0, (int)(argb.x * 255.999), (int)(argb.y * 255.999), (int)(argb.z * 255.999));
 			mlx_pixel_put(mlx.mlx, mlx.win, i, point_y - 1 - j, color);

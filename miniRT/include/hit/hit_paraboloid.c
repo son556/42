@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:52:24 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/07 21:55:11 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:22:36 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_norm	validation_para(t_discrim *d, t_ray ray, t_para p, double t_max)
 		if (t < 1e-5 && t > -1e-5)
 			return (norm);
 		t = -1 * dot_vec3(sub_vec3(ray.point, h), p.pl.n_vec) / t;
-		if (t < 0 || t > t_max)
+		if (t < 0.001 || t > t_max)
 			return (norm);
 		if (len_vec3(sub_vec3(ray_at(ray, t), h)) > p.r)
 			return (norm);
@@ -68,7 +68,7 @@ static int	para_plane(t_para pa, t_norm *no, t_ray ray, double t_max)
 	if (t < 1e-5 && t > -1e-5)
 		return (0);
 	t = -1 * dot_vec3(sub_vec3(ray.point, cen), pa.pl.n_vec) / t;
-	if (t < 0 || t > t_max)
+	if (t < 0.001 || t > t_max)
 		return (0);
 	hit = ray_at(ray, t);
 	if (len_vec3(sub_vec3(hit, cen)) > pa.r)
@@ -89,7 +89,7 @@ static int	para_range_check(t_discrim *disc, double t_max)
 		disc->root = n2;
 	else
 		disc->root = n1;
-	if (disc->root < 1e-5 || disc->root > t_max)
+	if (disc->root < 0.001 || disc->root > t_max)
 		return (0);
 	return (1);
 }

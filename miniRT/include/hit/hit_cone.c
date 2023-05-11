@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 20:21:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/06 20:05:09 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 19:56:10 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_norm	hit_cone_(t_cone con, t_ray ray, double t_max, t_discrim disc)
 	norm.root = 0;
 	if (!line_in_cone(con, ray, &disc))
 		return (norm);
-	if (disc.root < 0 || disc.root > t_max)
+	if (disc.root < 1e-5 || disc.root > t_max)
 		return (norm);
 	disc.root = where_hit_cone(disc, ray, con, &norm);
 	if (disc.root == 0)

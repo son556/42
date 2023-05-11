@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:31:43 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/10 20:02:17 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:31:43 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@ int	shade(t_norm norm, t_obj *obj, int n, int m)
 	double	t_max;
 	int		i;
 
-	ray.point = norm.hit;
-	ray.direction = normalize_vec3(sub_vec3(norm.light.point, norm.hit));
+	(void)m;
+	ray.point = add_vec3(norm.hit, mul_vec3(norm.n_vec, 1e-5));
+	ray.direction = normalize_vec3(sub_vec3(norm.light.point, ray.point));
 	t_max = len_vec3(sub_vec3(norm.hit, norm.light.point));
 	i = -1;
 	while (++i < n)
 	{
-		if (i == m || i == 3)
-			continue ;
 		temp = find_hit_function(ray, obj[i], t_max);
 		if (temp.root > 0.0)
 			return (1);
@@ -63,19 +62,30 @@ t_ray	diffuse_ray(t_norm norm)
 {
 	t_ray	new_ray;
 	t_vec3	temp;
-	t_vec3	cen;
 
 	new_ray.point = norm.hit;
-	cen = add_vec3(norm.hit, norm.n_vec);
-	while (1)
-	{
-		temp.x = random_min_max(-1, 1);
-		temp.y = random_min_max(-1, 1);
-		temp.z = random_min_max(-1, 1);
-		if (len_vec3(temp) < 1)
-			break ;
-	}
+	temp.x = random_min_max(-1, 1);
+	temp.y = random_min_max(-1, 1);
+	temp.z = random_min_max(-1, 1);
+	if (dot_vec3(norm.n_vec, temp) < 0)
+		temp = mul_vec3(temp, -1);
+	// temp = normalize_vec3(temp);
 	new_ray.direction = normalize_vec3(sub_vec3(\
-		add_vec3(cen, temp), new_ray.point));
+		add_vec3(new_ray.point, temp), new_ray.point));
+	return (new_ray);
+}
+
+t_ray	specular_ray(t_norm norm)
+{
+	t_ray	new_ray;
+	t_vec3	temp;
+	double	len;
+
+	new_ray.point = norm.hit;
+	temp = normalize_vec3(random_minmax_vec3(-1, 1));
+	len = len_vec3(sub_vec3(temp, norm.n_vec));
+	new_ray.direction = normalize_vec3(add_vec3(norm.n_vec, temp));
+	if (len < 1e-5 && len > -1e-5)
+		new_ray.direction = norm.n_vec;
 	return (new_ray);
 }

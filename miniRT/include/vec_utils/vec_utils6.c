@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:02:47 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/09 20:42:46 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:14:08 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,14 @@ t_vec3	minmax_vec3(t_vec3 vec, double min, double max)
 	vec3.y = ft_minmax(vec.y, min, max);
 	vec3.z = ft_minmax(vec.z, min, max);
 	return (vec3);
+}
+
+t_vec3	random_minmax_vec3(double min, double max)
+{
+	t_vec3	vec;
+
+	vec.x = random_min_max(min, max);
+	vec.y = random_min_max(min, max);
+	vec.z = random_min_max(min, max);
+	return (vec);
 }
