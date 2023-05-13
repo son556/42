@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/11 20:38:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:26:02 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
 			norm->n_vec = tmp_n.n_vec;
 			norm->root = tmp_n.root;
 			norm->hit = ray_at(ray, norm->root);
+			norm->material = obj[i].material;
 			m = i;
 		}
 	}
@@ -103,26 +104,25 @@ t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 {
 	t_norm		temp;
 	t_color3	col;
+	t_ray		new_ray;
+	double		t;
 
 	temp = *norm;
 	if (norm->depth <= 0)
-		return (mul_vec3(norm->color, 0.1));
+		return (vec3init(0, 0, 0));
 	if (obj_arr_hit(obj, ray, &temp, n) != -1)
 	{
 		norm->depth -= 1;
-		norm->n_vec = temp.n_vec;
-		norm->root = temp.root;
-		norm->hit = temp.hit;
-		if (norm->depth == norm->p_depth - 1)
-			norm->color = obj[temp.hit_idx].color;
-		return (mul_vec3(test_color(diffuse_ray(*norm), obj, norm, n), 0.5));
+		col = obj[temp.hit_idx].color;
+		if (temp.material == METAL)
+			new_ray = specular_ray(temp, ray);
+		else
+			new_ray = diffuse_ray(temp, ray);
+		return (vec3_x_vec3(test_color(new_ray, obj, norm, n), col));
 	}
 	if (norm->depth == norm->p_depth)
 		return (define_background_color(ray));
-	norm->light.ratio = dot_vec3(norm->n_vec, \
-		normalize_vec3(sub_vec3(norm->light.point, norm->hit)));
-	norm->light.ratio = ft_minmax(norm->light.ratio, 0, 1);
-	norm->light.ratio = ft_minmax(norm->light.ratio + 0.3, 0, 1);
-	col = mul_vec3(norm->color, norm->light.ratio);
-	return (col);
+	t = 0.5 * (ray.direction.y + 1.0);
+	return (add_vec3(mul_vec3(vec3init(1.0, 1.0, 1.0), (1.0 - t)), \
+		mul_vec3(vec3init(0.5, 0.7, 1.0), t)));
 }

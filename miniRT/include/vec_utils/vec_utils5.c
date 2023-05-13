@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 22:59:06 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/03 14:54:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:01:57 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t)
 	return (mat);
 }
 
-static t_vec3x3	make_factro_matrix(t_inverse_factor factor)
+static t_vec3x3	make_factor_matrix(t_inverse_factor factor)
 {
 	t_vec3x3	mat;
 
@@ -37,20 +37,20 @@ t_vec3x3	inverse_vec3x3(t_vec3x3 vec)
 	t_vec3x3			inv;
 	t_inverse_factor	factor;
 
-	factor.det_a = vec.v_x.x * (vec.v_y.y * vec.v_z.z - vec.v_z.y * vec.v_y.z);
-	factor.det_a -= vec.v_x.y * (vec.v_y.x * vec.v_z.z - vec.v_x.z * vec.v_z.x);
-	factor.det_a += vec.v_x.z * (vec.v_y.x * vec.v_z.y - vec.v_x.y * vec.v_z.x);
-	factor.c_11 = vec.v_y.y * vec.v_z.z - vec.v_z.y * vec.v_y.z;
-	factor.c_12 = -1 * (vec.v_x.y * vec.v_z.z - vec.v_z.y * vec.v_x.z);
-	factor.c_13 = vec.v_x.y * vec.v_y.z - vec.v_y.y * vec.v_x.z;
-	factor.c_21 = -1 * (vec.v_y.x * vec.v_z.z - vec.v_z.x * vec.v_y.z);
-	factor.c_22 = vec.v_x.x * vec.v_z.z - vec.v_z.x * vec.v_x.z;
-	factor.c_23 = -1 * (vec.v_x.x * vec.v_y.z - vec.v_y.x * vec.v_x.z);
-	factor.c_31 = vec.v_y.x * vec.v_z.y - vec.v_z.x * vec.v_y.y;
-	factor.c_32 = -1 * (vec.v_x.x * vec.v_z.y - vec.v_z.x * vec.v_x.y);
-	factor.c_33 = vec.v_x.x * vec.v_y.y - vec.v_y.x * vec.v_x.y;
-	inv = make_factro_matrix(factor);
-	inv = transpose_vec3x3(inv);
+	inv = transpose_vec3x3(vec);
+	factor.det_a = inv.v_x.x * (inv.v_y.y * inv.v_z.z - inv.v_z.y * inv.v_y.z);
+	factor.det_a -= inv.v_x.y * (inv.v_y.x * inv.v_z.z - inv.v_x.z * inv.v_z.x);
+	factor.det_a += inv.v_x.z * (inv.v_y.x * inv.v_z.y - inv.v_x.y * inv.v_z.x);
+	factor.c_11 = inv.v_y.y * inv.v_z.z - inv.v_z.y * inv.v_y.z;
+	factor.c_12 = -1 * (inv.v_x.y * inv.v_z.z - inv.v_z.y * inv.v_x.z);
+	factor.c_13 = inv.v_x.y * inv.v_y.z - inv.v_y.y * inv.v_x.z;
+	factor.c_21 = -1 * (inv.v_y.x * inv.v_z.z - inv.v_z.x * inv.v_y.z);
+	factor.c_22 = inv.v_x.x * inv.v_z.z - inv.v_z.x * inv.v_x.z;
+	factor.c_23 = -1 * (inv.v_x.x * inv.v_y.z - inv.v_y.x * inv.v_x.z);
+	factor.c_31 = inv.v_y.x * inv.v_z.y - inv.v_z.x * inv.v_y.y;
+	factor.c_32 = -1 * (inv.v_x.x * inv.v_z.y - inv.v_z.x * inv.v_x.y);
+	factor.c_33 = inv.v_x.x * inv.v_y.y - inv.v_y.x * inv.v_x.y;
+	inv = make_factor_matrix(factor);
 	inv = vec3x3_x_double(inv, 1 / factor.det_a);
 	return (inv);
 }

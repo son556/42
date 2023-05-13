@@ -7,6 +7,7 @@ SRCS_NAME = main \
 			./include/vec_utils/vec_utils4 \
 			./include/vec_utils/vec_utils5 \
 			./include/vec_utils/vec_utils6 \
+			./include/vec_utils/vec_utils7 \
 			./include/ray \
 			./include/mlx_functions/mlx_utils \
 			./include/mlx_functions/mlx_utils2 \

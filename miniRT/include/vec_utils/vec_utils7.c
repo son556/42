@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.h                                              :+:      :+:    :+:   */
+/*   vec_utils7.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/18 13:20:15 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 12:38:28 by chanson          ###   ########.fr       */
+/*   Created: 2023/05/13 17:42:58 by chanson           #+#    #+#             */
+/*   Updated: 2023/05/13 17:44:49 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RAY_H
-# define RAY_H
+#include "../vec3.h"
 
-# include "vec3.h"
-
-typedef struct s_ray
+t_vec3	vec3_x_vec3(t_vec3 vec1, t_vec3 vec2)
 {
-	t_point3	point;
-	t_dir		direction;
-	double		albedo;
-}	t_ray;
+	t_vec3	vec;
 
-typedef struct s_light
-{
-	t_point3	point;
-	t_color3	color;
-	double		ratio;
-}	t_light;
-
-t_ray		ray_init(t_point3 point, t_dir direction);
-t_point3	ray_at(t_ray ray, double t);
-t_light		light_init(t_point3 p, t_color3 c, double ratio);
-#endif
+	vec.x = vec1.x * vec2.x;
+	vec.y = vec1.y * vec2.y;
+	vec.z = vec1.z * vec2.z;
+	return (vec);
+}

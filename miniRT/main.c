@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/11 20:47:16 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 18:35:39 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	main(void)
 	complete_cyl(&obj_cylinder.cylinder, cen_vec_rh_init(vec3init(0, -5, -10), \
 		vec3init(0, 1, 0), vec3init(8.0, 2.0, 0)));
 	obj_cylinder.color = vec3init(0, 1, 0);
+	obj_cylinder.material = PLASTIC;
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
@@ -86,7 +87,8 @@ int	main(void)
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
 	complete_sphere(&obj_sphere.sphere, vec3init(0, -3, -10), 1.0);
-	obj_sphere.color = vec3init(0, 0, 1);
+	obj_sphere.color = vec3init(0.5, 0.5, 0.5);
+	obj_sphere.material = METAL;
 
 	t_obj	obj_plane;
 	obj_plane.type = PLANE;

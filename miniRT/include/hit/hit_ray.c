@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:31:43 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/11 21:31:43 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 14:22:29 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,34 +58,33 @@ int	front_or_back(t_ray ray, t_norm norm)
 	return (0);
 }
 
-t_ray	diffuse_ray(t_norm norm)
+t_ray	diffuse_ray(t_norm norm, t_ray ray)
 {
 	t_ray	new_ray;
 	t_vec3	temp;
 
+	(void)ray;
 	new_ray.point = norm.hit;
-	temp.x = random_min_max(-1, 1);
-	temp.y = random_min_max(-1, 1);
-	temp.z = random_min_max(-1, 1);
-	if (dot_vec3(norm.n_vec, temp) < 0)
-		temp = mul_vec3(temp, -1);
-	// temp = normalize_vec3(temp);
-	new_ray.direction = normalize_vec3(sub_vec3(\
-		add_vec3(new_ray.point, temp), new_ray.point));
+	temp = random_minmax_vec3(-1, 1);
+	temp = add_vec3(norm.n_vec, temp);
+	if (ft_abs(temp.x) < 1e-5 && ft_abs(temp.y) < 1e-5 && ft_abs(temp.z) < 1e-5)
+		new_ray.direction = ray.direction;
+	else
+		new_ray.direction = normalize_vec3(temp);
+	new_ray.albedo = 0.5;
 	return (new_ray);
 }
 
-t_ray	specular_ray(t_norm norm)
+t_ray	specular_ray(t_norm norm, t_ray ray)
 {
 	t_ray	new_ray;
-	t_vec3	temp;
-	double	len;
+	t_vec3	specular_dir;
 
 	new_ray.point = norm.hit;
-	temp = normalize_vec3(random_minmax_vec3(-1, 1));
-	len = len_vec3(sub_vec3(temp, norm.n_vec));
-	new_ray.direction = normalize_vec3(add_vec3(norm.n_vec, temp));
-	if (len < 1e-5 && len > -1e-5)
-		new_ray.direction = norm.n_vec;
+	specular_dir = add_vec3(norm.n_vec, mul_vec3(norm.n_vec, \
+		-2 * dot_vec3(ray.direction, norm.n_vec)));
+	specular_dir = normalize_vec3(specular_dir);
+	new_ray.direction = specular_dir;
+	new_ray.albedo = 0.8;
 	return (new_ray);
 }
