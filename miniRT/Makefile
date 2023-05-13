@@ -22,6 +22,7 @@ SRCS_NAME = main \
 			./include/hit/hit_obj \
 			./include/hit/hit_ray \
 			./include/hit/hit_ray2 \
+			./include/hit/hit_ray3 \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 

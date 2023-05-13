@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 17:45:07 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:49:38 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,12 @@ t_vec3		add_vec3_num(t_vec3 vec, double num);
 double		ft_abs(double num);
 double		random_0_to_1(void);
 double		random_min_max(double min, double max);
+double		ft_min(double val, double min);
 t_vec3		vec3_rand(void);
 t_vec3		random_minmax_vec3(double min, double max);
 t_vec3		minmax_vec3(t_vec3 vec, double min, double max);
 t_vec3		vec3_x_vec3(t_vec3 vec1, t_vec3 vec2);
+t_vec3		random_in_unit_sphere(void);
 void		display_vec3(t_vec3 vec);
 void		display_vec3x3(t_vec3x3 vec);
 #endif

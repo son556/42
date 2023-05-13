@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 18:26:02 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 21:09:55 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ static int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
 		{
 			norm->t_max = tmp_n.root;
 			norm->n_vec = tmp_n.n_vec;
+			norm->front = front_or_back(ray, *norm);
+			if (norm->front == 0)
+				norm->n_vec = mul_vec3(norm->n_vec, -1);
 			norm->root = tmp_n.root;
 			norm->hit = ray_at(ray, norm->root);
 			norm->material = obj[i].material;
@@ -115,7 +118,9 @@ t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 		norm->depth -= 1;
 		col = obj[temp.hit_idx].color;
 		if (temp.material == METAL)
-			new_ray = specular_ray(temp, ray);
+			new_ray = specular_ray(temp, ray, obj[temp.hit_idx].fuzz);
+		else if (temp.material == GLASS)
+			new_ray = refract_ray(temp, ray, obj[temp.hit_idx].ref_idx);
 		else
 			new_ray = diffuse_ray(temp, ray);
 		return (vec3_x_vec3(test_color(new_ray, obj, norm, n), col));

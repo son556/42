@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 18:35:39 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 21:45:24 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ int	main(void)
 
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
-	complete_sphere(&obj_sphere.sphere, vec3init(0, -3, -10), 1.0);
-	obj_sphere.color = vec3init(0.5, 0.5, 0.5);
-	obj_sphere.material = METAL;
+	complete_sphere(&obj_sphere.sphere, vec3init(0, -2, -10), 2.0);
+	obj_sphere.color = vec3init(1.0, 1.0, 1.0);
+	obj_sphere.material = GLASS;
+	obj_sphere.fuzz = 0.1;
+	obj_sphere.ref_idx = 1.5;
 
 	t_obj	obj_plane;
 	obj_plane.type = PLANE;
@@ -98,9 +100,12 @@ int	main(void)
 
 	t_obj	obj_cube;
 	obj_cube.type = CUBE;
+	obj_cube.material = GLASS;
 	complete_cube(&obj_cube.cube, make_n1_n2_c(vec3init(1, 1, 1), \
-		vec3init(1, 0, -1), vec3init(0, 3, -10)), 2.0);
-	obj_cube.color = vec3init(1, 0, 1);
+		vec3init(1, 0, -1), vec3init(0, -2, -10)), 2.0);
+	obj_cube.color = vec3init(0.8, 0.8, 0.8);
+	obj_cube.fuzz = 0;
+	obj_cube.ref_idx = 1.5;
 
 	t_obj	obj_paraboloid;
 	obj_paraboloid.type = PARABOLOID;

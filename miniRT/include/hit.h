@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 13:52:16 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:50:05 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ typedef struct s_obj
 	t_para			para;
 	t_color3		color;
 	enum e_objects	material;
+	double			fuzz;
+	double			ref_idx;
 }	t_obj;
 
 typedef struct s_discrim
@@ -164,7 +166,8 @@ t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 t_norm		find_hit_function(t_ray ray, t_obj obj, double t_max);
 t_ray		diffuse_ray(t_norm norm, t_ray ray);
-t_ray		specular_ray(t_norm norm, t_ray ray);
+t_ray		specular_ray(t_norm norm, t_ray ray, double fuzz);
+t_ray		refract_ray(t_norm norm, t_ray ray, double ref_idx);
 int			shade(t_norm norm, t_obj *obj, int n, int m);
 int			front_or_back(t_ray ray, t_norm norm);
 void		display_cone(t_cone con);
