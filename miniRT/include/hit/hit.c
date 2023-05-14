@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/11 20:46:52 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/14 20:09:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 	disc.ac = sub_vec3(ray.point, sph.center);
 	disc.a = dot_vec3(ray.direction, ray.direction);
 	disc.b = dot_vec3(disc.ac, ray.direction);
-	disc.c = dot_vec3(disc.ac, disc.ac) - pow(sph.radius, 2);
+	disc.c = dot_vec3(disc.ac, disc.ac) - ft_pow(sph.radius);
 	disc.discrim = disc.b * disc.b - disc.a * disc.c;
 	norm.root = 0;
 	if (disc.discrim < 0)
@@ -33,7 +33,8 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 			return (norm);
 	}
 	norm.root = disc.root;
-	norm.n_vec = normalize_vec3(sub_vec3(ray_at(ray, norm.root), sph.center));
+	norm.n_vec = div_vec3(sub_vec3(ray_at(ray, norm.root), sph.center), \
+		sph.radius);
 	return (norm);
 }
 

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 21:45:24 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/14 20:16:09 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,17 @@ int	main(void)
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
-	complete_cone(&obj_cone.cone, vec3init(0.3, 0, -10), \
-		vec3init(1, 0, 0), vec3init(1, 2, 0));
-	obj_cone.color = vec3init(1, 1, 0);
+	complete_cone(&obj_cone.cone, vec3init(0, -2, -10), \
+		vec3init(0, 1, 0), vec3init(2, 3, 0));
+	obj_cone.color = vec3init(1, 0, 0);
+	obj_cone.material = PLASTIC;
 
 	t_obj	obj_sphere;
 	obj_sphere.type = SPHERE;
-	complete_sphere(&obj_sphere.sphere, vec3init(0, -2, -10), 2.0);
-	obj_sphere.color = vec3init(1.0, 1.0, 1.0);
-	obj_sphere.material = GLASS;
-	obj_sphere.fuzz = 0.1;
+	complete_sphere(&obj_sphere.sphere, vec3init(0, -3, -10), 1.0);
+	obj_sphere.color = vec3init(0.8, 0.6, 0.2);
+	obj_sphere.material = METAL;
+	obj_sphere.fuzz = 0.0;
 	obj_sphere.ref_idx = 1.5;
 
 	t_obj	obj_plane;
@@ -100,17 +101,19 @@ int	main(void)
 
 	t_obj	obj_cube;
 	obj_cube.type = CUBE;
-	obj_cube.material = GLASS;
+	obj_cube.material = METAL;
 	complete_cube(&obj_cube.cube, make_n1_n2_c(vec3init(1, 1, 1), \
-		vec3init(1, 0, -1), vec3init(0, -2, -10)), 2.0);
-	obj_cube.color = vec3init(0.8, 0.8, 0.8);
+		vec3init(1, 0, -1), vec3init(0, 5, -10)), 2.0);
+	obj_cube.color = vec3init(0.6, 0.8, 0.2);
 	obj_cube.fuzz = 0;
 	obj_cube.ref_idx = 1.5;
 
 	t_obj	obj_paraboloid;
 	obj_paraboloid.type = PARABOLOID;
-	complete_para(&obj_paraboloid.para, vec3init(0, -6, -10), vec3init(0, -1, 0), 6.0);
-	obj_paraboloid.color = vec3init(1, 0, 0);
+	complete_para(&obj_paraboloid.para, vec3init(0, -2, -10), vec3init(0, 1, 0), 3.0);
+	obj_paraboloid.color = vec3init(1, 0, 0.5);
+	obj_paraboloid.material = METAL;
+	obj_paraboloid.fuzz = 0;
 
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, point_x, point_y, "test");
@@ -125,20 +128,33 @@ int	main(void)
 
 	t_norm	norm;
 
-	t_obj		obj_cyl;
-	obj_cyl.type = CYLINDER;
-	complete_cyl(&obj_cyl.cylinder, cen_vec_rh_init(vec3init(0, -2, -10), \
-		vec3init(0, 1, 0), vec3init(1, 2, 0)));
-	obj_cyl.color = vec3init(0, 1, 1);
+	t_obj	obj_sph;
+	obj_sph.type = SPHERE;
+	complete_sphere(&obj_sph.sphere, vec3init(0, -2, -10), 2.0);
+	obj_sph.material = GLASS;
+	obj_sph.color = vec3init(1.0, 1.0, 1.0);
+	obj_sph.ref_idx = 1.5;
 
-	t_obj	obj_para;
-	obj_para.type = PARABOLOID;
-	complete_para(&obj_para.para, vec3init(0, -5, -10), vec3init(0, 1, 0), 3.0);
-	obj_para.color = vec3init(0, 1, 0);
+	t_obj	obj_sph2;
+	obj_sph2.type = SPHERE;
+	complete_sphere(&obj_sph2.sphere, vec3init(0, -2, -10), -1.9);
+	obj_sph2.material = GLASS;
+	obj_sph2.color = vec3init(1.0, 1.0, 1.0);
+	obj_sph2.ref_idx = 1.5;
 
-	t_obj	obj_test[2];
+	t_obj	obj_sph3;
+	obj_sph3.type = SPHERE;
+	complete_sphere(&obj_sph3.sphere, vec3init(4, -2, -10), 2.0);
+	obj_sph3.material = METAL;
+	obj_sph3.color = vec3init(0.8, 0.6, 0.2);
+	obj_sph3.fuzz = 0;
+
+	t_obj	obj_test[4];
+
 	obj_test[0] = obj_arr[0];
-	obj_test[1] = obj_arr[2];
+	obj_test[1] = obj_sph;
+	obj_test[2] = obj_sph2;
+	obj_test[3] = obj_sph3;
 	norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
@@ -157,7 +173,7 @@ int	main(void)
 				norm.depth = 50;
 				norm.hit_idx = -1;
 				norm.p_depth = norm.depth;
-				t_vec3 argb2 = test_color(ray, obj_test, &norm, 2);
+				t_vec3 argb2 = test_color(ray, obj_test, &norm, 4);
 				argb = add_vec3(argb, argb2);
 			}
 			argb = div_vec3(argb, 9.0);

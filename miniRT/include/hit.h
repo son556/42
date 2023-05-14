@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 20:50:05 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/14 14:39:14 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ enum e_objects
 	PARABOLOID,
 	METAL,
 	GLASS,
-	PLASTIC
+	PLASTIC,
+	HOLLOWGLASS
 };
 
 typedef struct s_triangle

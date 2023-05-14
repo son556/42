@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 17:42:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 21:16:41 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/14 17:23:13 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,4 @@ t_vec3	random_in_unit_sphere(void)
 			continue ;
 		return (vec);
 	}
-}
-
-double	ft_min(double val, double min)
-{
-	if (val > min)
-		return (min);
-	return (val);
 }

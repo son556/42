@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:31:43 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 19:31:53 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/14 19:43:10 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ t_ray	diffuse_ray(t_norm norm, t_ray ray)
 	t_ray	new_ray;
 	t_vec3	temp;
 
-	(void)ray;
 	new_ray.point = norm.hit;
 	temp = random_minmax_vec3(-1, 1);
 	temp = add_vec3(norm.n_vec, temp);
@@ -80,9 +79,8 @@ t_ray	specular_ray(t_norm norm, t_ray ray, double fuzz)
 	t_vec3	specular_dir;
 
 	new_ray.point = norm.hit;
-	specular_dir = add_vec3(norm.n_vec, mul_vec3(norm.n_vec, \
+	specular_dir = add_vec3(ray.direction, mul_vec3(norm.n_vec, \
 		-2 * dot_vec3(ray.direction, norm.n_vec)));
-	specular_dir = normalize_vec3(specular_dir);
 	if (fuzz > 1)
 		fuzz = 1.0;
 	specular_dir = add_vec3(specular_dir, \
