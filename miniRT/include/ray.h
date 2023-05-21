@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:20:15 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/13 12:38:28 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/15 18:06:50 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_ray
 	t_point3	point;
 	t_dir		direction;
 	double		albedo;
+	double		time;
 }	t_ray;
 
 typedef struct s_light

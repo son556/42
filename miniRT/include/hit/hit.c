@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 20:09:23 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/16 21:07:06 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 	norm.n_vec = div_vec3(sub_vec3(ray_at(ray, norm.root), sph.center), \
 		sph.radius);
 	return (norm);
+}
+
+t_aabb	sphere_aabb_box(t_sphere sph)
+{
+	t_aabb	sph_box;
+
+	sph_box.minimum = sub_vec3(sph.center, \
+		vec3init(sph.radius, sph.radius, sph.radius));
+	sph_box.maximum = add_vec3(sph.center, \
+		vec3init(sph.radius, sph.radius, sph.radius));
+	return (sph_box);
 }
 
 t_norm	hit_plane(t_plane pln, t_ray ray, double t_max)

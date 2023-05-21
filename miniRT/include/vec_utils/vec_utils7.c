@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 17:42:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 17:23:13 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/17 18:45:12 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,27 @@ t_vec3	random_in_unit_sphere(void)
 			continue ;
 		return (vec);
 	}
+}
+
+t_vec3	rotate_xy_vec3(t_vec3 vec3)
+{
+	t_vec3x3	rot_x;
+	t_vec3x3	rot_y;
+	t_vec3x3	rot;
+	double		th;
+
+	th = get_radian(90);
+	rot_x.v_x = vec3init(1, 0, 0);
+	rot_x.v_y = vec3init(0, cos(th), -sin(th));
+	rot_x.v_z = vec3init(0, sin(th), cos(th));
+	rot_y.v_x = vec3init(cos(th), 0, -sin(th));
+	rot_y.v_y = vec3init(0, 1, 0);
+	rot_y.v_z = vec3init(sin(th), 0, cos(th));
+	rot = mul_vec3x3(rot_y, rot_x);
+	return (vec3x3_x_vec3(rot, vec3));
+}
+
+double	random_0_to_2(void)
+{
+	return (rand() % 3);
 }

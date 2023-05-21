@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 21:09:00 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/02 14:37:14 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/21 21:04:50 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,42 @@ void	display_cone(t_cone con)
 	display_vec3(con.n_vec);
 	display_vec3(con.c_h);
 	printf("cos: %f\n\n", con.c_cos);
+}
+
+t_aabb	cone_aabb_box(t_cone cone)
+{
+	t_aabb	bound_box;
+	t_vec3	up;
+	t_vec3	down;
+	double	a;
+	double	b;
+
+	a = cone.pl.center.x + cone.pl.center.y + cone.pl.center.z;
+	b = cone.c_h.x + cone.c_h.y + cone.c_h.z;
+	if (a < b)
+	{
+		down = cone.pl.center;
+		up = cone.c_h;
+	}
+	else
+	{
+		down = cone.c_h;
+		up = cone.pl.center;
+	}
+	bound_box.minimum = sub_vec3(down, \
+		vec3init(cone.radius, cone.radius, cone.radius));
+	bound_box.maximum = add_vec3(up, \
+		vec3init(cone.radius, cone.radius, cone.radius));
+	return (bound_box);
+}
+
+void	get_sphere_uv(t_norm *norm, t_vec3 cen)
+{
+	double	theta;
+	double	phi;
+
+	theta = acos(-cen.y);
+	phi = atan2(-cen.z, cen.x) + PI;
+	norm->u = phi / (2 * PI);
+	norm->v = theta / PI;
 }

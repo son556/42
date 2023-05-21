@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 18:16:50 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/21 15:58:17 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,17 @@ t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 	return (color);
 }
 
-static int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
+/*no bvh*/
+int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
 {
 	t_norm		tmp_n;
 	int			i;
-	int			m;
 
 	norm->t_max = INFINITY;
 	i = -1;
-	m = -1;
+	norm->hit_idx = -1;
 	while (++i < n)
 	{
-		if (i == norm->hit_idx)
-			continue ;
 		tmp_n.t_max = norm->t_max;
 		tmp_n = find_hit_function(ray, obj[i], tmp_n.t_max);
 		if (tmp_n.root != 0)
@@ -96,12 +94,12 @@ static int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
 			norm->root = tmp_n.root;
 			norm->hit = ray_at(ray, norm->root);
 			norm->material = obj[i].material;
-			m = i;
+			norm->hit_idx = i;
 		}
 	}
-	norm->hit_idx = m;
-	return (m);
+	return (norm->hit_idx);
 }
+	// if (bvh_hit(&temp, ray, obj) != -1)
 
 t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 {

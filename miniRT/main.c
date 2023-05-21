@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 20:16:09 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/20 20:20:59 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,32 @@ int	main(void)
 {
 	t_vars		mlx;
 	t_ray		ray;
-	double		res_ratio = 1.0 / 1.0;
+	double		res_ratio = 16.0 / 9.0;
 	double		point_x;
 	double		point_y;
 
-	point_x = 700;
 	point_y = 700;
-	double	vp_height = 2.0;
+	point_x = point_y * res_ratio;
+	double	theta = getradian(60);
+	double	h = tan(theta / 2);
+	double	vp_height = 2.0 * h;
 	double	vp_width = res_ratio * vp_height;
-	double	vp_length = 1.0;
-	t_vec3	horizontal = vec3init(vp_width, 0, 0);
-	t_vec3	vertical = vec3init(0, vp_height, 0);
-	t_vec3	ll_corner = vec3init( (- horizontal.x / 2) + (-vertical.x / 2) + (0)
-		 					, (- horizontal.y / 2) + (-vertical.y / 2) + (0)
-						 , (- horizontal.z / 2) + (-vertical.z / 2) + (-vp_length));
+	// double	vp_length = 1.0;
+	t_vec3	look_from = vec3init(0, 0, 0);
+	t_vec3	look_at = vec3init(0, 0, -1);
+	t_vec3	vup = vec3init(0, 1, 0);
+
+	t_vec3	w_vec = normalize_vec3(sub_vec3(look_from, look_at));
+	t_vec3	u_vec = normalize_vec3(cross_vec3(vup, w_vec));
+	t_vec3	v_vec = cross_vec3(w_vec, u_vec);
 	
+	t_vec3	horizontal = mul_vec3(u_vec, vp_width);
+	t_vec3	vertical = mul_vec3(v_vec, vp_height);
+	t_vec3	origin = look_from;
+	t_vec3	ll_corner = sub_vec3(origin, mul_vec3(horizontal, 0.5));
+	ll_corner = sub_vec3(ll_corner, mul_vec3(vertical, 0.5));
+	ll_corner = sub_vec3(ll_corner, w_vec);
+
 	t_obj		obj_cylinder;
 	obj_cylinder.type = CYLINDER;
 	complete_cyl(&obj_cylinder.cylinder, cen_vec_rh_init(vec3init(0, -5, -10), \
@@ -130,31 +141,42 @@ int	main(void)
 
 	t_obj	obj_sph;
 	obj_sph.type = SPHERE;
-	complete_sphere(&obj_sph.sphere, vec3init(0, -2, -10), 2.0);
+	complete_sphere(&obj_sph.sphere, vec3init(0, -3, -10), 1.0);
 	obj_sph.material = GLASS;
 	obj_sph.color = vec3init(1.0, 1.0, 1.0);
 	obj_sph.ref_idx = 1.5;
 
 	t_obj	obj_sph2;
 	obj_sph2.type = SPHERE;
-	complete_sphere(&obj_sph2.sphere, vec3init(0, -2, -10), -1.9);
+	complete_sphere(&obj_sph2.sphere, vec3init(0, -3, -10), -0.9);
 	obj_sph2.material = GLASS;
 	obj_sph2.color = vec3init(1.0, 1.0, 1.0);
 	obj_sph2.ref_idx = 1.5;
 
 	t_obj	obj_sph3;
 	obj_sph3.type = SPHERE;
-	complete_sphere(&obj_sph3.sphere, vec3init(4, -2, -10), 2.0);
+	complete_sphere(&obj_sph3.sphere, vec3init(2, -3, -10), 1.0);
 	obj_sph3.material = METAL;
 	obj_sph3.color = vec3init(0.8, 0.6, 0.2);
 	obj_sph3.fuzz = 0;
 
-	t_obj	obj_test[4];
+	t_obj	obj_sph4;
+	obj_sph4.type = SPHERE;
+	complete_sphere(&obj_sph4.sphere, vec3init(-2, -3, -10), 1.0);
+	obj_sph4.material = PLASTIC;
+	obj_sph4.fuzz = 0;
+	obj_sph4.color = vec3init(0.1, 0.2, 0.5);
+
+	t_obj	obj_test[5];
 
 	obj_test[0] = obj_arr[0];
 	obj_test[1] = obj_sph;
 	obj_test[2] = obj_sph2;
 	obj_test[3] = obj_sph3;
+	obj_test[4] = obj_sph4;
+	sort_obj_by_axis(obj_test, 0, 4, rand() % 3);
+	norm.tree.head = NULL;
+	make_bvh_tree(obj_test, 0, 4, &norm);
 	norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
@@ -165,15 +187,15 @@ int	main(void)
 			{
 				double u = (i + random_0_to_1()) / (point_x - 1);
 				double v = (j + random_0_to_1()) / (point_y - 1);
-				ray.point = vec3init(0, 0, 0);
-				ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x,
-								ll_corner.y + u*horizontal.y + v*vertical.y,
-								ll_corner.z + u*horizontal.z + v*vertical.z);
+				ray.point = origin;
+				ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x - origin.x,
+								ll_corner.y + u*horizontal.y + v*vertical.y - origin.y,
+								ll_corner.z + u*horizontal.z + v*vertical.z - origin.z);
 				ray.direction = normalize_vec3(ray.direction);
 				norm.depth = 50;
 				norm.hit_idx = -1;
 				norm.p_depth = norm.depth;
-				t_vec3 argb2 = test_color(ray, obj_test, &norm, 4);
+				t_vec3 argb2 = test_color(ray, obj_test, &norm, 5);
 				argb = add_vec3(argb, argb2);
 			}
 			argb = div_vec3(argb, 9.0);

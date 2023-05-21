@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 14:39:14 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/21 21:05:17 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ enum e_objects
 	PLASTIC,
 	HOLLOWGLASS
 };
+
+typedef struct s_aabb
+{
+	t_vec3	minimum;
+	t_vec3	maximum;
+}	t_aabb;
 
 typedef struct s_triangle
 {
@@ -116,6 +122,7 @@ typedef struct s_obj
 	enum e_objects	material;
 	double			fuzz;
 	double			ref_idx;
+	t_aabb			bound_box;
 }	t_obj;
 
 typedef struct s_discrim
@@ -127,6 +134,25 @@ typedef struct s_discrim
 	double		discrim;
 	double		root;
 }	t_discrim;
+
+typedef struct s_bvhnode
+{
+	int					start;
+	int					end;
+	int					idx;
+	t_aabb				outbox;
+	struct s_bvhnode	*left;
+	struct s_bvhnode	*right;
+	struct s_bvhnode	*up;
+}	t_bvhnode;
+
+typedef struct s_bvhtree
+{
+	t_bvhnode	*head;
+	t_bvhnode	*new_point;
+	t_bvhnode	*pre_point;
+	int			left_right;
+}	t_bvhtree;
 
 typedef struct s_norm
 {
@@ -144,6 +170,9 @@ typedef struct s_norm
 	int				p_depth;
 	int				hit_idx;
 	enum e_objects	material;
+	t_bvhtree		tree;
+	double			u;
+	double			v;
 }	t_norm;
 
 int			range_in_hit(t_discrim *disc, double t_max);
@@ -163,7 +192,6 @@ void		complete_cyl(t_cylinder *cyl, t_vec3x3 cen_vec_rh);
 void		complete_plane(t_plane *pl, t_vec3 cen, t_vec3 vec);
 t_vec3x3	cen_vec_rh_init(t_vec3 cen, t_vec3 vec, t_vec3 rh);
 t_vec3x3	make_n1_n2_c(t_vec3 n1, t_vec3 n2, t_vec3 cen);
-t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 t_norm		find_hit_function(t_ray ray, t_obj obj, double t_max);
 t_ray		diffuse_ray(t_norm norm, t_ray ray);
@@ -171,5 +199,23 @@ t_ray		specular_ray(t_norm norm, t_ray ray, double fuzz);
 t_ray		refract_ray(t_norm norm, t_ray ray, double ref_idx);
 int			shade(t_norm norm, t_obj *obj, int n, int m);
 int			front_or_back(t_ray ray, t_norm norm);
+int			hit_aabb(t_ray ray, double t_max, double t_min, t_aabb box);
+t_aabb		sphere_aabb_box(t_sphere sph);
+t_aabb		cylinder_aabb_box(t_cylinder cyl);
+t_aabb		cube_aabb_box(t_cube cube);
+t_aabb		cone_aabb_box(t_cone cone);
+t_aabb		paraboloid_aabb_box(t_para para);
+t_aabb		make_aabb_box(t_vec3 minimum, t_vec3 maximum);
+t_aabb		make_surrounding_box(t_aabb box1, t_aabb box2);
+t_aabb		make_out_box(t_obj *obj, int start, int end);
+t_bvhnode	*make_bvhnode(int start, int end, t_obj *obj);
+int			bvh_hit(t_norm *norm, t_ray ray, t_obj *obj);
+void		make_bvh_tree(t_obj *obj, int start, int end, t_norm *norm);
+int			left_right_box(t_aabb box1, t_aabb box2, int axis);
+void		sort_obj_by_axis(t_obj *obj, int start, int end, int axis);
+void		get_sphere_uv(t_norm *norm, t_vec3 cen);
+//test
 void		display_cone(t_cone con);
+int			obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n);
+t_color3	ray_color(t_ray ray, t_obj *obj, t_norm *norm, int n);
 #endif
