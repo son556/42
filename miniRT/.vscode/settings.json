@@ -2,6 +2,8 @@
 	"files.associations": {
 		"algorithm": "c",
 		"complex": "c",
-		"vec3.h": "c"
+		"vec3.h": "c",
+		"chrono": "c",
+		"a": "cpp"
 	}
 }

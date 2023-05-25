@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/17 18:45:34 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/24 21:59:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ double		ft_minmax(double val, double t_min, double t_max);
 t_vec3		add_vec3_num(t_vec3 vec, double num);
 double		ft_abs(double num);
 double		random_0_to_1(void);
-double		random_0_to_2(void);
+int			random_int(int min, int max);
 double		random_min_max(double min, double max);
 t_vec3		vec3_rand(void);
 t_vec3		random_minmax_vec3(double min, double max);
@@ -89,6 +89,6 @@ t_vec3		minmax_vec3(t_vec3 vec, double min, double max);
 t_vec3		vec3_x_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3		random_in_unit_sphere(void);
 t_vec3		rotate_xy_vec3(t_vec3 vec3);
-void		display_vec3(t_vec3 vec);
-void		display_vec3x3(t_vec3x3 vec);
+t_color3	texture_color(double u, double v, t_vec3 point, t_color3 col);
+
 #endif

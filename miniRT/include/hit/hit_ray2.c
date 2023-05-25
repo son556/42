@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/21 15:58:17 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/24 22:18:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,13 @@ int	obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n)
 	return (norm->hit_idx);
 }
 	// if (bvh_hit(&temp, ray, obj) != -1)
+	// if (obj_arr_hit(obj, ray, &temp, n) != -1)
 
 t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 {
 	t_norm		temp;
 	t_color3	col;
 	t_ray		new_ray;
-	double		t;
 
 	temp = *norm;
 	if (norm->depth <= 0)
@@ -115,6 +115,10 @@ t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 	{
 		norm->depth -= 1;
 		col = obj[temp.hit_idx].color;
+		if (obj[temp.hit_idx].texture == CHECK_TEXTURE)
+			col = texture_color(norm->u, norm->v, temp.hit, col);
+		else if (obj[temp.hit_idx].texture == NOISE_TEXTURE)
+			col = noise_color(temp, 4);
 		if (temp.material == METAL)
 			new_ray = specular_ray(temp, ray, obj[temp.hit_idx].fuzz);
 		else if (temp.material == GLASS)
@@ -123,9 +127,5 @@ t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 			new_ray = diffuse_ray(temp, ray);
 		return (vec3_x_vec3(test_color(new_ray, obj, norm, n), col));
 	}
-	if (norm->depth == norm->p_depth)
-		return (define_background_color(ray));
-	t = 0.5 * (ray.direction.y + 1.0);
-	return (add_vec3(mul_vec3(vec3init(1.0, 1.0, 1.0), (1.0 - t)), \
-		mul_vec3(vec3init(0.5, 0.7, 1.0), t)));
+	return (define_background_color(ray));
 }

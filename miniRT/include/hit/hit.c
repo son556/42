@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/16 21:07:06 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/22 13:51:44 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_norm	hit_sphere(t_sphere sph, t_ray ray, double t_max)
 	norm.root = disc.root;
 	norm.n_vec = div_vec3(sub_vec3(ray_at(ray, norm.root), sph.center), \
 		sph.radius);
+	get_sphere_uv(&norm, sph.center);
 	return (norm);
 }
 

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/21 21:05:17 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:46:22 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ enum e_objects
 	METAL,
 	GLASS,
 	PLASTIC,
-	HOLLOWGLASS
+	HOLLOWGLASS,
+	LIGHT,
+	CHECK_TEXTURE,
+	NOISE_TEXTURE
 };
 
 typedef struct s_aabb
@@ -120,6 +123,7 @@ typedef struct s_obj
 	t_para			para;
 	t_color3		color;
 	enum e_objects	material;
+	enum e_objects	texture;
 	double			fuzz;
 	double			ref_idx;
 	t_aabb			bound_box;
@@ -154,6 +158,25 @@ typedef struct s_bvhtree
 	int			left_right;
 }	t_bvhtree;
 
+typedef struct s_img
+{
+	unsigned char	*data;
+	int				width;
+	int				height;
+	int				bytes_per_scanline;
+}	t_img;
+
+typedef struct s_noise
+{
+	double			u;
+	double			v;
+	double			w;
+	t_vec3			ranfloat[256];
+	int				p_x[256];
+	int				p_y[256];
+	int				p_z[256];
+}	t_noise;
+
 typedef struct s_norm
 {
 	double			root;
@@ -164,15 +187,16 @@ typedef struct s_norm
 	t_light			light;
 	t_light			ambi;
 	t_light			spec;
-	t_color3		color;
+	t_color3		background;
 	int				front;
 	int				depth;
-	int				p_depth;
 	int				hit_idx;
 	enum e_objects	material;
-	t_bvhtree		tree;
 	double			u;
 	double			v;
+	t_bvhtree		tree;
+	t_noise			noise;
+	t_img			img;
 }	t_norm;
 
 int			range_in_hit(t_discrim *disc, double t_max);
@@ -214,6 +238,16 @@ void		make_bvh_tree(t_obj *obj, int start, int end, t_norm *norm);
 int			left_right_box(t_aabb box1, t_aabb box2, int axis);
 void		sort_obj_by_axis(t_obj *obj, int start, int end, int axis);
 void		get_sphere_uv(t_norm *norm, t_vec3 cen);
+
+// noise
+void		perm_and_ranfloat(int *p_x, int *p_y, int *p_z, t_vec3 *ranfloat);
+double		perlin_interp(t_vec3 c[2][2][2], double u, double v, double w);
+double		trilinear_interp(t_vec3 c[2][2][2], double u, double v, double w);
+double		noise(t_norm norm);
+t_color3	noise_color(t_norm norm, double scale);
+void		display_vec3(t_vec3 vec);
+void		display_vec3x3(t_vec3x3 vec);
+
 //test
 void		display_cone(t_cone con);
 int			obj_arr_hit(t_obj *obj, t_ray ray, t_norm *norm, int n);

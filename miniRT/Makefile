@@ -28,6 +28,9 @@ SRCS_NAME = main \
 			./include/hit/hit_aabb \
 			./include/hit/hit_aabb2 \
 			./include/hit/hit_aabb3 \
+			./include/hit/hit_noise \
+			./include/hit/hit_noise2 \
+			./include/hit/hit_img \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 

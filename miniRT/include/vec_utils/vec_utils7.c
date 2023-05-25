@@ -6,11 +6,16 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 17:42:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/17 18:45:12 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/24 15:51:32 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../vec3.h"
+
+int	random_int(int min, int max)
+{
+	return ((int)random_min_max(min, max + 1));
+}
 
 t_vec3	vec3_x_vec3(t_vec3 vec1, t_vec3 vec2)
 {
@@ -51,9 +56,4 @@ t_vec3	rotate_xy_vec3(t_vec3 vec3)
 	rot_y.v_z = vec3init(sin(th), 0, cos(th));
 	rot = mul_vec3x3(rot_y, rot_x);
 	return (vec3x3_x_vec3(rot, vec3));
-}
-
-double	random_0_to_2(void)
-{
-	return (rand() % 3);
 }

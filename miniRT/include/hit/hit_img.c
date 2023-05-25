@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   hit_img.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 20:41:00 by chanson           #+#    #+#             */
-/*   Updated: 2023/04/16 20:43:40 by chanson          ###   ########.fr       */
+/*   Created: 2023/05/25 17:49:55 by chanson           #+#    #+#             */
+/*   Updated: 2023/05/25 19:46:51 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "print.h"
+#include "../hit.h"
 
-void	write_color(t_color3 pixel_color)
+void	hit_img(t_vec3 norm)
 {
-	printf("%d %d %d\n", (int)(255.999 * pixel_color.x), \
-			(int)(255.999 * pixel_color.y), \
-			(int)(255.999 * pixel_color.z));
+	(void)norm;
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/20 20:20:59 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:46:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(void)
 		vec3init(0, 1, 0), vec3init(8.0, 2.0, 0)));
 	obj_cylinder.color = vec3init(0, 1, 0);
 	obj_cylinder.material = PLASTIC;
+	obj_cylinder.texture = CHECK_TEXTURE;
 
 	t_obj		obj_cone;
 	obj_cone.type = CONE;
@@ -165,7 +166,8 @@ int	main(void)
 	complete_sphere(&obj_sph4.sphere, vec3init(-2, -3, -10), 1.0);
 	obj_sph4.material = PLASTIC;
 	obj_sph4.fuzz = 0;
-	obj_sph4.color = vec3init(0.1, 0.2, 0.5);
+	obj_sph4.color = vec3init(0, 0.2, 1);
+	obj_sph4.texture = NOISE_TEXTURE;
 
 	t_obj	obj_test[5];
 
@@ -174,10 +176,23 @@ int	main(void)
 	obj_test[2] = obj_sph2;
 	obj_test[3] = obj_sph3;
 	obj_test[4] = obj_sph4;
-	sort_obj_by_axis(obj_test, 0, 4, rand() % 3);
-	norm.tree.head = NULL;
-	make_bvh_tree(obj_test, 0, 4, &norm);
-	norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
+	// sort_obj_by_axis(obj_test, 0, 4, rand() % 3);
+	// norm.tree.head = NULL;
+	// make_bvh_tree(obj_test, 0, 4, &norm);
+	// norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
+	perm_and_ranfloat(norm.noise.p_x, norm.noise.p_y, norm.noise.p_z, norm.noise.ranfloat);
+	
+	t_obj	obj_perlin_sph;
+	obj_perlin_sph.type = SPHERE;
+	complete_sphere(&obj_perlin_sph.sphere, vec3init(0, -2, -10), 2.0);
+	obj_perlin_sph.material = PLASTIC;
+	obj_perlin_sph.color = vec3init(0, 0.2, 1);
+	obj_perlin_sph.texture = NOISE_TEXTURE;
+
+	t_obj	obj_perlin[2];
+
+	obj_perlin[0] = obj_arr[0];
+	obj_perlin[1] = obj_perlin_sph;
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)
@@ -194,8 +209,7 @@ int	main(void)
 				ray.direction = normalize_vec3(ray.direction);
 				norm.depth = 50;
 				norm.hit_idx = -1;
-				norm.p_depth = norm.depth;
-				t_vec3 argb2 = test_color(ray, obj_test, &norm, 5);
+				t_vec3 argb2 = test_color(ray, obj_perlin, &norm, 2);
 				argb = add_vec3(argb, argb2);
 			}
 			argb = div_vec3(argb, 9.0);
