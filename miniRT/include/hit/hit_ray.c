@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:31:43 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/14 19:43:10 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/26 14:17:16 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_norm	find_hit_function(t_ray ray, t_obj obj, double t_max)
 		return (hit_cube(obj.cube, ray, t_max, &obj.color));
 	if (obj.type == CONE)
 		return (hit_cone(obj.cone, ray, t_max));
+	if (obj.type == XYZ_PLANE)
+		return (hit_xyz_pl(ray, obj.xyz_pl, t_max));
 	return (hit_paraboloid(obj.para, ray, t_max));
 }
 

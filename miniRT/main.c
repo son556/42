@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/25 19:46:16 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/27 17:03:31 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,6 @@
 #include "./include/hit.h"
 #include "./include/mlx_function.h"
 #include <stdio.h>
-
-void	display_cube(t_cube cube)
-{
-	for (int i = 0; i < 6; i++)
-	{
-		printf("center: %f %f %f\n", cube.plane[i].center.x, cube.plane[i].center.y, \
-			cube.plane[i].center.z);
-		printf("n_vec: ");
-		printf("%f %f %f\n\n", cube.plane[i].n_vec.x, cube.plane[i].n_vec.y, cube.plane[i].n_vec.z);
-		for (int j = 0; j < 4; j++)
-		{
-			printf("%d: %f %f %f\n", i, cube.plane[i].plane_vertex[j].x, cube.plane[i].plane_vertex[j].y, \
-			cube.plane[i].plane_vertex[j].z);
-		}
-		printf("\n");
-	}
-}
-
-void	display_cube_plane(t_cube_plane plane)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		printf("vertex[%d]: ", i);
-		display_vec3(plane.plane_vertex[i]);
-	}
-}
-
-void	display_norm(t_norm norm)
-{
-	printf("root: %f t_max %f\n\n", norm.root, norm.t_max);
-}
 
 int	argb_(int a, int r, int g, int b)
 {
@@ -60,7 +29,7 @@ int	main(void)
 	double		point_x;
 	double		point_y;
 
-	point_y = 700;
+	point_y = 400;
 	point_x = point_y * res_ratio;
 	double	theta = getradian(60);
 	double	h = tan(theta / 2);
@@ -142,14 +111,14 @@ int	main(void)
 
 	t_obj	obj_sph;
 	obj_sph.type = SPHERE;
-	complete_sphere(&obj_sph.sphere, vec3init(0, -3, -10), 1.0);
+	complete_sphere(&obj_sph.sphere, vec3init(2, -3, -10), 1.0);
 	obj_sph.material = GLASS;
 	obj_sph.color = vec3init(1.0, 1.0, 1.0);
 	obj_sph.ref_idx = 1.5;
 
 	t_obj	obj_sph2;
 	obj_sph2.type = SPHERE;
-	complete_sphere(&obj_sph2.sphere, vec3init(0, -3, -10), -0.9);
+	complete_sphere(&obj_sph2.sphere, vec3init(2, -3, -10), -0.9);
 	obj_sph2.material = GLASS;
 	obj_sph2.color = vec3init(1.0, 1.0, 1.0);
 	obj_sph2.ref_idx = 1.5;
@@ -180,25 +149,49 @@ int	main(void)
 	// norm.tree.head = NULL;
 	// make_bvh_tree(obj_test, 0, 4, &norm);
 	// norm.light = light_init(vec3init(0, 10, -10), vec3init(1, 1, 1), 0.8);
+
 	perm_and_ranfloat(norm.noise.p_x, norm.noise.p_y, norm.noise.p_z, norm.noise.ranfloat);
+
+	t_obj	obj_perlin_pl;
+	obj_perlin_pl.type = XYZ_PLANE;
+	complete_xyz_pl(&obj_perlin_pl.xyz_pl, vec3init(0, -4, -10), 5, 1);
+	obj_perlin_pl.color = vec3init(0, 0.8, 0);
+	obj_perlin_pl.material = PLASTIC;
+
 	
 	t_obj	obj_perlin_sph;
 	obj_perlin_sph.type = SPHERE;
-	complete_sphere(&obj_perlin_sph.sphere, vec3init(0, -2, -10), 2.0);
+	complete_sphere(&obj_perlin_sph.sphere, vec3init(0, -3, -10), 1.0);
 	obj_perlin_sph.material = PLASTIC;
 	obj_perlin_sph.color = vec3init(0, 0.2, 1);
 	obj_perlin_sph.texture = NOISE_TEXTURE;
 
-	t_obj	obj_perlin[2];
+	t_obj	obj_light;
+	obj_light.type = XYZ_PLANE;
+	complete_xyz_pl(&obj_light.xyz_pl, vec3init(0, 2, -10), 1, 1);
+	obj_light.material = LIGHT;
 
-	obj_perlin[0] = obj_arr[0];
+	t_obj	obj_light2;
+	obj_light2.type = SPHERE;
+	complete_sphere(&obj_light2.sphere, vec3init(0, 2, -10), 1);
+	obj_light2.material = LIGHT;
+
+	t_obj	obj_perlin[5];
+
+	obj_perlin[0] = obj_perlin_pl;
 	obj_perlin[1] = obj_perlin_sph;
+	obj_perlin[2] = obj_light;
+	obj_perlin[3] = obj_sph;
+	obj_perlin[4] = obj_sph2;
+
+	norm.background = vec3init(0, 0, 0);
+	norm.light.color = vec3init(7, 7, 7);
 	for (int j = point_y - 1 ; j >= 0; --j)
 	{
 		for (int i = 0 ; i < point_x ; i++)
 		{
 			t_vec3 argb = vec3init(0, 0, 0);
-			for (int k = 0; k < 9; k++)
+			for (int k = 0; k < 2000; k++)
 			{
 				double u = (i + random_0_to_1()) / (point_x - 1);
 				double v = (j + random_0_to_1()) / (point_y - 1);
@@ -209,10 +202,10 @@ int	main(void)
 				ray.direction = normalize_vec3(ray.direction);
 				norm.depth = 50;
 				norm.hit_idx = -1;
-				t_vec3 argb2 = test_color(ray, obj_perlin, &norm, 2);
+				t_vec3 argb2 = light_color(ray, obj_perlin, &norm, 4);
 				argb = add_vec3(argb, argb2);
 			}
-			argb = div_vec3(argb, 9.0);
+			argb = div_vec3(argb, 2000);
 			argb.x = sqrt(argb.x);
 			argb.y = sqrt(argb.y);
 			argb.z = sqrt(argb.z);
