@@ -33,6 +33,7 @@ SRCS_NAME = main \
 			./include/hit/hit_img \
 			./include/hit/hit_xyz_plane \
 			./include/hit/hit_light_color \
+			./include/pthread/pthread \
 
 SRCS = $(addsuffix .c, $(SRCS_NAME))
 
@@ -41,6 +42,9 @@ OBJS = $(addsuffix .o, $(SRCS_NAME))
 CC = cc
 
 FLAGS = -Wall -Wextra -Werror
+
+DEBUG = -fsanitize=address -g
+DEBUG1 = -fsanitize=thread -g
 
 MLX = -L./mlx -lmlx -framework OpenGL -framework Appkit
 

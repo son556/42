@@ -8,7 +8,7 @@ SRCS = ./error/str_put_error.c ./error/valid_check.c \
 		./utils/ft_strcjoin.c ./utils/ft_strcpy.c ./utils/ft_strjoin.c \
 		./utils/ft_strlen.c ./utils/str_find.c ./utils/str_in_str.c \
 		./utils/display_arr.c \
-		pipe.c
+		pipex.c
 
 SRCS_B = ./bonus/utils_bonus/ft_split_2_bonus.c ./bonus/utils_bonus/ft_split_bonus.c \
 		./bonus/utils_bonus/ft_strjoin_bonus.c ./bonus/utils_bonus/ft_strlen_bonus.c \

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/27 17:03:31 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/29 21:05:01 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "./include/ray.h"
 #include "./include/hit.h"
 #include "./include/mlx_function.h"
+#include "./include/pthread.h"
 #include <stdio.h>
 
 int	argb_(int a, int r, int g, int b)
@@ -21,35 +22,118 @@ int	argb_(int a, int r, int g, int b)
 	return (a << 24 | r << 16 | g << 8 | b);
 }
 
+static void	set_ray(t_main m, t_ray *ray, t_for_idx p)
+{
+	ray->point = m.origin;
+	ray->direction.x = m.ll_corner.x + p.u * m.horizontal.x + \
+		p.v * m.vertical.x - m.origin.x;
+	ray->direction.y = m.ll_corner.y + p.u * m.horizontal.y + \
+		p.v * m.vertical.y - m.origin.y;
+	ray->direction.z = m.ll_corner.z + p.u * m.horizontal.z + \
+		p.v * m.vertical.z - m.origin.z;
+	ray->direction = normalize_vec3(ray->direction);
+}
+
+void	*draw(void *arg)
+{
+	t_thread	*thr;
+	t_for_idx	p;
+	t_task		task;
+	t_ray		ray;
+	t_list		*list;
+
+	thr = (t_thread *)arg;
+	list = thr->list;
+	while (1)
+	{
+		task = out_task(thr->list);
+		if (task.start == -1)
+			break ;
+		// printf("idx: %d, start: %d, end: %d\n", thr->thread_idx, task.start, task.end);
+		p.j = task.end + 1;
+		while (--(p.j) >= task.start)
+		{
+			p.i = -1;
+			while (++(p.i) < list->point_x)
+			{
+				p.argb = vec3init(0, 0, 0);
+				p.k = -1;
+				while (++(p.k) < 100)
+				{
+					// printf("mid mid k: %d idx: %d i: %d p_x: %d\n", p.k, thr->thread_idx, p.i, list->point_x);
+					p.u = (p.i + random_0_to_1()) / (thr->list->point_x - 1);
+					p.v = (p.j + random_0_to_1()) / (thr->list->m.point_y - 1);
+					ray.point = thr->list->m.origin;
+					set_ray(list->m, &ray, p);
+					// printf("mid sos: %d idx: %d i: %d p_x: %d\n", p.k, thr->thread_idx, p.i, list->point_x);
+					thr->norm.depth = 15;
+					thr->norm.hit_idx = -1;
+					// printf("th_idx: %d, j: %d, i: %d, k: %d, addr: %p\n", thr->thread_idx, p.j, p.i, p.k, &(thr->norm));
+					p.argb2 = light_color(ray, thr->list->obj_list, &(thr->norm), thr->list->m.arr_cnt);
+					p.argb = add_vec3(p.argb, p.argb2);
+				}
+				p.argb = div_vec3(p.argb, 100);
+				p.argb.x = sqrt(p.argb.x);
+				p.argb.y = sqrt(p.argb.y);
+				p.argb.z = sqrt(p.argb.z);
+				p.argb = minmax_vec3(p.argb, 0, 1);
+				p.color = argb_(0, (int)(p.argb.x * 255.999), (int)(p.argb.y * 255.999), (int)(p.argb.z * 255.999));
+				pthread_mutex_lock(&(thr->list->key_draw));
+				mlx_pixel_put(list->m.mlx.mlx, list->m.mlx.win, p.i, 700 - 1 - p.j, p.color);
+				pthread_mutex_unlock(&(thr->list->key_draw));
+			}
+		}
+	}
+	return (0);
+}
+
+void	thread_start(t_list	*list, t_norm norm)
+{
+	t_thread	thread_list[6];
+	int			i;
+
+	i = -1;
+	set_thread_lst(thread_list, list, norm);
+	while (++i < 6)
+		pthread_create(&(thread_list[i].thread), NULL, \
+			&draw, (void *)&(thread_list[i]));
+	i = -1;
+	while (++i < 6)
+		pthread_join(thread_list[i].thread, NULL);
+}
+
+void	set_main(t_main *m)
+{
+	m->res_ratio = 16.0 / 9.0;
+	m->point_y = 700;
+	m->point_x = m->point_y * m->res_ratio;
+	m->theta = getradian(60);
+	m->h = tan(m->theta / 2);
+	m->vp_height = 2.0 * m->h;
+	m->vp_width = m->res_ratio * m->vp_height;
+	m->look_from = vec3init(0, 0, 0);
+	m->look_at = vec3init(0, 0, -1);
+	m->vup = vec3init(0, 1, 0);
+	m->w_vec = normalize_vec3(sub_vec3(m->look_from, m->look_at));
+	m->u_vec = normalize_vec3(cross_vec3(m->vup, m->w_vec));
+	m->v_vec = cross_vec3(m->w_vec, m->u_vec);
+	m->horizontal = mul_vec3(m->u_vec, m->vp_width);
+	m->vertical = mul_vec3(m->v_vec, m->vp_height);
+	m->origin = m->look_from;
+	m->ll_corner = sub_vec3(m->origin, mul_vec3(m->horizontal, 0.5));
+	m->ll_corner = sub_vec3(m->ll_corner, mul_vec3(m->vertical, 0.5));
+	m->ll_corner = sub_vec3(m->ll_corner, m->w_vec);
+	m->mlx.mlx = mlx_init();
+	m->mlx.win = mlx_new_window(m->mlx.mlx, m->point_x, m->point_y, "test");
+}
+
 int	main(void)
 {
-	t_vars		mlx;
-	t_ray		ray;
-	double		res_ratio = 16.0 / 9.0;
-	double		point_x;
-	double		point_y;
+	t_list	list;
+	t_norm	norm;
 
-	point_y = 400;
-	point_x = point_y * res_ratio;
-	double	theta = getradian(60);
-	double	h = tan(theta / 2);
-	double	vp_height = 2.0 * h;
-	double	vp_width = res_ratio * vp_height;
-	// double	vp_length = 1.0;
-	t_vec3	look_from = vec3init(0, 0, 0);
-	t_vec3	look_at = vec3init(0, 0, -1);
-	t_vec3	vup = vec3init(0, 1, 0);
-
-	t_vec3	w_vec = normalize_vec3(sub_vec3(look_from, look_at));
-	t_vec3	u_vec = normalize_vec3(cross_vec3(vup, w_vec));
-	t_vec3	v_vec = cross_vec3(w_vec, u_vec);
-	
-	t_vec3	horizontal = mul_vec3(u_vec, vp_width);
-	t_vec3	vertical = mul_vec3(v_vec, vp_height);
-	t_vec3	origin = look_from;
-	t_vec3	ll_corner = sub_vec3(origin, mul_vec3(horizontal, 0.5));
-	ll_corner = sub_vec3(ll_corner, mul_vec3(vertical, 0.5));
-	ll_corner = sub_vec3(ll_corner, w_vec);
+	set_main(&(list.m));
+	list.first = NULL;
 
 	t_obj		obj_cylinder;
 	obj_cylinder.type = CYLINDER;
@@ -96,18 +180,12 @@ int	main(void)
 	obj_paraboloid.material = METAL;
 	obj_paraboloid.fuzz = 0;
 
-	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, point_x, point_y, "test");
-
-
 	t_obj	obj_arr[5];
 	obj_arr[0] = obj_cylinder;
 	obj_arr[1] = obj_cone;
 	obj_arr[2] = obj_sphere;
 	obj_arr[3] = obj_cube;
 	obj_arr[4] = obj_paraboloid;
-
-	t_norm	norm;
 
 	t_obj	obj_sph;
 	obj_sph.type = SPHERE;
@@ -158,7 +236,6 @@ int	main(void)
 	obj_perlin_pl.color = vec3init(0, 0.8, 0);
 	obj_perlin_pl.material = PLASTIC;
 
-	
 	t_obj	obj_perlin_sph;
 	obj_perlin_sph.type = SPHERE;
 	complete_sphere(&obj_perlin_sph.sphere, vec3init(0, -3, -10), 1.0);
@@ -171,51 +248,30 @@ int	main(void)
 	complete_xyz_pl(&obj_light.xyz_pl, vec3init(0, 2, -10), 1, 1);
 	obj_light.material = LIGHT;
 
-	t_obj	obj_light2;
-	obj_light2.type = SPHERE;
-	complete_sphere(&obj_light2.sphere, vec3init(0, 2, -10), 1);
-	obj_light2.material = LIGHT;
+	t_obj	obj_pl_sph3;
+	obj_pl_sph3.type = SPHERE;
+	complete_sphere(&obj_pl_sph3.sphere, vec3init(-2, -3, -10), 1.0);
+	obj_pl_sph3.material = METAL;
+	obj_pl_sph3.color = vec3init(0.8, 0.6, 0);
+	obj_pl_sph3.fuzz = 0;
 
-	t_obj	obj_perlin[5];
+	t_obj	obj_perlin[6];
 
 	obj_perlin[0] = obj_perlin_pl;
 	obj_perlin[1] = obj_perlin_sph;
 	obj_perlin[2] = obj_light;
 	obj_perlin[3] = obj_sph;
 	obj_perlin[4] = obj_sph2;
+	obj_perlin[5] = obj_pl_sph3;
 
 	norm.background = vec3init(0, 0, 0);
 	norm.light.color = vec3init(7, 7, 7);
-	for (int j = point_y - 1 ; j >= 0; --j)
-	{
-		for (int i = 0 ; i < point_x ; i++)
-		{
-			t_vec3 argb = vec3init(0, 0, 0);
-			for (int k = 0; k < 2000; k++)
-			{
-				double u = (i + random_0_to_1()) / (point_x - 1);
-				double v = (j + random_0_to_1()) / (point_y - 1);
-				ray.point = origin;
-				ray.direction = vec3init(ll_corner.x + u*horizontal.x + v*vertical.x - origin.x,
-								ll_corner.y + u*horizontal.y + v*vertical.y - origin.y,
-								ll_corner.z + u*horizontal.z + v*vertical.z - origin.z);
-				ray.direction = normalize_vec3(ray.direction);
-				norm.depth = 50;
-				norm.hit_idx = -1;
-				t_vec3 argb2 = light_color(ray, obj_perlin, &norm, 4);
-				argb = add_vec3(argb, argb2);
-			}
-			argb = div_vec3(argb, 2000);
-			argb.x = sqrt(argb.x);
-			argb.y = sqrt(argb.y);
-			argb.z = sqrt(argb.z);
-			argb = minmax_vec3(argb, 0, 1);
-			int	color = argb_(0, (int)(argb.x * 255.999), (int)(argb.y * 255.999), (int)(argb.z * 255.999));
-			mlx_pixel_put(mlx.mlx, mlx.win, i, point_y - 1 - j, color);
-		}
-	}
-	mlx_key_hook(mlx.win, key_hook, &mlx);
-	mlx_hook(mlx.win, 17, 0, exit_hook, 0);
-	mlx_loop(mlx.mlx);
+	list.m.arr_cnt = 6;
+	list.first = NULL;
+	set_task_list(&list, 6, obj_perlin);
+	thread_start(&list, norm);
+	mlx_key_hook(list.m.mlx.win, key_hook, &(list.m.mlx));
+	mlx_hook(list.m.mlx.win, 17, 0, exit_hook, 0);
+	mlx_loop(list.m.mlx.mlx);
 	return (0);
 }

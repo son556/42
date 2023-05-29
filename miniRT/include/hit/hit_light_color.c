@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 14:09:50 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/27 15:59:00 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/29 20:23:54 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,30 @@ t_color3	light_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 	t_ray		new_ray;
 
 	temp = *norm;
+	// printf("depth:%d\n", norm->depth);
 	if (norm->depth <= 0)
+	{
+		// printf("0\n");
 		return (vec3init(0, 0, 0));
+	}
+	// printf("hi\n");
 	if (obj_arr_hit(obj, ray, &temp, n) != -1)
 	{
+		// printf("hello\n");
 		norm->depth -= 1;
+		// printf("1\n");
 		if (obj[temp.hit_idx].material == LIGHT)
+		{	
+			// printf("22\n");
 			return (norm->light.color);
+		}
+		// printf("2\n");
 		def_color(&col, obj, temp, *norm);
+		// printf("3\n");
 		new_ray = def_new_ray(ray, obj, temp);
+		// printf("4\n");
 		return (vec3_x_vec3(light_color(new_ray, obj, norm, n), col));
 	}
+	// printf("5\n");
 	return (norm->background);
 }

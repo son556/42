@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/27 14:11:12 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/29 19:27:50 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "ray.h"
 # include <stdlib.h>
 # include <math.h>
+# include <stdio.h>
 
 typedef int				t_bool;
 
