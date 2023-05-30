@@ -6,16 +6,11 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:34:52 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/05 19:18:16 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 12:13:37 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../vec3.h"
-
-double	get_radian(double theta)
-{
-	return (theta * (M_PI / 180));
-}
 
 t_rot	rotate_vec(double t1, double t2, double t3)
 {
@@ -25,9 +20,9 @@ t_rot	rotate_vec(double t1, double t2, double t3)
 	double	pitch;
 	double	yaw;
 
-	roll = get_radian(t1);
-	pitch = get_radian(t2);
-	yaw = get_radian(t3);
+	roll = getradian(t1);
+	pitch = getradian(t2);
+	yaw = getradian(t3);
 	rot_1.v_x = vec3init(cos(yaw), -sin(yaw), 0);
 	rot_1.v_y = vec3init(sin(yaw), cos(yaw), 0);
 	rot_1.v_z = vec3init(0, 0, 1);

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 17:42:58 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/24 15:51:32 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 12:13:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_vec3	rotate_xy_vec3(t_vec3 vec3)
 	t_vec3x3	rot;
 	double		th;
 
-	th = get_radian(90);
+	th = getradian(90);
 	rot_x.v_x = vec3init(1, 0, 0);
 	rot_x.v_y = vec3init(0, cos(th), -sin(th));
 	rot_x.v_z = vec3init(0, sin(th), cos(th));
@@ -56,4 +56,9 @@ t_vec3	rotate_xy_vec3(t_vec3 vec3)
 	rot_y.v_z = vec3init(sin(th), 0, cos(th));
 	rot = mul_vec3x3(rot_y, rot_x);
 	return (vec3x3_x_vec3(rot, vec3));
+}
+
+int	argb_(int a, int r, int g, int b)
+{
+	return (a << 24 | r << 16 | g << 8 | b);
 }

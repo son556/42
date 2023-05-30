@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:08:35 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/29 19:39:47 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 14:43:09 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_color3	test_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 		norm->depth -= 1;
 		col = obj[temp.hit_idx].color;
 		if (obj[temp.hit_idx].texture == CHECK_TEXTURE)
-			col = texture_color(norm->u, norm->v, temp.hit, col);
+			col = check_color(norm->u, norm->v, temp.hit, col);
 		else if (obj[temp.hit_idx].texture == NOISE_TEXTURE)
 			col = noise_color(temp, 4);
 		if (temp.material == METAL)

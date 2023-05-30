@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:14:27 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/25 18:04:46 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 15:04:06 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ double	noise(t_norm norm)
 	return (trilinear_interp(c, norm.noise.u, norm.noise.v, norm.noise.w));
 }
 
-double	turb(t_norm norm)
+static double	turb(t_norm norm)
 {
 	double	accum;
 	t_norm	temp_p;

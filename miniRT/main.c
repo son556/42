@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:11:28 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/29 21:05:01 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 16:23:24 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 #include "./include/mlx_function.h"
 #include "./include/pthread.h"
 #include <stdio.h>
-
-int	argb_(int a, int r, int g, int b)
-{
-	return (a << 24 | r << 16 | g << 8 | b);
-}
 
 static void	set_ray(t_main m, t_ray *ray, t_for_idx p)
 {
@@ -49,7 +44,6 @@ void	*draw(void *arg)
 		task = out_task(thr->list);
 		if (task.start == -1)
 			break ;
-		// printf("idx: %d, start: %d, end: %d\n", thr->thread_idx, task.start, task.end);
 		p.j = task.end + 1;
 		while (--(p.j) >= task.start)
 		{
@@ -58,21 +52,18 @@ void	*draw(void *arg)
 			{
 				p.argb = vec3init(0, 0, 0);
 				p.k = -1;
-				while (++(p.k) < 100)
+				while (++(p.k) < 500)
 				{
-					// printf("mid mid k: %d idx: %d i: %d p_x: %d\n", p.k, thr->thread_idx, p.i, list->point_x);
 					p.u = (p.i + random_0_to_1()) / (thr->list->point_x - 1);
 					p.v = (p.j + random_0_to_1()) / (thr->list->m.point_y - 1);
 					ray.point = thr->list->m.origin;
 					set_ray(list->m, &ray, p);
-					// printf("mid sos: %d idx: %d i: %d p_x: %d\n", p.k, thr->thread_idx, p.i, list->point_x);
 					thr->norm.depth = 15;
 					thr->norm.hit_idx = -1;
-					// printf("th_idx: %d, j: %d, i: %d, k: %d, addr: %p\n", thr->thread_idx, p.j, p.i, p.k, &(thr->norm));
 					p.argb2 = light_color(ray, thr->list->obj_list, &(thr->norm), thr->list->m.arr_cnt);
 					p.argb = add_vec3(p.argb, p.argb2);
 				}
-				p.argb = div_vec3(p.argb, 100);
+				p.argb = div_vec3(p.argb, 500);
 				p.argb.x = sqrt(p.argb.x);
 				p.argb.y = sqrt(p.argb.y);
 				p.argb.z = sqrt(p.argb.z);
@@ -100,6 +91,8 @@ void	thread_start(t_list	*list, t_norm norm)
 	i = -1;
 	while (++i < 6)
 		pthread_join(thread_list[i].thread, NULL);
+	pthread_mutex_destroy(&(list->key));
+	pthread_mutex_destroy(&(list->key_draw));
 }
 
 void	set_main(t_main *m)
@@ -255,14 +248,22 @@ int	main(void)
 	obj_pl_sph3.color = vec3init(0.8, 0.6, 0);
 	obj_pl_sph3.fuzz = 0;
 
+	t_obj	obj_pl_cone;
+	obj_pl_cone.type = CONE;
+	complete_cone(&obj_pl_cone.cone, vec3init(-2, -4, -10), \
+		vec3init(0, 1, 0), vec3init(1, 2, 0));
+	obj_pl_cone.material = METAL;
+	obj_pl_cone.color = vec3init(0.8, 0.6, 0);
+	obj_pl_cone.fuzz = 0.2;
+
 	t_obj	obj_perlin[6];
 
 	obj_perlin[0] = obj_perlin_pl;
 	obj_perlin[1] = obj_perlin_sph;
 	obj_perlin[2] = obj_light;
 	obj_perlin[3] = obj_sph;
-	obj_perlin[4] = obj_sph2;
-	obj_perlin[5] = obj_pl_sph3;
+	obj_perlin[4] = obj_pl_cone;
+	obj_perlin[5] = obj_sph2;
 
 	norm.background = vec3init(0, 0, 0);
 	norm.light.color = vec3init(7, 7, 7);

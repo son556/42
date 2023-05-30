@@ -5,15 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 17:49:55 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/25 19:46:51 by chanson          ###   ########.fr       */
+/*   Created: 2023/05/30 21:27:17 by chanson           #+#    #+#             */
+/*   Updated: 2023/05/30 21:29:34 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 
-void	hit_img(t_vec3 norm)
+t_color3	img_color(t_norm norm, t_mlx mlx)
 {
-	(void)norm;
-	return ;
+	
 }

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 20:21:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/11 19:56:10 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 14:52:45 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static t_norm	hit_cone_(t_cone con, t_ray ray, double t_max, t_discrim disc)
 	return (norm);
 }
 
-t_norm	hit_cone2(t_cone con, t_ray ray, double t_max)
+static t_norm	hit_cone2(t_cone con, t_ray ray, double t_max)
 {
 	t_discrim	disc;
 	double		m;

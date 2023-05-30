@@ -43,7 +43,7 @@ CC = cc
 
 FLAGS = -Wall -Wextra -Werror
 
-DEBUG = -fsanitize=address -g
+DEBUG = -fsanitize=undefined -g
 DEBUG1 = -fsanitize=thread -g
 
 MLX = -L./mlx -lmlx -framework OpenGL -framework Appkit

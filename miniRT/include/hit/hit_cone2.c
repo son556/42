@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 21:09:00 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/21 21:04:50 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 21:21:34 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,17 @@ t_aabb	cone_aabb_box(t_cone cone)
 	return (bound_box);
 }
 
-void	get_sphere_uv(t_norm *norm, t_vec3 cen)
+void	get_uv(t_norm *norm, t_vec3 point, t_vec3 cen)
 {
 	double	theta;
 	double	phi;
+	t_vec3	tmp_v;
 
-	theta = acos(-cen.y);
-	phi = atan2(-cen.z, cen.x) + PI;
+	tmp_v = normalize_vec3(sub_vec3(point, cen));
+	theta = acos(-point.y);
+	phi = atan2(-point.z, point.x) + PI;
 	norm->u = phi / (2 * PI);
 	norm->v = theta / PI;
+	norm->u = ft_minmax(norm->u, 0.0, 1.0);
+	norm->v = 1.0 - ft_minmax(norm->v, 0.0, 1.0);
 }

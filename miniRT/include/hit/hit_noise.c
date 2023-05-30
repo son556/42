@@ -6,13 +6,13 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 13:26:37 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/25 14:53:51 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/30 14:42:48 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hit.h"
 
-t_color3	texture_color(double u, double v, t_vec3 point, t_color3 col)
+t_color3	check_color(double u, double v, t_vec3 point, t_color3 col)
 {
 	double	sine;
 
