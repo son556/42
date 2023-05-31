@@ -4,6 +4,7 @@
 		"complex": "c",
 		"vec3.h": "c",
 		"chrono": "c",
-		"a": "cpp"
+		"a": "cpp",
+		"mlx_function.h": "c"
 	}
 }

@@ -1,6 +1,7 @@
 NAME = minirt
 
-SRCS_NAME = main \
+SRCS_NAME = ./main_c/main \
+			./main_c/main_draw \
 			./include/vec_utils/vec_utils \
 			./include/vec_utils/vec_utils2 \
 			./include/vec_utils/vec_utils3 \

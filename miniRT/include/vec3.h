@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 22:14:08 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/30 14:44:41 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/31 13:48:14 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_rot		rotate_vec(double t1, double t2, double t3);
 double		ft_pow(double a);
 t_vec3		point_symemtry(t_vec3 target, t_vec3 std);
 t_vec3		add_vec3_num(t_vec3 vec, double num);
+double		ft_min(double d1, double d2);
 
 //vec_utils5
 t_vec3x3	vec3x3_x_double(t_vec3x3 vec, double t);

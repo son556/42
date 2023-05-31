@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 21:09:00 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/30 21:21:34 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/31 17:01:27 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	get_uv(t_norm *norm, t_vec3 point, t_vec3 cen)
 	t_vec3	tmp_v;
 
 	tmp_v = normalize_vec3(sub_vec3(point, cen));
-	theta = acos(-point.y);
-	phi = atan2(-point.z, point.x) + PI;
+	theta = acos(-tmp_v.y);
+	phi = atan2(tmp_v.z, -tmp_v.x) + PI;
 	norm->u = phi / (2 * PI);
 	norm->v = theta / PI;
 	norm->u = ft_minmax(norm->u, 0.0, 1.0);

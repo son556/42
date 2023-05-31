@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/30 21:27:58 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/31 16:14:52 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <math.h>
 # include <stdio.h>
+# include "mlx_function.h"
 
 typedef int				t_bool;
 
@@ -39,6 +40,36 @@ enum e_objects
 	NOISE_TEXTURE,
 	IMAGE_TEXTURE
 };
+
+typedef struct s_texture
+{
+	t_data	data;
+	int		width;
+	int		height;
+}	t_texture;
+
+typedef struct s_point2
+{
+	double	x;
+	double	y;
+}	t_point2;
+
+typedef struct s_resolution
+{
+	char		*flag;
+	t_point2	point;
+}	t_resolution;
+
+typedef struct s_mlx
+{
+	t_vars			*mlx;
+	float			res_ratio;
+	t_resolution	res;
+	t_data			buffer;
+	t_texture		check;
+	t_texture		block_c;
+	t_texture		block_b;
+}	t_mlx;
 
 typedef struct s_aabb
 {
@@ -145,6 +176,7 @@ typedef struct s_obj
 	double			fuzz;
 	double			ref_idx;
 	t_aabb			bound_box;
+	t_mlx			mlx;
 }	t_obj;
 
 typedef struct s_discrim
@@ -276,6 +308,7 @@ double		noise(t_norm norm);
 t_color3	noise_color(t_norm norm, double scale);
 
 // hit_img
+t_color3	img_color(t_norm *norm, t_obj *obj);
 
 // hit_obj
 void		complete_sphere(t_sphere *sp, t_vec3 cen, double r);

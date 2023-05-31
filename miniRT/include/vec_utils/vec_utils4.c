@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 19:34:52 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/30 12:13:37 by chanson          ###   ########.fr       */
+/*   Updated: 2023/05/31 13:47:58 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,11 @@ t_vec3	add_vec3_num(t_vec3 vec, double num)
 	add.y = vec.y + num;
 	add.z = vec.z + num;
 	return (add);
+}
+
+double	ft_min(double d1, double d2)
+{
+	if (d1 < d2)
+		return (d1);
+	return (d2);
 }
