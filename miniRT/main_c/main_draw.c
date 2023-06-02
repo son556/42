@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 14:46:51 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/31 17:03:14 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/02 20:39:54 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	set_ray(t_main m, t_ray *ray, t_for_idx p)
 	ray->direction = normalize_vec3(ray->direction);
 }
 
-static void	draw_def_col(t_for_idx *p, t_thread *thr, t_list *list)
+static void	draw_def_col(t_for_idx *p, t_thread *thr, t_list_pth *list)
 {
 	p->argb.x = sqrt(p->argb.x);
 	p->argb.y = sqrt(p->argb.y);
@@ -38,7 +38,7 @@ static void	draw_def_col(t_for_idx *p, t_thread *thr, t_list *list)
 	pthread_mutex_unlock(&(thr->list->key_draw));
 }
 
-static void	draw_anti_(t_for_idx *p, t_ray *ray, t_thread *thr, t_list *list)
+static void	draw_anti(t_for_idx *p, t_ray *ray, t_thread *thr, t_list_pth *list)
 {
 	p->argb = vec3init(0, 0, 0);
 	p->k = -1;
@@ -50,8 +50,8 @@ static void	draw_anti_(t_for_idx *p, t_ray *ray, t_thread *thr, t_list *list)
 		set_ray(list->m, ray, *p);
 		thr->norm.depth = 15;
 		thr->norm.hit_idx = -1;
-		p->argb2 = light_color(*ray, thr->list->obj_list, \
-			&(thr->norm), thr->list->m.arr_cnt);
+		p->argb2 = light_color(*ray, list->obj_list, \
+			&(thr->norm), list->m.arr_cnt);
 		p->argb = add_vec3(p->argb, p->argb2);
 	}
 	p->argb = div_vec3(p->argb, 500);
@@ -64,7 +64,7 @@ void	*draw(void *arg)
 	t_for_idx	p;
 	t_task		task;
 	t_ray		ray;
-	t_list		*list;
+	t_list_pth	*list;
 
 	thr = (t_thread *)arg;
 	list = thr->list;
@@ -78,7 +78,7 @@ void	*draw(void *arg)
 		{
 			p.i = -1;
 			while (++(p.i) < list->point_x)
-				draw_anti_(&p, &ray, thr, list);
+				draw_anti(&p, &ray, thr, list);
 		}
 	}
 	return (0);

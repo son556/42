@@ -2,6 +2,18 @@ NAME = minirt
 
 SRCS_NAME = ./main_c/main \
 			./main_c/main_draw \
+			./main_c/main_set \
+			./main_c/main_set2 \
+			./main_c/main_parse \
+			./main_c/main_parse2 \
+			./main_c/main_parse3 \
+			./main_c/main_parse4 \
+			./main_c/utils/check_num \
+			./main_c/utils/check_vec \
+			./main_c/utils/free_split \
+			./main_c/utils/ft_atof \
+			./main_c/utils/ft_strexit \
+			./main_c/utils/ft_strncmp \
 			./include/vec_utils/vec_utils \
 			./include/vec_utils/vec_utils2 \
 			./include/vec_utils/vec_utils3 \
@@ -52,15 +64,20 @@ MLX = -L./mlx -lmlx -framework OpenGL -framework Appkit
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-			@$(CC) $(MLX) $(FLAGS) $(OBJS) -o $(NAME)
+			make bonus -C libft
+			make -C mlx
+			@$(CC) $(MLX) $(FLAGS) $(OBJS) -o $(NAME) ./mlx/libmlx.a ./libft/libft.a
 
 %.o:	%.c
 			$(CC) $(FLAGS) -c $< -o $@
 
 clean:
+			@make clean -C libft
+			@make clean -C mlx
 			@rm -rf $(OBJS)
 
 fclean:		clean
+			make fclean -C libft
 			rm -rf $(NAME)
 
 re:			

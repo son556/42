@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:27:17 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/31 16:51:08 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/01 12:33:23 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,11 @@ t_color3	img_color(t_norm *norm, t_obj *obj)
 	get_uv(norm, norm->hit, obj[norm->hit_idx].sphere.center);
 	w = (int)(obj->mlx.block_c.width * norm->u);
 	h = (int)(obj->mlx.block_c.height * norm->v);
-	// printf("u:%f v:%f w:%d h:%d\n", norm->u, norm->v, w, h);
 	col = color_vec3(my_mlx_pixel_get(&obj->mlx.block_c.data, w, h));
 	w = (int)(obj->mlx.block_b.width * norm->u);
 	h = (int)(obj->mlx.block_b.height * norm->v);
 	normal = color_vec3(my_mlx_pixel_get(&obj->mlx.block_b.data, w, h));
 	normal = sub_vec3(mul_vec3(normal, 2), vec3init(1, 1, 1));
 	norm->n_vec = add_vec3(norm->n_vec, normal);
-	// display_vec3(col);
 	return (col);
 }

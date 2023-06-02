@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:10:49 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/29 18:59:51 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/01 20:27:52 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_main
 	double	vp_height;
 	double	vp_width;
 	t_vec3	look_from;
-	t_vec3	look_at;
 	t_vec3	vup;
 	t_vec3	w_vec;
 	t_vec3	u_vec;
@@ -69,7 +68,7 @@ typedef struct s_main
 	int		arr_cnt;
 }	t_main;
 
-typedef struct t_list
+typedef struct t_list_pth
 {
 	t_task			*first;
 	t_task			*last;
@@ -78,18 +77,18 @@ typedef struct t_list
 	pthread_mutex_t	key;
 	pthread_mutex_t	key_draw;
 	t_main			m;
-}	t_list;
+}	t_list_pth;
 
 typedef struct s_thread
 {
 	pthread_t	thread;
 	t_task		*task;
-	t_list		*list;
+	t_list_pth	*list;
 	int			thread_idx;
 	t_norm		norm;
 }	t_thread;
 
-void	set_task_list(t_list *list, int arr_cnt, t_obj *o_list);
-t_task	out_task(t_list *list);
-void	set_thread_lst(t_thread *thr_lst, t_list *list, t_norm norm);
+void	set_task_list(t_list_pth *list, int arr_cnt, t_obj *o_list);
+void	set_thread_lst(t_thread *thr_lst, t_list_pth *list, t_norm norm);
+t_task	out_task(t_list_pth *list);
 #endif

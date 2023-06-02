@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 17:10:32 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/31 14:39:44 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/02 20:39:07 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	set_task(t_task *task, int start, int end)
 	task->next = NULL;
 }
 
-void	set_task_list(t_list *list, int arr_cnt, t_obj *o_list)
+void	set_task_list(t_list_pth *list, int arr_cnt, t_obj *o_list)
 {
 	t_task	*task;
 	int		i;
@@ -48,7 +48,7 @@ void	set_task_list(t_list *list, int arr_cnt, t_obj *o_list)
 	}
 }
 
-t_task	out_task(t_list *list)
+t_task	out_task(t_list_pth *list)
 {
 	t_task	tmp;
 	t_task	*tmp_task;
@@ -71,7 +71,7 @@ t_task	out_task(t_list *list)
 	return (tmp);
 }
 
-void	set_thread_lst(t_thread *thr_lst, t_list *list, t_norm norm)
+void	set_thread_lst(t_thread *thr_lst, t_list_pth *list, t_norm norm)
 {
 	int		i;
 

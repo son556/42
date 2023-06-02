@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:37:11 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/31 16:14:52 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/02 14:39:00 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ enum e_objects
 	METAL,
 	GLASS,
 	PLASTIC,
-	HOLLOWGLASS,
 	LIGHT,
 	CHECK_TEXTURE,
 	NOISE_TEXTURE,
@@ -170,6 +169,7 @@ typedef struct s_obj
 	t_plane			plane;
 	t_para			para;
 	t_xyz_pl		xyz_pl;
+	t_light			light;
 	t_color3		color;
 	enum e_objects	material;
 	enum e_objects	texture;

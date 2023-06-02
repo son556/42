@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 14:09:50 by chanson           #+#    #+#             */
-/*   Updated: 2023/05/31 16:54:26 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/02 20:06:09 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_color3	light_color(t_ray ray, t_obj *obj, t_norm *norm, int n)
 	{
 		norm->depth -= 1;
 		if (obj[temp.hit_idx].material == LIGHT)
-			return (norm->light.color);
+			return (mul_vec3(obj[temp.hit_idx].light.color, \
+				obj[temp.hit_idx].light.ratio));
 		def_color(&col, obj, &temp, *norm);
 		new_ray = def_new_ray(ray, obj, temp);
 		return (vec3_x_vec3(light_color(new_ray, obj, norm, n), col));
