@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 14:09:50 by chanson           #+#    #+#             */
-/*   Updated: 2023/06/02 20:06:09 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/02 21:58:20 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	def_color(t_color3 *col, t_obj *obj, t_norm *temp, t_norm norm)
 {
 	if (obj[temp->hit_idx].texture == CHECK_TEXTURE)
-		*col = check_color(norm.u, norm.v, temp->hit, *col);
+		*col = check_color(norm.u, norm.v, temp->hit, obj[temp->hit_idx].color);
 	else if (obj[temp->hit_idx].texture == NOISE_TEXTURE)
 		*col = noise_color(*temp, 4);
 	else if (obj[temp->hit_idx].texture == IMAGE_TEXTURE)
