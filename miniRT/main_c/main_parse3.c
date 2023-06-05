@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 20:54:18 by chanson           #+#    #+#             */
-/*   Updated: 2023/06/02 20:28:37 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/03 16:06:56 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void	parsing_cu(char **str, t_obj *obj, int idx)
 		"error rt file: cube normal vector1\n"));
 	cub.n_vec2 = normalize_vec3(check_vec(str[3], \
 		"error rt file: cube normal vector2\n"));
+	if (dot_vec3(cub.n_vec1, cub.n_vec2) != 0)
+		ft_strexit("error rt file: cube vector error\n");
 	cub.col = div_vec3(check_vec(str[4], \
 		"error rt file: cube color\n"), 255);
 	cub.len = check_num(str[5], "error rt file: cube length\n");

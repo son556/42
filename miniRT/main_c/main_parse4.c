@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 22:30:02 by chanson           #+#    #+#             */
-/*   Updated: 2023/06/02 21:57:56 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/03 18:38:00 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	parsing_co(char **str, t_obj *obj, int idx)
 	con.ref_idx = check_num(str[9], "error rt file: cone ref_idx\n");
 	obj[idx] = set_cone(con);
 }
-
 
 void	parsing_pa(char **str, t_obj *obj, int idx)
 {

@@ -6,7 +6,7 @@
 /*   By: chanson <chanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 14:46:51 by chanson           #+#    #+#             */
-/*   Updated: 2023/06/02 22:00:05 by chanson          ###   ########.fr       */
+/*   Updated: 2023/06/03 22:01:48 by chanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	draw_anti(t_for_idx *p, t_ray *ray, t_thread *thr, t_list_pth *list)
 {
 	p->argb = vec3init(0, 0, 0);
 	p->k = -1;
-	while (++(p->k) < 500)
+	while (++(p->k) < 3000)
 	{
 		p->u = (p->i + random_0_to_1()) / (thr->list->point_x - 1);
 		p->v = (p->j + random_0_to_1()) / (thr->list->m.point_y - 1);
@@ -54,7 +54,7 @@ static void	draw_anti(t_for_idx *p, t_ray *ray, t_thread *thr, t_list_pth *list)
 			&(thr->norm), list->m.arr_cnt);
 		p->argb = add_vec3(p->argb, p->argb2);
 	}
-	p->argb = div_vec3(p->argb, 500);
+	p->argb = div_vec3(p->argb, 3000);
 	draw_def_col(p, thr, list);
 }
 
