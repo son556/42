@@ -2,16 +2,16 @@
 
 int	main(void)
 {
-	Zombie	zombiea = Zombie("zozo"); // stack
+	Zombie	zombiea = Zombie("zozo");
 	zombiea.announce();
 
-	Zombie* zombieB = newZombie("heapZombieB"); //heap
+	Zombie* zombieB = newZombie("heapZombieB");
 	zombieB->announce();
 
-	Zombie* zombieC = new Zombie("juju"); // heap
+	Zombie* zombieC = new Zombie("juju");
 	zombieC->announce();
 
-	randomChump("hallpoint zombie"); // stack
+	randomChump("hallpoint zombie");
 
 	delete zombieB;
 	delete zombieC;

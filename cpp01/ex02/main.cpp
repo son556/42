@@ -9,7 +9,7 @@ int	main(void)
 	stringPTR = &str;
 	std::cout << "---------------addr-------------------" << std::endl;
 	std::cout << "str addr: " << &str << std::endl;
-	std::cout << "stringPTR addr: " << &stringPTR << std::endl;
+	std::cout << "stringPTR addr: " << stringPTR << std::endl;
 	std::cout << "stringREF addr: " << &strringREF << std::endl;
 	std::cout << std::endl;
 
