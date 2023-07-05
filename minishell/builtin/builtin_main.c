@@ -55,8 +55,8 @@ int	builtin_pipe(t_tree *info)
 	int	check_2;
 
 	exit_check = 0;
-	if (info->outfile != 0)
-		dup2(info->outfile, STDOUT_FILENO);
+	// if (info->outfile != 0)
+	// 	dup2(info->outfile, STDOUT_FILENO);
 	check_1 = cd_echo_env_check(info);
 	if (check_1 != 1)
 		return (check_1);

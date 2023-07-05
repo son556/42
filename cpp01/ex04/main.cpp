@@ -29,6 +29,8 @@ int	main(int argc, char **argv)
 		std::getline(in, s, '\0');
 		while ((idx = s.find(argv[2])) != std::string::npos)
 		{
+			if (new_s.size() == 0)
+				break ;
 			s.erase(idx, new_s.size());
 			s.insert(idx, argv[3]);
 		}

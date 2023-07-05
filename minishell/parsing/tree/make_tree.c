@@ -42,6 +42,7 @@ t_tree	*init_tree(char **temp, t_tree *tree)
 	pre = NULL;
 	if (make_list(temp, list) == FALSE)
 		return (FALSE);
+	// show_list(list);
 	_make_tree(list, tree, 1, &pre);
 	free(list);
 	list = NULL;
