@@ -23,7 +23,7 @@ void	find_value_print(t_env *env_list, char *key)
 		{
 			if (tmp->value && !ft_strscmp(tmp->value, " "))
 			{
-				printf("%s", tmp->value);
+				printf("%s  %s", tmp->key, tmp->value);
 				return ;
 			}
 		}
