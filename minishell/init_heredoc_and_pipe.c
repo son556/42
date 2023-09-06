@@ -43,7 +43,7 @@ void	_init_heredoc_and_pipe(t_tree *tree, char ***temp, char *str)
 {
 	tree = init_heredoc(tree, temp);
 	tree->pipe_cnt = count_pipe(*temp);
-	tree->echo_export_arr = builtin_split(str);
+	tree->echo_export_arr = builtin_split(str);	
 	start_cmd(tree, *temp);
 	unlink_heredoc(tree);
 	ft_free_tree(tree);

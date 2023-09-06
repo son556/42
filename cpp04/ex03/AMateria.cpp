@@ -1,4 +1,5 @@
 #include "./AMateria.hpp"
+#include "./ICharacter.hpp"
 
 AMateria::AMateria(std::string const& type)
 {
