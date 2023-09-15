@@ -1,0 +1,26 @@
+NAME = test
+
+SRCS = main.cpp
+
+OBJS = main.o
+
+HEADER = easyfind.hpp
+
+CXX = c++
+
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+
+all:	$(NAME)
+
+$(NAME):	$(OBJS) $(HEADER)
+			$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+
+clean:
+			rm -rf $(OBJS)
+
+fclean:		clean
+			rm -rf $(NAME)
+
+re:			fclean all
+
+.PHONEY:	all clean fclean re
