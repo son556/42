@@ -50,6 +50,7 @@ T& Array<T>::operator[](size_t idx) const
 {
 	try
 	{
+		std::cout << "const operator excute...." << std::endl;
 		if (idx >= cnt || idx < 0)
 			throw std::out_of_range("index Out of Range!");
 		return arr[idx];
@@ -58,6 +59,7 @@ T& Array<T>::operator[](size_t idx) const
 	{
 		std::cerr << e.what() << std::endl;
 	};
+	return arr[idx];
 }
 
 template <typename T>
@@ -65,6 +67,7 @@ T& Array<T>::operator[](size_t idx)
 {
 	try
 	{
+		std::cout << "operator excute..." << std::endl;
 		if (idx >= cnt || idx < 0)
 			throw std::out_of_range("index Out of Range!");
 		return arr[idx];
